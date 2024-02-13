@@ -5,6 +5,7 @@ QMAKE = /bin/qmake
 
 # Target naem
 TARGET = icp24
+TARGET_DEBUG = icp24_debug
 
 # Source files
 SRC_PATH = src
@@ -21,7 +22,7 @@ BUILD_DIR = build
 
 # Default target
 all: build
-	cd build && $(QMAKE) && $(MAKE) && cp $(TARGET) ../
+	cd build && $(QMAKE) && $(MAKE) && cp $(TARGET) $(TARGET_DEBUG) ../
 
 build: clean
 	mkdir $(BUILD_DIR)
@@ -39,5 +40,6 @@ cleandoc:
 clean: 
 	rm -rf $(BUILD_DIR)/
 	rm -rf $(TARGET)
+	rm -rf $(TARGET_DEBUG)
 
 .PHONY: run clean
