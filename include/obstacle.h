@@ -1,5 +1,7 @@
 #pragma once 
 
+#include "object.h"
+
 class Obstacle : public virtual Object
 {
 public:

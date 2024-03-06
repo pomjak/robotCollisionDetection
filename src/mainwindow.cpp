@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "object.h"
+#include "robot.h"
+#include "obstacle.h"
 #include "simulation.h"
 
 MainWindow::MainWindow(QWidget *parent)

@@ -1,7 +1,8 @@
 #pragma once 
 
-class Robot : public virtual Object
-{
+#include "object.h"
+
+class Robot : public virtual Object {
 private:
 public:
     Robot() {}

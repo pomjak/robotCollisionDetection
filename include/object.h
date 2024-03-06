@@ -1,8 +1,6 @@
 #pragma once 
 
 #include <QtWidgets>
-#include "robot.h"
-#include "obstacle.h"
 
 struct Position
 {
