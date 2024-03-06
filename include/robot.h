@@ -1,8 +1,5 @@
 #pragma once 
 
-#include "object.h"
-#include <iostream>
-
 class Robot : public virtual Object
 {
 private:

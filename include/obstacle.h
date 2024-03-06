@@ -1,7 +1,5 @@
 #pragma once 
 
-#include "robot.h"
-
 class Obstacle : public virtual Object
 {
 public:

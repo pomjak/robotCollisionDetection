@@ -14,8 +14,8 @@ HEADERS += \
     mainwindow.h \
     object.h \
     obstacle.h \
-    robot.h
-
+    robot.h \
+    simulation.h 
 
 FORMS += \
     mainwindow.ui
