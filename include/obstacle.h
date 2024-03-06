@@ -2,7 +2,7 @@
 
 #include "robot.h"
 
-class Obstacle : public Object
+class Obstacle : public virtual Object
 {
 public:
     Obstacle() {}

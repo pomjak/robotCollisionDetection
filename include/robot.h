@@ -3,7 +3,7 @@
 #include "object.h"
 #include <iostream>
 
-class Robot
+class Robot : public virtual Object
 {
 private:
 public:
