@@ -11,7 +11,11 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    object.h \
+    obstacle.h \
+    robot.h
+
 
 FORMS += \
     mainwindow.ui
