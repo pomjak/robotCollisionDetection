@@ -10,24 +10,10 @@ class Obstacle : public virtual Object
 public:
     Obstacle() {}
     ~Obstacle() {}
-    QRectF boundingRect() const override
-    {
-        return QRectF(100, 100, 100, 100);
-    }
 
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override
-    {
-        Q_UNUSED(option);
-        Q_UNUSED(widget);
-
-        painter->setPen(Qt::blue);
-        painter->setBrush(Qt::blue);
-        painter->drawRect(boundingRect());
-
-        DBG << "painted obstacle";
-    }
+    QRectF boundingRect() const override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 private:
-    double size;
 };
 
 class ObstacleFactory

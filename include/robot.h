@@ -8,25 +8,21 @@
 class Robot : public virtual Object
 {
 private:
+    double orientation;
+    double rotation;
+    double speed;
+
 public:
     Robot() {}
     ~Robot() {}
-    QRectF boundingRect() const 
-    {
-        return QRectF(10, 10, 100, 100);
-    }
+    QRectF boundingRect() const override;
 
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) 
-    {
-        Q_UNUSED(option);
-        Q_UNUSED(widget);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
-        painter->setPen(Qt::red);
-        painter->setBrush(Qt::red);
-        painter->drawEllipse(boundingRect());
-        DBG << "painted robot";
-
-    }
+    void move(void);
+    void detectCollision(void);
+    void rotate(void);
+    void manualControl(void);
 };
 
 class RobotFactory

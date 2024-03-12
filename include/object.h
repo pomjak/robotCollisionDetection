@@ -15,9 +15,10 @@ public:
 
 protected:
     Position position;
+    double size;
 
 public:
-    Position getPosition() const { return position; }
-    void setPosition(const Position& newPosition) { position = newPosition; }
+    inline Position getPosition() const { return position; }
+    inline void setPosition(const Position& newPosition) { position = newPosition; }
 };
 

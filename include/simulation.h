@@ -1,34 +1,25 @@
 #pragma once 
 
 #include <QGraphicsScene>
-#include <QGraphicsView>
-
 #include <vector>
 
 #include "object.h"
 #include "debug.h"
 
+enum SimulationState { INIT, RUNNING, PAUSED, HALT };
 class Simulation
 {
 private:
     std::vector<Object*> objectList;
-    QGraphicsScene *scene;
+    QGraphicsScene* scene;
+    int timeElapsed;
+    SimulationState STATE;
+
 public:
-    Simulation() : scene(new QGraphicsScene())
-    {}
+    Simulation() : scene(new QGraphicsScene()), timeElapsed(0), STATE(SimulationState::INIT) {}
     ~Simulation() { delete scene; }
-
-    void addObject(QGraphicsItem* item)
-    {
-        scene->addItem(item);
-        DBG << "adding object to scene";
-    }
-
-    QGraphicsScene* getScene() const
-    {
-        DBG << "gettin scene";
-        return scene;
-    }
+    void addObject(QGraphicsItem* item);
+    QGraphicsScene* getScene() const;
 
 };
 
