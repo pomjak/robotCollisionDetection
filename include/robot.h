@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <QGraphicsItem>
 #include <QPainter>
@@ -15,14 +15,13 @@ private:
 public:
     Robot() {}
     ~Robot() {}
+
     QRectF boundingRect() const override;
-
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
-
-    void move(void);
-    void detectCollision(void);
-    void rotate(void);
-    void manualControl(void);
+    void move();
+    void detectCollision();
+    void rotate();
+    void manualControl();
 };
 
 class RobotFactory

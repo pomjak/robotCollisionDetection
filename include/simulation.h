@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <QGraphicsScene>
 #include <vector>
@@ -6,29 +6,28 @@
 #include "object.h"
 #include "debug.h"
 
-enum SimulationState { INIT, RUNNING, PAUSED, HALT };
+enum class SimulationState { INIT, RUNNING, PAUSED, HALT };
+
 class Simulation
 {
 private:
     std::vector<Object*> objectList;
     QGraphicsScene* scene;
     int timeElapsed;
-    SimulationState STATE;
+    SimulationState state;
 
 public:
-    Simulation() : scene(new QGraphicsScene()), timeElapsed(0), STATE(SimulationState::INIT) {}
+    Simulation() : scene(new QGraphicsScene()), timeElapsed(0), state(SimulationState::INIT) {}
     ~Simulation() { delete scene; }
 
     void addObject(QGraphicsItem* item);
 
     QGraphicsScene* getScene() const;
 
-    void start(void);
-    void stop(void);
-    void resume(void);
-    void halt(void);
-    void loadConfig(void);
-    void storeConfig(void);
+    void start();
+    void stop();
+    void resume();
+    void halt();
+    void loadConfig();
+    void storeConfig();
 };
-
-

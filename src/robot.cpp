@@ -13,6 +13,7 @@ void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
     painter->setPen(Qt::red);
     painter->setBrush(Qt::red);
     painter->drawEllipse(boundingRect());
+    
     DBG << "painted robot";
 
 }
