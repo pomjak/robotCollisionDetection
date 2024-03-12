@@ -31,6 +31,9 @@ build: clean
 run: all
 	./$(TARGET)
 
+debug: all
+	./$(TARGET_DEBUG)
+
 doxygen: cleandoc
 	doxygen doc/Doxyfile
 
