@@ -4,20 +4,25 @@
 #include "robot.h"
 #include "obstacle.h"
 #include "simulation.h"
+#include "debug.h"
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    DBG << "ui setup";
     RobotFactory robotFactory;
     ObstacleFactory obstacleFactory;
-    Simulation simulation;
+    Simulation* simulation = new Simulation();
 
     Robot* robot = robotFactory.createRobot();
     Obstacle* obstacle = obstacleFactory.createObstacle();
 
-    delete obstacle;
-    delete robot;
+
+    simulation->addObject(robot);
+    simulation->addObject(obstacle);
+    ui->graphicsView->setScene(simulation->getScene());
+
 }
 
 MainWindow::~MainWindow()

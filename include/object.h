@@ -1,6 +1,6 @@
 #pragma once 
 
-#include <QtWidgets>
+#include <QGraphicsItem>
 
 struct Position
 {
@@ -8,7 +8,7 @@ struct Position
     double y;
 };
 
-class Object : public QWidget
+class Object : public QGraphicsItem 
 {
 public:
     virtual ~Object() {};
