@@ -18,9 +18,17 @@ private:
 public:
     Simulation() : scene(new QGraphicsScene()), timeElapsed(0), STATE(SimulationState::INIT) {}
     ~Simulation() { delete scene; }
+
     void addObject(QGraphicsItem* item);
+
     QGraphicsScene* getScene() const;
 
+    void start(void);
+    void stop(void);
+    void resume(void);
+    void halt(void);
+    void loadConfig(void);
+    void storeConfig(void);
 };
 
 
