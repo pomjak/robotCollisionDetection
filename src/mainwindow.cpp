@@ -4,44 +4,45 @@
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), simulation(std::make_unique<Simulation>())
 {
-    ui->setupUi(this);
-    DBG << "ui setup";
-
-    RobotFactory robotFactory;
-    ObstacleFactory obstacleFactory;
-
     QTimer* timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &MainWindow::updateRobotPosition);
-    timer->start(1000/33);
+    timer->start(1000 / 33);
 
-    
-    Robot* robot = robotFactory.createRobot();
-    Obstacle* obstacle = obstacleFactory.createObstacle();
+    ui->setupUi(this);
+    addRobot(20, Position{ 100,100 }, robotAttributes{ 0,10,10 });
+    connect(timer, &QTimer::timeout, this, &MainWindow::updateRobotPosition);
 
     ui->graphicsView->setScene(simulation.get()->getScene());
-
-    simulation.get()->addObject(robot);
-    simulation.get()->addObject(obstacle);
-
-    robot->setSpeed(10);
-    robot->setRotation(10);
-    robot->setOrientation(1.5);
-
+    ui->graphicsView->setRenderHint(QPainter::Antialiasing);
 }
+
+void MainWindow::addRobot(void)
+{
+    static RobotFactory robotFactory;
+    Robot* robot = robotFactory.createRobot();
+    simulation.get()->addObject(robot);
+}
+
+void MainWindow::addRobot(double sizeValue, Position positionValue, robotAttributes attributesValues)
+{
+    static RobotFactory robotFactory;
+    Robot* robot = robotFactory.createRobot(sizeValue, positionValue, attributesValues);
+    simulation.get()->addObject(robot);
+}
+
 
 void MainWindow::updateRobotPosition()
 {
-    for(Object* obj : simulation.get()->objectList)
+    for ( Object* obj : simulation.get()->objectList )
     {
         if ( Robot* robot = dynamic_cast<Robot*>( obj ) )  // If dynamic_cast succeeds, obj points to a Robot
         {
             Position delta = robot->newPosition();
             robot->moveBy(delta.x, delta.y);
+            
+            robot->correctBoundaries(ui->graphicsView->width(), ui->graphicsView->height());
             DBG << "Moving by:" << delta.x << delta.y;
         }
-        
     }
-    
 }
 
 MainWindow::~MainWindow()

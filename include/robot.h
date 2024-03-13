@@ -5,16 +5,27 @@
 #include <QPainter>
 #include "object.h"
 #include "debug.h"
+struct robotAttributes
+{
+    double orientation;
+    double rotation;
+    double speed;
+};
+
 
 class Robot : public virtual Object
 {
 private:
-    double orientation;
-    double rotation;
-    double speed;
+    robotAttributes attributes;
 
 public:
-    Robot() : Object(), orientation(0.0), rotation(0.0), speed(0.0) {}
+    Robot() : Object(), attributes{0.0,0.0,0.0} {}
+    Robot(double sizeValue, \
+        Position positionValue, \
+        robotAttributes attributesValues) \
+        : \
+        Object(sizeValue, positionValue), \
+        attributes(attributesValues) {}
     ~Robot() {}
 
     QRectF boundingRect() const override;
@@ -28,6 +39,7 @@ public:
     void setSpeed(double newSpeed);
 
     Position newPosition();
+    void correctBoundaries(int width, int height);
     void detectCollision();
     void rotate();
     void manualControl();
@@ -36,9 +48,17 @@ public:
 class RobotFactory
 {
 public:
+
     Robot* createRobot()
     {
         Robot* robot = new Robot();
+        DBG << "created robot";
+        return robot;
+    }
+
+    Robot* createRobot(double sizeValue, Position positionValue, robotAttributes attributes)
+    {
+        Robot* robot = new Robot(sizeValue, positionValue, attributes);
         DBG << "created robot";
         return robot;
     }

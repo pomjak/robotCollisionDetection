@@ -26,7 +26,9 @@ public:
     ~MainWindow();
 
 private slots:
-    void updateRobotPosition(void);
+    void addRobot(void);
+    void addRobot(double sizeValue, Position positionValue, robotAttributes attributesValues);
+    void updateRobotPosition();
 
 private:
     Ui::MainWindow* ui;

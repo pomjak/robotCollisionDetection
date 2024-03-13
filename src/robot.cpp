@@ -20,40 +20,63 @@ void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
 
 inline double Robot::getOrientation() const
 {
-    return orientation;
+    return attributes.orientation;
 }
 
 void Robot::setOrientation(double newOrientation)
 {
-    orientation = newOrientation;
+    attributes.orientation = newOrientation;
 }
 
 inline double Robot::getRotation() const
 {
-    return rotation;
+    return attributes.rotation;
 }
 
 void Robot::setRotation(double newRotation)
 {
-    rotation = newRotation;
+    attributes.rotation = newRotation;
 }
 
 inline double Robot::getSpeed() const
 {
-    return speed;
+    return attributes.speed;
 }
 
 void Robot::setSpeed(double newSpeed)
 {
-    speed = newSpeed;
+    attributes.speed = newSpeed;
 }
 
 Position Robot::newPosition()
 {
     Position delta{ 0.0,0.0 };
-    delta.x = speed * std::cos(orientation);
-    delta.y = speed * std::sin(orientation);
+    delta.x = attributes.speed * std::cos(attributes.orientation);
+    delta.y = attributes.speed * std::sin(attributes.orientation);
     return delta;
+}
+
+void Robot::correctBoundaries(int width, int height)
+{
+    if ( this->pos().x() > width )
+    {
+        this->setPos(0, this->pos().y());
+    }
+
+    if ( this->pos().x() < 0 )
+    {
+        this->setPos(width, this->pos().y());
+    }
+
+    if ( this->pos().y() > height)
+    {
+        this->setPos(this->pos().x(), 0);
+    }
+
+    if ( this->pos().y() < 0 )
+    {
+        this->setPos(this->pos().x(), height);
+    }
 }
 
 void Robot::detectCollision()
