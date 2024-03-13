@@ -21,13 +21,13 @@ public:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
     double getOrientation() const;
-    void setOrientation(double value);
+    void setOrientation(double newOrientation);
     double getRotation() const;
-    void setRotation(double value);
+    void setRotation(double newRotation);
     double getSpeed() const;
-    void setSpeed(double value);
+    void setSpeed(double newSpeed);
 
-    void move();
+    Position newPosition();
     void detectCollision();
     void rotate();
     void manualControl();

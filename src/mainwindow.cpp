@@ -1,28 +1,40 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "object.h"
-#include "robot.h"
-#include "obstacle.h"
-#include "simulation.h"
-#include "debug.h"
+
+
+RobotFactory robotFactory;
+Robot* robot = robotFactory.createRobot();
 
 MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow)
+    : QMainWindow(parent), ui(new Ui::MainWindow), simulation(std::make_unique<Simulation>())
 {
     ui->setupUi(this);
     DBG << "ui setup";
-    RobotFactory robotFactory;
-    ObstacleFactory obstacleFactory;
-    Simulation* simulation = new Simulation();
 
-    Robot* robot = robotFactory.createRobot();
+    
+    ObstacleFactory obstacleFactory;
+
+    QTimer* timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &MainWindow::updateRobotPosition);
+    timer->start(1000/33);
+
+    
     Obstacle* obstacle = obstacleFactory.createObstacle();
 
+    ui->graphicsView->setScene(simulation.get()->getScene());
 
-    simulation->addObject(robot);
-    simulation->addObject(obstacle);
-    ui->graphicsView->setScene(simulation->getScene());
+    simulation.get()->addObject(robot);
+    simulation.get()->addObject(obstacle);
+    robot->setSpeed(10);
+    robot->setRotation(10);
+    robot->setOrientation(0);
 
+}
+
+void MainWindow::updateRobotPosition()
+{
+    Position delta = robot->newPosition();
+    robot->moveBy(delta.x,delta.y);
 }
 
 MainWindow::~MainWindow()

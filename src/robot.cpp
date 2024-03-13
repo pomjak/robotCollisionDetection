@@ -23,7 +23,7 @@ inline double Robot::getOrientation() const
     return orientation;
 }
 
-inline void Robot::setOrientation(double newOrientation)
+void Robot::setOrientation(double newOrientation)
 {
     rotation = newOrientation;
 }
@@ -33,7 +33,7 @@ inline double Robot::getRotation() const
     return rotation;
 }
 
-inline void Robot::setRotation(double newRotation)
+void Robot::setRotation(double newRotation)
 {
     rotation = newRotation;
 }
@@ -43,15 +43,17 @@ inline double Robot::getSpeed() const
     return speed;
 }
 
-inline void Robot::setSpeed(double newSpeed)
+void Robot::setSpeed(double newSpeed)
 {
     speed = newSpeed;
 }
 
-void Robot::move()
+Position Robot::newPosition()
 {
-    position.x += speed * std::cos(rotation);
-    position.y += speed * std::sin(rotation);
+    Position delta{ 0.0,0.0 };
+    delta.x += speed * std::cos(rotation);
+    delta.y += speed * std::sin(rotation);
+    return delta;
 }
 
 void Robot::detectCollision()
