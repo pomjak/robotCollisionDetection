@@ -20,7 +20,6 @@ private:
     robotAttributes attributes;
 
 public:
-    Robot() : Object(), attributes{0.0,0.0,0.0,0.0} {}
     Robot(double sizeValue, \
         Position positionValue, \
         robotAttributes attributesValues) \
@@ -49,14 +48,6 @@ public:
 class RobotFactory
 {
 public:
-
-    Robot* createRobot()
-    {
-        Robot* robot = new Robot();
-        DBG << "created robot";
-        return robot;
-    }
-
     Robot* createRobot(double sizeValue, Position positionValue, robotAttributes attributes)
     {
         Robot* robot = new Robot(sizeValue, positionValue, attributes);

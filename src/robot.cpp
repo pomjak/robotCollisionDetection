@@ -17,7 +17,7 @@ void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
     QPointF center = boundingRect().center();
     QPointF arrowEnd = QPointF(center.x() + size * cos(attributes.orientation), \
         center.y() + size * sin(attributes.orientation));
-        
+
     painter->setPen(Qt::black);
     painter->drawLine(center, arrowEnd);
 }
@@ -62,30 +62,23 @@ Position Robot::newPosition()
 
 void Robot::correctBoundaries(int width, int height)
 {
-    if ( this->pos().x() > width - 1 )
-    {
-        this->setPos(0, this->pos().y());
-    }
+    QPointF newPos = pos();
 
-    if ( this->pos().x() < 0 )
-    {
-        this->setPos(width, this->pos().y());
-    }
+    if ( newPos.x() > width - 1 )
+        newPos.setX(0);
+    else if ( newPos.x() < 0 )
+        newPos.setX(width);
 
-    if ( this->pos().y() > height - 1 )
-    {
-        this->setPos(this->pos().x(), 0);
-    }
+    if ( newPos.y() > height - 1 )
+        newPos.setY(0);
+    else if ( newPos.y() < 0 )
+        newPos.setY(height);
 
-    if ( this->pos().y() < 0 )
-    {
-        this->setPos(this->pos().x(), height);
-    }
+    setPos(newPos);
 }
 
 void Robot::detectCollision()
 {
-
 }
 
 void Robot::rotate()
