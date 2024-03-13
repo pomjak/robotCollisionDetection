@@ -8,14 +8,16 @@ struct Position
     double y;
 };
 
-class Object : public QGraphicsItem 
+class Object : public QGraphicsItem
 {
 public:
+    Object(void) : size(50.0), position{ 10.0, 10.0 }{}
+    Object(double sizeValue, Position positionValue) : size(sizeValue), position(positionValue) {}
     virtual ~Object() {};
 
 protected:
-    Position position;
     double size;
+    Position position;
 
 public:
     inline Position getPosition() const { return position; }

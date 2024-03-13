@@ -2,7 +2,7 @@
 
 QRectF Robot::boundingRect() const
 {
-    return QRectF(10, 10, 100, 100);
+    return QRectF(position.x, position.y, size, size);
 }
 
 void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -13,7 +13,80 @@ void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
     painter->setPen(Qt::red);
     painter->setBrush(Qt::red);
     painter->drawEllipse(boundingRect());
-    
-    DBG << "painted robot";
+
+    QPointF center = boundingRect().center();
+    QPointF arrowEnd = QPointF(center.x() + size * cos(attributes.orientation), \
+        center.y() + size * sin(attributes.orientation));
+
+    painter->setPen(Qt::black);
+    painter->drawLine(center, arrowEnd);
+}
+
+inline double Robot::getOrientation() const
+{
+    return attributes.orientation;
+}
+
+void Robot::setOrientation(double newOrientation)
+{
+    attributes.orientation = newOrientation;
+}
+
+inline double Robot::getRotation() const
+{
+    return attributes.rotation;
+}
+
+void Robot::setRotation(double newRotation)
+{
+    attributes.rotation = newRotation;
+}
+
+inline double Robot::getSpeed() const
+{
+    return attributes.speed;
+}
+
+void Robot::setSpeed(double newSpeed)
+{
+    attributes.speed = newSpeed;
+}
+
+Position Robot::newPosition()
+{
+    Position delta{ 0.0,0.0 };
+    delta.x = attributes.speed * std::cos(attributes.orientation);
+    delta.y = attributes.speed * std::sin(attributes.orientation);
+    return delta;
+}
+
+void Robot::correctBoundaries(int width, int height)
+{
+    QPointF newPos = pos();
+
+    if ( newPos.x() > width - 1 )
+        newPos.setX(0);
+    else if ( newPos.x() < 0 )
+        newPos.setX(width);
+
+    if ( newPos.y() > height - 1 )
+        newPos.setY(0);
+    else if ( newPos.y() < 0 )
+        newPos.setY(height);
+
+    setPos(newPos);
+}
+
+void Robot::detectCollision()
+{
+}
+
+void Robot::rotate()
+{
+    attributes.orientation += attributes.rotation;
+}
+
+void Robot::manualControl()
+{
 
 }
