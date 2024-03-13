@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <QGraphicsItem>
 #include <QPainter>
 #include "object.h"
@@ -13,11 +14,19 @@ private:
     double speed;
 
 public:
-    Robot() {}
+    Robot() : Object(), orientation(0.0), rotation(0.0), speed(0.0) {}
     ~Robot() {}
 
     QRectF boundingRect() const override;
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
+
+    double getOrientation() const;
+    void setOrientation(double value);
+    double getRotation() const;
+    void setRotation(double value);
+    double getSpeed() const;
+    void setSpeed(double value);
+
     void move();
     void detectCollision();
     void rotate();
