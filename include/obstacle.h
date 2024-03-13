@@ -8,7 +8,7 @@
 class Obstacle : public virtual Object
 {
 public:
-    Obstacle() {}
+    Obstacle() : Object() {}
     ~Obstacle() {}
 
     QRectF boundingRect() const override;
