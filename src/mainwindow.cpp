@@ -8,6 +8,9 @@ MainWindow::MainWindow(QWidget* parent)
     timer->start(1000 / 33);
 
     ui->setupUi(this);
+    addObstacle(35, Position{ 10,10 });
+    addObstacle(35, Position{ 200,25 });
+    addObstacle(35, Position{ 100,100 });
     addRobot(35, Position{ 0,0 }, robotAttributes{ 0,10,5,1 });
     addRobot(35, Position{ 0,0 }, robotAttributes{ 1,10,5,1 });
     addRobot(35, Position{ 0,0 }, robotAttributes{ 2,10,5,1 });
@@ -21,6 +24,20 @@ MainWindow::MainWindow(QWidget* parent)
 
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+}
+
+void MainWindow::addObstacle()
+{
+    static ObstacleFactory obstacleFactory;
+    Obstacle* obstacle = obstacleFactory.createObstacle();
+    simulation.get()->addObject(obstacle);
+}
+
+void MainWindow::addObstacle(double sizeValue, Position positionValue)
+{
+    static ObstacleFactory obstacleFactory;
+    Obstacle* obstacle = obstacleFactory.createObstacle(sizeValue, positionValue);
+    simulation.get()->addObject(obstacle);
 }
 
 void MainWindow::addRobot(void)

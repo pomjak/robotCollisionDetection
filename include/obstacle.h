@@ -9,6 +9,7 @@ class Obstacle : public virtual Object
 {
 public:
     Obstacle() : Object() {}
+    Obstacle(double sizeValue, Position positionValue) : Object(sizeValue, positionValue) {}
     ~Obstacle() {}
 
     QRectF boundingRect() const override;
@@ -21,6 +22,13 @@ public:
     Obstacle* createObstacle()
     {
         Obstacle* obstacle = new Obstacle();
+        DBG << "created obstacle";
+        return obstacle;
+    }
+
+    Obstacle* createObstacle(double sizeValue, Position positionValue)
+    {
+        Obstacle* obstacle = new Obstacle(sizeValue, positionValue);
         DBG << "created obstacle";
         return obstacle;
     }

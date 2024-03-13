@@ -26,6 +26,8 @@ public:
     ~MainWindow();
 
 private slots:
+    void addObstacle();
+    void addObstacle(double sizeValue, Position positionValue);
     void addRobot(void);
     void addRobot(double sizeValue, Position positionValue, robotAttributes attributesValues);
     void updateRobotPosition();
