@@ -10,6 +10,7 @@ struct robotAttributes
     double orientation;
     double rotation;
     double speed;
+    double detectionDistance;
 };
 
 
@@ -19,7 +20,7 @@ private:
     robotAttributes attributes;
 
 public:
-    Robot() : Object(), attributes{0.0,0.0,0.0} {}
+    Robot() : Object(), attributes{0.0,0.0,0.0,0.0} {}
     Robot(double sizeValue, \
         Position positionValue, \
         robotAttributes attributesValues) \

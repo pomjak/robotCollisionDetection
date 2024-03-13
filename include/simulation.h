@@ -21,7 +21,6 @@ public:
 
     void addObject(QGraphicsItem* item);
     std::vector<Object*> objectList;
-    
 
     QGraphicsScene* getScene() const;
 

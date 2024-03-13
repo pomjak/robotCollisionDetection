@@ -8,12 +8,17 @@ MainWindow::MainWindow(QWidget* parent)
     timer->start(1000 / 33);
 
     ui->setupUi(this);
-    addRobot(20, Position{ 100,100 }, robotAttributes{ 0,10,10 });
+    addRobot(35, Position{ 0,0 }, robotAttributes{ 0,10,5,1 });
+    addRobot(35, Position{ 0,0 }, robotAttributes{ 1,10,5,1 });
+    addRobot(35, Position{ 0,0 }, robotAttributes{ 2,10,5,1 });
+    addRobot(35, Position{ 0,0 }, robotAttributes{ 3,10,5,1 });
+    addRobot(35, Position{ 0,0 }, robotAttributes{ 4,10,5,1 });
+    addRobot(35, Position{ 0,0 }, robotAttributes{ 5,10,5,1 });
     connect(timer, &QTimer::timeout, this, &MainWindow::updateRobotPosition);
 
     ui->graphicsView->setScene(simulation.get()->getScene());
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
-    
+
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
