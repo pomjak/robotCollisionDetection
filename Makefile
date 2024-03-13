@@ -17,6 +17,7 @@ HEADERS = $(INC_PATH)/*.h
 FORMS   = $(FOR_PATH)/*.ui
 PROJ    = $(TARGET).pro
 OBJECTS = $(SOURCES:.cpp=.o) # mby useless idk
+TRASH 	= vgcore.*
 
 BUILD_DIR = build
 
@@ -44,5 +45,6 @@ clean:
 	rm -rf $(BUILD_DIR)/
 	rm -rf $(TARGET)
 	rm -rf $(TARGET_DEBUG)
+	rm -rf $(TRASH)
 
 .PHONY: run clean
