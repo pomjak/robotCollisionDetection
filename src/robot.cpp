@@ -14,8 +14,12 @@ void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
     painter->setBrush(Qt::red);
     painter->drawEllipse(boundingRect());
 
-    DBG << "painted robot";
-
+    QPointF center = boundingRect().center();
+    QPointF arrowEnd = QPointF(center.x() + size * cos(attributes.orientation), \
+        center.y() + size * sin(attributes.orientation));
+        
+    painter->setPen(Qt::black);
+    painter->drawLine(center, arrowEnd);
 }
 
 inline double Robot::getOrientation() const
