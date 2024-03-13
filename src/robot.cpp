@@ -25,7 +25,7 @@ inline double Robot::getOrientation() const
 
 void Robot::setOrientation(double newOrientation)
 {
-    rotation = newOrientation;
+    orientation = newOrientation;
 }
 
 inline double Robot::getRotation() const
@@ -51,8 +51,8 @@ void Robot::setSpeed(double newSpeed)
 Position Robot::newPosition()
 {
     Position delta{ 0.0,0.0 };
-    delta.x += speed * std::cos(rotation);
-    delta.y += speed * std::sin(rotation);
+    delta.x = speed * std::cos(orientation);
+    delta.y = speed * std::sin(orientation);
     return delta;
 }
 

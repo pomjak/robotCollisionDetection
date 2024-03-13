@@ -23,16 +23,17 @@ BUILD_DIR = build
 
 # Default target
 all: build
-	cd build && $(QMAKE) && $(MAKE) && cp $(TARGET) $(TARGET_DEBUG) ../
+	cd build && $(QMAKE) && $(MAKE) && cp $(TARGET_DEBUG) ../
 
 build: clean
 	mkdir $(BUILD_DIR)
 	cp $(SOURCES) $(HEADERS) $(PROJ) $(FORMS) $(BUILD_DIR)/
 
 run: all
-	./$(TARGET)
+	./$(TARGET_DEBUG)
 
 debug: all
+	rm -rf $(BUILD_DIR)/
 	./$(TARGET_DEBUG)
 
 doxygen: cleandoc

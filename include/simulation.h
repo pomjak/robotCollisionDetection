@@ -11,7 +11,6 @@ enum class SimulationState { INIT, RUNNING, PAUSED, HALT };
 class Simulation
 {
 private:
-    std::vector<Object*> objectList;
     QGraphicsScene* scene;
     int timeElapsed;
     SimulationState state;
@@ -21,6 +20,8 @@ public:
     ~Simulation() { delete scene; }
 
     void addObject(QGraphicsItem* item);
+    std::vector<Object*> objectList;
+    
 
     QGraphicsScene* getScene() const;
 
