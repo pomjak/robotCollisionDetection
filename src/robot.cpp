@@ -58,7 +58,7 @@ Position Robot::newPosition()
 
 void Robot::correctBoundaries(int width, int height)
 {
-    if ( this->pos().x() > width )
+    if ( this->pos().x() > width - 1 )
     {
         this->setPos(0, this->pos().y());
     }
@@ -68,7 +68,7 @@ void Robot::correctBoundaries(int width, int height)
         this->setPos(width, this->pos().y());
     }
 
-    if ( this->pos().y() > height)
+    if ( this->pos().y() > height - 1 )
     {
         this->setPos(this->pos().x(), 0);
     }
@@ -86,7 +86,7 @@ void Robot::detectCollision()
 
 void Robot::rotate()
 {
-
+    attributes.orientation += attributes.rotation;
 }
 
 void Robot::manualControl()

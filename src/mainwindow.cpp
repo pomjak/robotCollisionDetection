@@ -13,6 +13,9 @@ MainWindow::MainWindow(QWidget* parent)
 
     ui->graphicsView->setScene(simulation.get()->getScene());
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+    
+    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 void MainWindow::addRobot(void)
