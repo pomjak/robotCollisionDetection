@@ -40,6 +40,7 @@ public:
 
     Position newPosition();
     void correctBoundaries(int width, int height);
+    std::vector<QPointF> getDetectionArea();
     void detectCollision();
     void rotate();
     void manualControl();

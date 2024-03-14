@@ -15,11 +15,12 @@ void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
     painter->drawEllipse(boundingRect());
 
     QPointF center = boundingRect().center();
-    QPointF arrowEnd = QPointF(center.x() + size * cos(attributes.orientation), \
-        center.y() + size * sin(attributes.orientation));
+    QPointF arrowEnd = QPointF(center.x() + size/2 * cos(attributes.orientation), \
+        center.y() + size/2 * sin(attributes.orientation));
 
     painter->setPen(Qt::black);
     painter->drawLine(center, arrowEnd);
+    
 }
 
 inline double Robot::getOrientation() const
@@ -77,13 +78,36 @@ void Robot::correctBoundaries(int width, int height)
     setPos(newPos);
 }
 
-void Robot::detectCollision()
+std::vector<QPointF> Robot::getDetectionArea()
 {
+    QPointF center = boundingRect().center();
+    QPointF frontBumper = QPointF{ center.x() + size * cos(attributes.orientation), \
+                            center.y() + size * sin(attributes.orientation) };
+
+    QPointF detectionAreaEnd = QPointF{ frontBumper.x() + attributes.detectionDistance * cos(attributes.orientation), \
+                                frontBumper.y() + attributes.detectionDistance * sin(attributes.orientation) };
+
+    std::vector<QPointF> detectionLine;
+
+    QPointF point = frontBumper;
+    QPointF step = { 0.1 * cos(attributes.orientation), 0.1 * sin(attributes.orientation) }; 
+
+    while ( QLineF(point, detectionAreaEnd).length() > 0.1 )
+    {
+        point += step;
+        detectionLine.push_back(point);
+    }
+    return detectionLine;
+
 }
+
+void Robot::detectCollision()
+{}
 
 void Robot::rotate()
 {
     attributes.orientation += attributes.rotation;
+    DBG << "Robot rotated";
 }
 
 void Robot::manualControl()

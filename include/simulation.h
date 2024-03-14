@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QGraphicsScene>
+#include <QPainterPath>
 #include <vector>
 
 #include "object.h"
@@ -20,6 +21,7 @@ public:
     ~Simulation() { delete scene; }
 
     void addObject(QGraphicsItem* item);
+    bool isLineOccupied(const std::vector<QPointF>& line, QGraphicsScene* scene);
     std::vector<Object*> objectList;
 
     QGraphicsScene* getScene() const;

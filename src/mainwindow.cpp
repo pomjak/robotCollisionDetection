@@ -8,16 +8,8 @@ MainWindow::MainWindow(QWidget* parent)
     timer->start(1000 / 33);
 
     ui->setupUi(this);
-
-    addObstacle(35, Position{ 10,10 });
-    addObstacle(35, Position{ 200,25 });
-    addObstacle(35, Position{ 100,100 });
-    addRobot(35, Position{ 0,0 }, robotAttributes{ 0,10,5,1 });
-    addRobot(35, Position{ 0,0 }, robotAttributes{ 1,10,5,1 });
-    addRobot(35, Position{ 0,0 }, robotAttributes{ 2,10,5,1 });
-    addRobot(35, Position{ 0,0 }, robotAttributes{ 3,10,5,1 });
-    addRobot(35, Position{ 0,0 }, robotAttributes{ 4,10,5,1 });
-    addRobot(35, Position{ 0,0 }, robotAttributes{ 5,10,5,1 });
+    addObstacle(100,Position{0,0});
+    addRobot(50, Position{ 0,0 }, robotAttributes{ 10,10,5,1 });
 
     connect(timer, &QTimer::timeout, this, &MainWindow::updateRobotPosition);
 
@@ -42,17 +34,25 @@ void MainWindow::addRobot(double sizeValue = 10, Position positionValue = Positi
     simulation.get()->addObject(robot);
 }
 
-
 void MainWindow::updateRobotPosition()
 {
     for ( Object* obj : simulation.get()->objectList )
     {
         if ( Robot* robot = dynamic_cast<Robot*>( obj ) )  // If dynamic_cast succeeds, obj points to a Robot
         {
-            
-            Position delta = robot->newPosition();
-            robot->moveBy(delta.x, delta.y);
-            robot->correctBoundaries(ui->graphicsView->width(), ui->graphicsView->height());
+            std::vector<QPointF> detectionLine = robot->getDetectionArea();
+
+            if ( simulation.get()->isLineOccupied(detectionLine, ui->graphicsView->scene()) )
+            {
+                robot->rotate();
+            }
+            else
+            {
+                Position delta = robot->newPosition();
+                robot->moveBy(delta.x, delta.y);
+                DBG << "moved";
+                robot->correctBoundaries(ui->graphicsView->width(), ui->graphicsView->height());
+            }
         }
     }
 }
