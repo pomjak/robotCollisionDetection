@@ -22,7 +22,7 @@ private:
 public:
     Robot(double sizeValue, \
         Position positionValue, \
-        robotAttributes attributesValues) \
+        robotAttributes attributesValues)   \
         : \
         Object(sizeValue, positionValue), \
         attributes(attributesValues) {}
@@ -40,8 +40,7 @@ public:
 
     Position newPosition();
     void correctBoundaries(int width, int height);
-    std::vector<QPointF> getDetectionArea();
-    void detectCollision();
+    bool detectCollision(const std::vector<Object*>& objectList);
     void rotate();
     void manualControl();
 };

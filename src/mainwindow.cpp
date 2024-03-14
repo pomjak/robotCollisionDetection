@@ -8,8 +8,8 @@ MainWindow::MainWindow(QWidget* parent)
     timer->start(1000 / 33);
 
     ui->setupUi(this);
-    addObstacle(100,Position{0,0});
-    addRobot(50, Position{ 0,0 }, robotAttributes{ 10,10,5,1 });
+    addObstacle(100,Position{400,25});
+    addRobot(50, Position{ 0,0 }, robotAttributes{ 0,1,5,10 });
 
     connect(timer, &QTimer::timeout, this, &MainWindow::updateRobotPosition);
 
@@ -17,6 +17,11 @@ MainWindow::MainWindow(QWidget* parent)
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setFixedSize(800, 800);
+    ui->graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QSizeF(800, 800)));
+    ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+
 }
 
 void MainWindow::addObstacle(double sizeValue = 10, Position positionValue = Position{ 10,10 })
@@ -40,9 +45,8 @@ void MainWindow::updateRobotPosition()
     {
         if ( Robot* robot = dynamic_cast<Robot*>( obj ) )  // If dynamic_cast succeeds, obj points to a Robot
         {
-            std::vector<QPointF> detectionLine = robot->getDetectionArea();
 
-            if ( simulation.get()->isLineOccupied(detectionLine, ui->graphicsView->scene()) )
+            if ( robot->detectCollision(simulation.get()->objectList) )
             {
                 robot->rotate();
             }
@@ -50,7 +54,6 @@ void MainWindow::updateRobotPosition()
             {
                 Position delta = robot->newPosition();
                 robot->moveBy(delta.x, delta.y);
-                DBG << "moved";
                 robot->correctBoundaries(ui->graphicsView->width(), ui->graphicsView->height());
             }
         }
