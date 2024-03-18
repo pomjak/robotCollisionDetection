@@ -2,7 +2,7 @@
 
 QRectF Obstacle::boundingRect() const
 {
-    return QRectF(position.x, position.y, size, size);
+    return QRectF(getPosition().x , getPosition().y - (getSize() / 2), getSize(), getSize());
 }
 
 void Obstacle::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -11,6 +11,5 @@ void Obstacle::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
     Q_UNUSED(widget);
 
     painter->setPen(Qt::blue);
-    painter->setBrush(Qt::blue);
     painter->drawRect(boundingRect());
 }

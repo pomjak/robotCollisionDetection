@@ -42,6 +42,8 @@ doxygen: cleandoc
 cleandoc:
 	rm -rf doc/html doc/latex
 
+celan: clean
+
 clean: 
 	rm -rf $(BUILD_DIR)/
 	rm -rf $(TARGET)

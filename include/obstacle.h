@@ -8,7 +8,7 @@
 class Obstacle : public virtual Object
 {
 public:
-    Obstacle(double sizeValue, Position positionValue) : Object(sizeValue, positionValue) {}
+    Obstacle(double sizeValue, Position positionValue, unsigned int idValue) : Object(sizeValue, positionValue, idValue) {}
     ~Obstacle() {}
 
     QRectF boundingRect() const override;
@@ -18,9 +18,9 @@ public:
 class ObstacleFactory
 {
 public:
-    Obstacle* createObstacle(double sizeValue, Position positionValue)
+    Obstacle* createObstacle(double sizeValue, Position positionValue, unsigned int idValue)
     {
-        Obstacle* obstacle = new Obstacle(sizeValue, positionValue);
+        Obstacle* obstacle = new Obstacle(sizeValue, positionValue, idValue);
         DBG << "created obstacle";
         return obstacle;
     }
