@@ -3,7 +3,7 @@
 void Simulation::addObject(QGraphicsItem* item)
 {
     scene->addItem(item);
-    objectList.push_back(reinterpret_cast<Object*>(item));
+    objectList.push_back(reinterpret_cast<Object*>( item ));
     DBG << "adding object";
 }
 

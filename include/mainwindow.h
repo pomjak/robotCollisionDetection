@@ -9,6 +9,9 @@
 #include "obstacle.h"
 #include "debug.h"
 
+#define SCENE_SIZE 800
+#define VIEW_SIZE  424
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -26,13 +29,15 @@ public:
     ~MainWindow();
 
 private slots:
-    void addObstacle(double sizeValue, Position positionValue);
-    void addRobot(double sizeValue, Position positionValue, robotAttributes attributesValues);
     void updateRobotPosition(void);
 
 private:
     Ui::MainWindow* ui;
     std::unique_ptr<Simulation> simulation;
+    void setup();
+    void addObstacle(double sizeValue, Position positionValue, unsigned int idValue);
+    void addRobot(double sizeValue, Position positionValue, unsigned int idValue,robotAttributes attributesValues);
+    
 
 };
 #endif // MAINWINDOW_H

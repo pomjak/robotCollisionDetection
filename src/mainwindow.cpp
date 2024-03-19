@@ -7,41 +7,48 @@ MainWindow::MainWindow(QWidget* parent)
     QTimer* timer = new QTimer(this);
     timer->start(1000 / 33);
 
-    ui->setupUi(this);
+    setup();
 
-    addObstacle(35, Position{ 10,10 });
-    addObstacle(35, Position{ 200,25 });
-    addObstacle(35, Position{ 100,100 });
-    addRobot(35, Position{ 0,0 }, robotAttributes{ 0,10,5,1 });
-    addRobot(35, Position{ 0,0 }, robotAttributes{ 1,10,5,1 });
-    addRobot(35, Position{ 0,0 }, robotAttributes{ 2,10,5,1 });
-    addRobot(35, Position{ 0,0 }, robotAttributes{ 3,10,5,1 });
-    addRobot(35, Position{ 0,0 }, robotAttributes{ 4,10,5,1 });
-    addRobot(35, Position{ 0,0 }, robotAttributes{ 5,10,5,1 });
-
+    // addObstacle(100, Position{ 300,0 }, 1);
+    addRobot(50, Position{ 25,415 }, 2, robotAttributes{ -M_PI / 2,-M_PI / 2,2.5,2 });
     connect(timer, &QTimer::timeout, this, &MainWindow::updateRobotPosition);
+}
+
+void MainWindow::setup()
+{
+    ui->setupUi(this);
 
     ui->graphicsView->setScene(simulation.get()->getScene());
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setFixedSize(SCENE_SIZE, SCENE_SIZE);
+    ui->graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QSizeF(SCENE_SIZE, SCENE_SIZE)));
+    ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 }
 
-void MainWindow::addObstacle(double sizeValue = 10, Position positionValue = Position{ 10,10 })
+
+void MainWindow::addObstacle(double sizeValue = 10, \
+    Position positionValue = Position{ 10,10 }, \
+    unsigned int idValue = 0)
 {
     static ObstacleFactory obstacleFactory;
-    Obstacle* obstacle = obstacleFactory.createObstacle(sizeValue, positionValue);
+    Obstacle* obstacle = obstacleFactory.createObstacle(sizeValue, positionValue, idValue);
+    obstacle->setPos(positionValue.x, positionValue.y);
     simulation.get()->addObject(obstacle);
 }
 
-void MainWindow::addRobot(double sizeValue = 10, Position positionValue = Position{ 10,10 }\
-    , robotAttributes attributesValues = robotAttributes{ 10,10,10,10 })
+void MainWindow::addRobot(double sizeValue = 10, \
+    Position positionValue = Position{ 10,10 }\
+    , unsigned int idValue = 0, \
+    robotAttributes attributesValues = robotAttributes{ 10,10,10,10 })
 {
     static RobotFactory robotFactory;
-    Robot* robot = robotFactory.createRobot(sizeValue, positionValue, attributesValues);
+    Robot* robot = robotFactory.createRobot(sizeValue, positionValue, idValue, attributesValues);
+    robot->setPos(positionValue.x, positionValue.y);
     simulation.get()->addObject(robot);
 }
-
 
 void MainWindow::updateRobotPosition()
 {
@@ -49,10 +56,19 @@ void MainWindow::updateRobotPosition()
     {
         if ( Robot* robot = dynamic_cast<Robot*>( obj ) )  // If dynamic_cast succeeds, obj points to a Robot
         {
-            
-            Position delta = robot->newPosition();
-            robot->moveBy(delta.x, delta.y);
-            robot->correctBoundaries(ui->graphicsView->width(), ui->graphicsView->height());
+            auto points = robot->getDetectionPoints();
+            if ( robot->detectCollisions(points, simulation.get()->objectList)  \
+                || \
+                robot->detectBorders(points, VIEW_SIZE) )
+            {
+                robot->rotate();
+            }
+            else
+            {
+                Position newPos = robot->getPosition() + robot->newPosition();
+                robot->setPosition(newPos);     //  core position
+                robot->setPos(newPos.x, newPos.y);    //GUI Qt position
+            }
         }
     }
 }

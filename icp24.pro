@@ -2,7 +2,7 @@
 QT += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += qt c++17 warn_on debug build_all
+CONFIG += qt c++17 warn_on debug build_all lm
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
@@ -12,14 +12,16 @@ SOURCES += \
     obstacle.cpp \
     robot.cpp \
     object.cpp \
-    simulation.cpp
+    simulation.cpp \
+    position.cpp
 
 HEADERS += \
     mainwindow.h \
     object.h \
     obstacle.h \
     robot.h \
-    simulation.h 
+    simulation.h \
+    position.h
 
 FORMS += \
     mainwindow.ui
