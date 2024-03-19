@@ -2,7 +2,7 @@
 
 QRectF Robot::boundingRect() const
 {
-    return QRectF(getPosition().x - (getSize() / 2), getPosition().y - (getSize() / 2), getSize(), getSize());
+    return QRectF(getPosition().x - getSize(), getPosition().y - getSize(), getSize(), getSize());
 }
 
 void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -17,8 +17,8 @@ void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
 
 
     QPointF center = boundingRect().center();
-    QPointF arrowEnd = QPointF(center.x() + size / 2 * cos(attributes.orientation), \
-        center.y() + size / 2 * sin(attributes.orientation));
+    QPointF arrowEnd = QPointF(center.x() + getSize() / 2 * cos(attributes.orientation), \
+        center.y() + getSize() / 2 * sin(attributes.orientation));
 
     painter->setPen(Qt::black);
     painter->drawLine(center, arrowEnd);
@@ -62,18 +62,18 @@ Position Robot::newPosition()
 
 std::vector<Position> Robot::getDetectionPoints()
 {
-    const double step = 1;
+    const double step = 0.1;
 
     std::vector<Position> points;
 
     const Position delta = calculateDeltaPosition(step, attributes.orientation);
-    const Position frontBumper = position + calculateDeltaPosition(getSize() / 2, attributes.orientation);
+    const Position frontBumper = getPosition() + calculateDeltaPosition(getSize() / 2, attributes.orientation);
     const Position endPoint = frontBumper + calculateDeltaPosition(attributes.detectionDistance, attributes.orientation);
 
 
     for ( Position runner = frontBumper; distance(runner, endPoint) > step; runner += delta )
     {
-        points.push_back(runner);
+        points.emplace_back(runner);
     }
     return points;
 }
@@ -108,33 +108,21 @@ bool Robot::detectCollisionAtPoint(const std::vector<Object*>& objectList, Posit
             Position bottomRight = { obstacle->getPosition().x + ( obstacle->getSize() / 2 ), \
                                         obstacle->getPosition().y + ( obstacle->getSize() / 2 ) };
 
-            DBG << "Point:" << pointOfInterest.x << pointOfInterest.y;
-            if ( pointOfInterest.containsInRect(leftTop, bottomRight) )
-            {
-                DBG << "robot_x :" << this->getPosition().x;
-                DBG << "robot_y :" << this->getPosition().y;
-                DBG << "robot_size :" << this->getSize();
-                DBG << "-----------";
-
-                DBG << "obstacle_x : "<< obstacle->getPosition().x;
-                DBG << "obstacle_y : "<< obstacle->getPosition().y;
-                DBG << "obstacle size : "<< obstacle->getSize();
-                DBG << "-----------";
-
-                DBG << leftTop.x << leftTop.y;
-                DBG << bottomRight.x << bottomRight.y;
-                DBG << "Point:" << pointOfInterest.x << pointOfInterest.y;
-                DBG << "point is indeed in rectangle";
-                return true;
-            }
-            else return false;
+            return pointOfInterest.containsInRect(leftTop, bottomRight);
         }
     }
     return false;
 }
+bool Robot::detectBorders(const std::vector<Position>& detectionPoints, double viewSize)
+{
+    for(Position point : detectionPoints)
+        if ( !point.containsInRect(0,viewSize,0,viewSize) )
+            return true;
+    return false;
+}
+
 
 void Robot::rotate()
 {
     attributes.orientation += attributes.rotation;
-    DBG << "Robot rotated";
 }
