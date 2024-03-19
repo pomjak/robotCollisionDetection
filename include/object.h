@@ -2,42 +2,7 @@
 
 #include <QGraphicsItem>
 #include "debug.h"
-struct Position
-{
-    double x;
-    double y;
-
-    Position& operator+=(const Position& other)
-    {
-        x += other.x;
-        y += other.y;
-        return *this;
-    }
-
-    friend Position operator+(const Position& lhs, const Position& rhs)
-    {
-        Position result;
-        result.x = lhs.x + rhs.x;
-        result.y = lhs.y + rhs.y;
-        return result;
-    }
-
-    friend inline bool operator<(const Position& lhs, const Position& rhs) { return ( lhs.x < rhs.x && lhs.y < rhs.y ); }
-
-    bool containsInRect(const double& minX, const double& maxX, const double& minY, const double& maxY) const
-    {
-        return ( x >= minX && x <= maxX && y >= minY && y <= maxY );
-    }
-
-
-    bool containsInRect(const Position& topLeft, const Position& bottomRight) const
-    {
-        return ( x >= topLeft.x && x <= bottomRight.x && y >= topLeft.y && y <= bottomRight.y );
-    }
-
-};
-
-inline double distance(const Position& p1, const Position& p2) { return std::max(std::abs(p2.x - p1.x), std::abs(p2.y - p1.y)); }
+#include "position.h"
 
 class Object : public QGraphicsItem
 {
