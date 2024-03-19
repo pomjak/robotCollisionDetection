@@ -9,7 +9,8 @@
 #include "obstacle.h"
 #include "debug.h"
 
-#define VIEW_SIZE 800
+#define SCENE_SIZE 800
+#define VIEW_SIZE  424
 
 
 QT_BEGIN_NAMESPACE

@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget* parent)
     setup();
 
     // addObstacle(100, Position{ 300,0 }, 1);
-    addRobot(50, Position{ 425,25 }, 2, robotAttributes{ M_PI,-M_PI / 2,2.5,2 });
+    addRobot(50, Position{ 25,415 }, 2, robotAttributes{ -M_PI / 2,-M_PI / 2,2.5,2 });
     connect(timer, &QTimer::timeout, this, &MainWindow::updateRobotPosition);
 }
 
@@ -22,8 +22,8 @@ void MainWindow::setup()
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setFixedSize(VIEW_SIZE, VIEW_SIZE);
-    ui->graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QSizeF(VIEW_SIZE, VIEW_SIZE)));
+    ui->graphicsView->setFixedSize(SCENE_SIZE, SCENE_SIZE);
+    ui->graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QSizeF(SCENE_SIZE, SCENE_SIZE)));
     ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 }
@@ -57,7 +57,9 @@ void MainWindow::updateRobotPosition()
         if ( Robot* robot = dynamic_cast<Robot*>( obj ) )  // If dynamic_cast succeeds, obj points to a Robot
         {
             auto points = robot->getDetectionPoints();
-            if ( robot->detectCollisions(points, simulation.get()->objectList) || robot->detectBorders(points, 400) )
+            if ( robot->detectCollisions(points, simulation.get()->objectList)  \
+                || \
+                robot->detectBorders(points, VIEW_SIZE) )
             {
                 robot->rotate();
             }
