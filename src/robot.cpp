@@ -12,9 +12,6 @@ void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
 
     painter->setPen(Qt::red);
     painter->drawEllipse(boundingRect());
-    painter->setPen(Qt::black);
-    painter->drawRect(boundingRect());
-
 
     QPointF center = boundingRect().center();
     QPointF arrowEnd = QPointF(center.x() + getSize() / 2 * cos(attributes.orientation), \
@@ -62,19 +59,21 @@ Position Robot::newPosition()
 
 std::vector<Position> Robot::getDetectionPoints()
 {
-    const double step = 0.1;
+    const double step = 1;
 
     std::vector<Position> points;
 
     const Position delta = calculateDeltaPosition(step, attributes.orientation);
     const Position frontBumper = getPosition() + calculateDeltaPosition(getSize() / 2, attributes.orientation);
-    const Position endPoint = frontBumper + calculateDeltaPosition(attributes.detectionDistance, attributes.orientation);
 
+    Position runner = frontBumper;
 
-    for ( Position runner = frontBumper; distance(runner, endPoint) > step; runner += delta )
+    for ( double i = 0; i < attributes.detectionDistance; i += step )
     {
         points.emplace_back(runner);
+        runner += delta;
     }
+
     return points;
 }
 
@@ -115,8 +114,8 @@ bool Robot::detectCollisionAtPoint(const std::vector<Object*>& objectList, Posit
 }
 bool Robot::detectBorders(const std::vector<Position>& detectionPoints, double viewSize)
 {
-    for(Position point : detectionPoints)
-        if ( !point.containsInRect(0,viewSize,0,viewSize) )
+    for ( Position point : detectionPoints )
+        if ( !point.containsInRect(0, viewSize, 0, viewSize) )
             return true;
     return false;
 }

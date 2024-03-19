@@ -1,6 +1,6 @@
 #pragma once
 #include <algorithm>
-struct Position
+struct Position 
 {
     double x;
     double y;

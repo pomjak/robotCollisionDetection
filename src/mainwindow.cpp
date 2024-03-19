@@ -9,8 +9,9 @@ MainWindow::MainWindow(QWidget* parent)
 
     setup();
 
-    // addObstacle(100, Position{ 300,0 }, 1);
-    addRobot(50, Position{ 25,415 }, 2, robotAttributes{ -M_PI / 2,-M_PI / 2,2.5,2 });
+    addObstacle(100, Position{ 300,200 }, 1);
+    addObstacle(100, Position{ 100,200 }, 1);
+    addRobot(50, Position{ 200,200 }, 2, robotAttributes{ 0,M_PI,2.5,10 });
     connect(timer, &QTimer::timeout, this, &MainWindow::updateRobotPosition);
 }
 
