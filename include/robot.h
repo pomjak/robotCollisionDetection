@@ -42,10 +42,7 @@ public:
     void setSpeed(double newSpeed);
 
     Position newPosition();
-    std::vector<Position> getDetectionPoints();
-    bool detectCollisions(const std::vector<Position>& detectionPoints, const std::vector<Object*>& objectList);
-    bool detectCollisionAtPoint(const std::vector<Object*>& objectList, Position& pointOfInterest);
-    bool detectBorders(const std::vector<Position>& detectionPoints,double viewSize);
+    bool detectCollisions( const std::vector<Object*>& objectList);
     void rotate();
 };
 

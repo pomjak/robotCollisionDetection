@@ -57,10 +57,7 @@ void MainWindow::updateRobotPosition()
     {
         if ( Robot* robot = dynamic_cast<Robot*>( obj ) )  // If dynamic_cast succeeds, obj points to a Robot
         {
-            auto points = robot->getDetectionPoints();
-            if ( robot->detectCollisions(points, simulation.get()->objectList)  \
-                || \
-                robot->detectBorders(points, VIEW_SIZE) )
+            if ( robot->detectCollisions(points, simulation.get()->objectList)  )
             {
                 robot->rotate();
             }
