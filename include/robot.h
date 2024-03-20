@@ -6,6 +6,7 @@
 #include "object.h"
 #include "obstacle.h"
 #include "debug.h"
+#include "hitbox.h"
 struct robotAttributes
 {
     double orientation;
@@ -18,16 +19,20 @@ class Robot : public virtual Object
 {
 private:
     robotAttributes attributes;
+public: 
+    Hitbox* hitbox;
 
 public:
     Robot(double sizeValue, \
         Position positionValue, \
         unsigned int idValue, \
-        robotAttributes attributesValues)           \
+        robotAttributes attributesValues)\
         : \
         Object(sizeValue, positionValue, idValue), \
-        attributes(attributesValues) {}
-    ~Robot() {}
+        attributes(attributesValues),
+        hitbox(new Hitbox(positionValue, attributesValues.orientation, sizeValue, attributesValues.detectionDistance))
+    {}
+    ~Robot() {delete hitbox;}
 
     QRectF boundingRect() const override;
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
@@ -42,7 +47,7 @@ public:
     void setSpeed(double newSpeed);
 
     Position newPosition();
-    bool detectCollisions( const std::vector<Object*>& objectList);
+    bool detectCollisions(const std::vector<Object*>& objectList);
     void rotate();
 };
 

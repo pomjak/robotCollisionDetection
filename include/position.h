@@ -1,5 +1,6 @@
 #pragma once
 #include <algorithm>
+#include <QPointF>
 struct Position 
 {
     double x;
@@ -10,6 +11,5 @@ struct Position
     friend inline bool operator<(const Position& lhs, const Position& rhs) { return ( lhs.x < rhs.x && lhs.y < rhs.y ); }
     bool containsInRect(const double& minX, const double& maxX, const double& minY, const double& maxY) const;
     bool containsInRect(const Position& topLeft, const Position& bottomRight) const;
+    inline QPointF toQPointF() const { return QPointF(x, y); }
 };
-
-inline double distance(const Position& p1, const Position& p2) { return std::max(std::abs(p2.x - p1.x), std::abs(p2.y - p1.y)); }
