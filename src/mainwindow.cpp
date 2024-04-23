@@ -9,8 +9,9 @@ MainWindow::MainWindow(QWidget* parent)
 
     setup();
 
-    // addObstacle(100, Position{ 300,0 }, 1);
-    addRobot(50, Position{ 25,415 }, 2, robotAttributes{ -M_PI / 2,-M_PI / 2,2.5,2 });
+    addObstacle(100, Position{ 300,200 }, 1);
+    addObstacle(100, Position{ 100,200 }, 3);
+    addRobot(50, Position{ 200,200 }, 2, robotAttributes{ M_PI /2,M_PI,1,100 });
     connect(timer, &QTimer::timeout, this, &MainWindow::updateRobotPosition);
 }
 
@@ -56,10 +57,7 @@ void MainWindow::updateRobotPosition()
     {
         if ( Robot* robot = dynamic_cast<Robot*>( obj ) )  // If dynamic_cast succeeds, obj points to a Robot
         {
-            auto points = robot->getDetectionPoints();
-            if ( robot->detectCollisions(points, simulation.get()->objectList)  \
-                || \
-                robot->detectBorders(points, VIEW_SIZE) )
+            if ( robot->detectCollisions(simulation.get()->objectList)  )
             {
                 robot->rotate();
             }
@@ -68,6 +66,8 @@ void MainWindow::updateRobotPosition()
                 Position newPos = robot->getPosition() + robot->newPosition();
                 robot->setPosition(newPos);     //  core position
                 robot->setPos(newPos.x, newPos.y);    //GUI Qt position
+                robot->hitbox->setPosition(newPos);
+                robot->hitbox->setPos(newPos.x, newPos.y);
             }
         }
     }

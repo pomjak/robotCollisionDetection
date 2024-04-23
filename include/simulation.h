@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "object.h"
+#include "robot.h"
 #include "debug.h"
 
 enum class SimulationState { INIT, RUNNING, PAUSED, HALT };
