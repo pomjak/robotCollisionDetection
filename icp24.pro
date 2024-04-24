@@ -10,13 +10,15 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     robot.cpp \
-    obstacle.cpp
+    obstacle.cpp \
+    simulation.cpp
 
 HEADERS += \
     mainwindow.h \
     debug.h \
     robot.h \
-    obstacle.h
+    obstacle.h \
+    simulation.h
 
 
 FORMS += \

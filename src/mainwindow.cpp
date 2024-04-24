@@ -9,21 +9,29 @@ MainWindow::MainWindow(QWidget* parent)
 
     setup();
 
+    Robot r(10,11,12,13);
+    Obstacle o(14);
+    Simulation sim;
+
+    sim.addRobot(&r);
+    sim.addObstacle(&o);
+    sim.saveToJson();
     // connect(timer, &QTimer::timeout, this, &MainWindow::updateRobotPosition);
 }
 
 void MainWindow::setup()
 {
     ui->setupUi(this);
-
+    // FIXME
+    // causes segfault without setup scene
     // ui->graphicsView->setScene(simulation.get()->getScene());
-    ui->graphicsView->setRenderHint(QPainter::Antialiasing);
-    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setFixedSize(SCENE_SIZE, SCENE_SIZE);
-    ui->graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QSizeF(SCENE_SIZE, SCENE_SIZE)));
-    ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
+    // ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+    // ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    // ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    // ui->graphicsView->setFixedSize(SCENE_SIZE, SCENE_SIZE);
+    // ui->graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QSizeF(SCENE_SIZE, SCENE_SIZE)));
+    // ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    // ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 }
 
 MainWindow::~MainWindow()
