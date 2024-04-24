@@ -9,13 +9,6 @@ MainWindow::MainWindow(QWidget* parent)
 
     setup();
 
-    Robot r(10,11,12,13);
-    Obstacle o(14);
-    Simulation sim;
-
-    sim.addRobot(&r);
-    sim.addObstacle(&o);
-    sim.saveToJson();
     // connect(timer, &QTimer::timeout, this, &MainWindow::updateRobotPosition);
 }
 

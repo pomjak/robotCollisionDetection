@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <QList>
 
 #include "robot.h"
@@ -19,8 +20,12 @@ public:
     Simulation() : time(0.0) {}
     ~Simulation() {}
 
+    Robot* createRobot();
+    Obstacle* createObstacle();
     void addRobot(Robot* _);
     void addObstacle(Obstacle* _);
-
     void saveToJson();
+    void loadFromJson();
+    void read(const QJsonObject &json);
+    void printLists();
 };
