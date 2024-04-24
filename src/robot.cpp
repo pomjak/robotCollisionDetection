@@ -1,68 +1,33 @@
 #include "robot.h"
 
-QRectF Robot::boundingRect() const
+QJsonObject Robot::saveToJson(void) const
 {
-    return QRectF(getPosition().x - getSize(), getPosition().y - getSize(), getSize(), getSize());
+    QJsonObject json;
+    json["orientation"] = orientation;
+    json["speed"] = speed;
+    json["rotation"] = rotation;
+    json["size"] = size;
+    json["position_x"] = scenePos().x();
+    json["position_y"] = scenePos().y();
+    return json;
 }
 
-void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+QRectF Robot::boundingRect() const
+{
+    return QRectF(pos().x(), pos().y(), getSize(), getSize());
+}
+void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-
     painter->setPen(Qt::red);
     painter->drawEllipse(boundingRect());
+    painter->setPen(Qt::black);
+    painter->drawRect(boundingRect());
 
     QPointF center = boundingRect().center();
-    QPointF arrowEnd = QPointF(center.x() + getSize() / 2 * cos(attributes.orientation), \
-        center.y() + getSize() / 2 * sin(attributes.orientation));
+    QPointF arrowEnd = QPointF(center.x() + getSize() / 2 * cos(orientation),
+                               center.y() + getSize() / 2 * sin(orientation));
 
-    painter->setPen(Qt::black);
     painter->drawLine(center, arrowEnd);
-
-}
-
-inline double Robot::getOrientation() const
-{
-    return attributes.orientation;
-}
-
-void Robot::setOrientation(double newOrientation)
-{
-    attributes.orientation = newOrientation;
-}
-
-inline double Robot::getRotation() const
-{
-    return attributes.rotation;
-}
-
-void Robot::setRotation(double newRotation)
-{
-    attributes.rotation = newRotation;
-}
-
-inline double Robot::getSpeed() const
-{
-    return attributes.speed;
-}
-
-void Robot::setSpeed(double newSpeed)
-{
-    attributes.speed = newSpeed;
-}
-
-Position Robot::newPosition()
-{
-    return calculateDeltaPosition(attributes.speed, attributes.orientation);
-}
-
-bool Robot::detectCollisions(const std::vector<Object*>& objectList)
-{
-    return false;
-}
-
-void Robot::rotate()
-{
-    attributes.orientation += attributes.rotation;
 }

@@ -1,15 +1,23 @@
 #include "obstacle.h"
 
-QRectF Obstacle::boundingRect() const
+QJsonObject Obstacle::saveToJson(void) const
 {
-    return QRectF(getPosition().x - ( getSize() / 2 ), getPosition().y - ( getSize() / 2 ), getSize(), getSize());
+    QJsonObject json;
+    json["size"] = size;
+    json["position_x"] = scenePos().x();
+    json["position_y"] = scenePos().y();
+    return json;
 }
 
-void Obstacle::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+QRectF Obstacle::boundingRect() const
+{
+    return QRectF(pos().x(), pos().y(), getSize(), getSize());
+}
+
+void Obstacle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-
     painter->setPen(Qt::blue);
     painter->drawRect(boundingRect());
 }

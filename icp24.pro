@@ -8,22 +8,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp \ 
-    obstacle.cpp \
+    mainwindow.cpp \
     robot.cpp \
-    object.cpp \
-    simulation.cpp \
-    position.cpp \
-    hitbox.cpp
+    obstacle.cpp \
+    simulation.cpp
 
 HEADERS += \
     mainwindow.h \
-    object.h \
-    obstacle.h \
+    debug.h \
     robot.h \
-    simulation.h \
-    position.h \
-    hitbox.h
+    obstacle.h \
+    simulation.h
 
 
 FORMS += \

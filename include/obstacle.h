@@ -1,27 +1,24 @@
 #pragma once
 
+#include <QGraphicsItem>
+#include <QtCore>
 #include <QPainter>
-#include <QDebug>
-#include "object.h"
-#include "debug.h"
 
-class Obstacle : public virtual Object
+class Obstacle : public QGraphicsItem
 {
+private:
+    double size;
+
 public:
-    Obstacle(double sizeValue, Position positionValue, unsigned int idValue) : Object(sizeValue, positionValue, idValue) {}
+    Obstacle() : size(20) {}
+    Obstacle(double _size) : size(_size) {}
     ~Obstacle() {}
+    inline double getSize() const { return size; }
+
+    inline void setSize(double _size) { size = _size; }
+
+    QJsonObject saveToJson(void) const;
 
     QRectF boundingRect() const override;
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
-};
-
-class ObstacleFactory
-{
-public:
-    Obstacle* createObstacle(double sizeValue, Position positionValue, unsigned int idValue)
-    {
-        Obstacle* obstacle = new Obstacle(sizeValue, positionValue, idValue);
-        DBG << "created obstacle";
-        return obstacle;
-    }
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 };

@@ -1,36 +1,31 @@
 #pragma once
 
-#include <QGraphicsScene>
-#include <QPainterPath>
-#include <vector>
+#include <iostream>
+#include <QList>
 
-#include "object.h"
 #include "robot.h"
+#include "obstacle.h"
 #include "debug.h"
-
-enum class SimulationState { INIT, RUNNING, PAUSED, HALT };
 
 class Simulation
 {
 private:
-    QGraphicsScene* scene;
-    int timeElapsed;
-    SimulationState state;
+    QList<Robot *> robotList;
+    QList<Obstacle *> obstacleList;
+    double time;
+    
+    QJsonObject getJsonObjects();
 
 public:
-    Simulation() : scene(new QGraphicsScene()), timeElapsed(0), state(SimulationState::INIT) {}
-    ~Simulation() { delete scene; }
+    Simulation() : time(0.0) {}
+    ~Simulation() {}
 
-    void addObject(QGraphicsItem* item);
-    bool isLineOccupied(const std::vector<QPointF>& line, QGraphicsScene* scene);
-    std::vector<Object*> objectList;
-
-    QGraphicsScene* getScene() const;
-
-    void start();
-    void stop();
-    void resume();
-    void halt();
-    void loadConfig();
-    void storeConfig();
+    Robot* createRobot();
+    Obstacle* createObstacle();
+    void addRobot(Robot* _);
+    void addObstacle(Obstacle* _);
+    void saveToJson();
+    void loadFromJson();
+    void read(const QJsonObject &json);
+    void printLists();
 };
