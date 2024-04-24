@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <memory>
 #include "robot.h"
+#include "obstacle.h"
 
 #define SCENE_SIZE 800
 #define VIEW_SIZE 424
