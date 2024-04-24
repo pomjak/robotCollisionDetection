@@ -13,10 +13,11 @@ private:
     double size;
 
 public:
-    Robot() : orientation(0.0), speed(0.0), rotation(0.0), size(10){};
+    Robot() : orientation(0.0), speed(0.0), rotation(0.0), size(10) {};
     Robot(double _orientation, double _speed, double _rotation, double _size)
-        : orientation(_orientation), speed(_speed), rotation(_rotation), size(_size) {}
-    ~Robot(){};
+        : orientation(_orientation), speed(_speed), rotation(_rotation), size(_size)
+    {}
+    ~Robot() {};
 
     inline double getOrientation() const { return orientation; }
     inline double getSpeed() const { return speed; }
@@ -31,5 +32,5 @@ public:
     QJsonObject saveToJson(void) const;
 
     QRectF boundingRect() const override;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 };

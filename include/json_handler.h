@@ -8,18 +8,19 @@
 class JsonHandler
 {
 private:
-    QList<Robot *> *robotList;
-    QList<Obstacle *> *obstacleList;
+    QList<Robot*>* robotList;
+    QList<Obstacle*>* obstacleList;
 
     QJsonObject getJsonObjects();
-    void read(const QJsonObject &json);
-    
-    Robot *createRobot(); // TODO  - factory remake
-    Obstacle *createObstacle();
+    void read(const QJsonObject& json);
+
+    Robot* createRobot(); // TODO  - factory remake
+    Obstacle* createObstacle();
 
 public:
-    JsonHandler(QList<Robot *> *_rList, QList<Obstacle *> *_oList)
-        : robotList(_rList), obstacleList(_oList) {}
+    JsonHandler(QList<Robot*>* _rList, QList<Obstacle*>* _oList)
+        : robotList(_rList), obstacleList(_oList)
+    {}
     ~JsonHandler() {}
 
     void save();

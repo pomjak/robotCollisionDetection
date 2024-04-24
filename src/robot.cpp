@@ -16,7 +16,7 @@ QRectF Robot::boundingRect() const
 {
     return QRectF(pos().x(), pos().y(), getSize(), getSize());
 }
-void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
@@ -27,7 +27,7 @@ void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
     QPointF center = boundingRect().center();
     QPointF arrowEnd = QPointF(center.x() + getSize() / 2 * cos(orientation),
-                               center.y() + getSize() / 2 * sin(orientation));
+        center.y() + getSize() / 2 * sin(orientation));
 
     painter->drawLine(center, arrowEnd);
 }

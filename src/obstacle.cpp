@@ -14,7 +14,7 @@ QRectF Obstacle::boundingRect() const
     return QRectF(pos().x(), pos().y(), getSize(), getSize());
 }
 
-void Obstacle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Obstacle::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
