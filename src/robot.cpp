@@ -22,11 +22,12 @@ void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     Q_UNUSED(widget);
     painter->setPen(Qt::red);
     painter->drawEllipse(boundingRect());
+    painter->setPen(Qt::black);
+    painter->drawRect(boundingRect());
 
     QPointF center = boundingRect().center();
     QPointF arrowEnd = QPointF(center.x() + getSize() / 2 * cos(orientation),
                                center.y() + getSize() / 2 * sin(orientation));
 
-    painter->setPen(Qt::black);
     painter->drawLine(center, arrowEnd);
 }
