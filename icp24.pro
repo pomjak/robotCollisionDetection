@@ -8,11 +8,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp 
+    mainwindow.cpp \
+    robot.cpp
 
 HEADERS += \
     mainwindow.h \
-    debug.h
+    debug.h \
+    robot.h
 
 
 FORMS += \

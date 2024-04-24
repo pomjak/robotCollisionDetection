@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <memory>
+#include "robot.h"
 
 #define SCENE_SIZE 800
 #define VIEW_SIZE 424
