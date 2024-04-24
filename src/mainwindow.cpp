@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), simulation(std::make_unique<Simulation>())
+    : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     QTimer* timer = new QTimer(this);
     timer->start(1000 / 33);
@@ -16,7 +16,7 @@ void MainWindow::setup()
 {
     ui->setupUi(this);
 
-    ui->graphicsView->setScene(simulation.get()->getScene());
+    // ui->graphicsView->setScene(simulation.get()->getScene());
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

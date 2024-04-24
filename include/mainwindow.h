@@ -4,12 +4,9 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <memory>
-#include "simulation.h"
-#include "robot.h"
-#include "obstacle.h"
-#include "debug.h"
 
-
+#define SCENE_SIZE 800
+#define VIEW_SIZE 424
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -25,6 +22,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
+    void setup();
 
 private slots:
 
