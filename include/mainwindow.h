@@ -7,6 +7,7 @@
 #include "robot.h"
 #include "obstacle.h"
 #include "simulation.h"
+#include "json_handler.h"
 
 #define SCENE_SIZE 800
 #define VIEW_SIZE 424

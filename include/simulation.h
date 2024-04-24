@@ -13,19 +13,14 @@ private:
     QList<Robot *> robotList;
     QList<Obstacle *> obstacleList;
     double time;
-    
-    QJsonObject getJsonObjects();
 
 public:
     Simulation() : time(0.0) {}
     ~Simulation() {}
 
-    Robot* createRobot();
-    Obstacle* createObstacle();
-    void addRobot(Robot* _);
-    void addObstacle(Obstacle* _);
-    void saveToJson();
-    void loadFromJson();
-    void read(const QJsonObject &json);
+    inline QList<Robot *> *getRobotList() { return &robotList; }
+    inline QList<Obstacle *> *getObstacleList() { return &obstacleList; }
+    inline void addRobot(Robot *_);
+    inline void addObstacle(Obstacle* _);
     void printLists();
 };

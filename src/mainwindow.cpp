@@ -1,14 +1,17 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget* parent)
+MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
-    QTimer* timer = new QTimer(this);
+    QTimer *timer = new QTimer(this);
     timer->start(1000 / 33);
 
     setup();
-
+    Simulation sim;
+    JsonHandler json(sim.getRobotList(), sim.getObstacleList());
+    json.load();
+    sim.printLists();
     // connect(timer, &QTimer::timeout, this, &MainWindow::updateRobotPosition);
 }
 
