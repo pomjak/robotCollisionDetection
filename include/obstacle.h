@@ -13,9 +13,9 @@ public:
     Obstacle() : size(20) {}
     Obstacle(double _size) : size(_size) {}
     ~Obstacle() {}
-    inline double getSize() const { return size; }
+    double getSize() const { return size; }
 
-    inline void setSize(double _size) { size = _size; }
+    void setSize(double _size) { size = _size; }
 
     QRectF boundingRect() const override;
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;

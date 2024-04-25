@@ -18,9 +18,9 @@ public:
     Simulation() : time(0.0) {}
     ~Simulation() {}
 
-    inline QList<Robot*>* getRobotList() { return &robotList; }
-    inline QList<Obstacle*>* getObstacleList() { return &obstacleList; }
-    inline void addRobot(Robot* robot) { robotList.push_back(robot); }
-    inline void addObstacle(Obstacle* obstacle) { obstacleList.push_back(obstacle); }
+    QList<Robot*>* getRobotList() { return &robotList; }
+    QList<Obstacle*>* getObstacleList() { return &obstacleList; }
+    void addRobot(Robot* robot) { robotList.push_back(robot); }
+    void addObstacle(Obstacle* obstacle) { obstacleList.push_back(obstacle); }
     void printLists();
 };

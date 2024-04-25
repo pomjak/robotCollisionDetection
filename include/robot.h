@@ -19,15 +19,15 @@ public:
     {}
     ~Robot() {};
 
-    inline double getOrientation() const { return orientation; }
-    inline double getSpeed() const { return speed; }
-    inline double getRotation() const { return rotation; }
-    inline double getSize() const { return size; }
+    double getOrientation() const { return orientation; }
+    double getSpeed() const { return speed; }
+    double getRotation() const { return rotation; }
+    double getSize() const { return size; }
 
-    inline void setOrientation(double _orientation) { orientation = _orientation; }
-    inline void setSpeed(double _speed) { speed = _speed; }
-    inline void setRotation(double _rotation) { rotation = _rotation; }
-    inline void setSize(double _size) { size = _size; }
+    void setOrientation(double _orientation) { orientation = _orientation; }
+    void setSpeed(double _speed) { speed = _speed; }
+    void setRotation(double _rotation) { rotation = _rotation; }
+    void setSize(double _size) { size = _size; }
 
 
     QRectF boundingRect() const override;
