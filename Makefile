@@ -30,10 +30,9 @@ build: clean
 	cp $(SOURCES) $(HEADERS) $(PROJ) $(FORMS) $(BUILD_DIR)/
 
 run: all
-	./$(TARGET_DEBUG)
+	./$(TARGET)
 
 debug: all
-	rm -rf $(BUILD_DIR)/
 	./$(TARGET_DEBUG)
 
 doxygen: cleandoc

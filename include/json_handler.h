@@ -3,10 +3,9 @@
 #include <QtCore>
 #include <QList>
 
-#include "simulation.h"
 #include "robot.h"
 #include "obstacle.h"
-
+#include "debug.h"
 class JsonHandler
 {
 private:
@@ -18,15 +17,12 @@ private:
     QJsonObject getJsonObjects();
     void read(const QJsonObject& json);
 
-    Robot* createRobot(); // TODO  - factory remake
-    Obstacle* createObstacle();
-
 public:
     JsonHandler(QList<Robot*>* _rList, QList<Obstacle*>* _oList)
         : robotList(_rList), obstacleList(_oList)
     {}
     ~JsonHandler() {}
 
-    void save();
-    void load();
+    void save(const QString& filename);
+    void load(const QString& filename);
 };

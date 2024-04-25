@@ -1,4 +1,6 @@
 #include "json_handler.h"
+#include <QMessageBox>
+
 
 QJsonObject JsonHandler::saveToJson(Robot* robot) const
 {
@@ -42,33 +44,20 @@ QJsonObject JsonHandler::getJsonObjects()
     return json;
 }
 
-void JsonHandler::save()
+void JsonHandler::save(const QString& filename)
 {
-    QFile saveFile("save.json");
+    QFile saveFile(filename);
 
     if ( !saveFile.open(QIODevice::WriteOnly) )
     {
+        QMessageBox::information(nullptr, "Unable to open file",
+                                 saveFile.errorString());
         WARN << "Couldn't open file";
         return;
     }
 
     QJsonObject gameObject = getJsonObjects();
     saveFile.write(QJsonDocument(gameObject).toJson());
-}
-
-// FIXME factory needed
-Robot* JsonHandler::createRobot()
-{
-    Robot* robot = new Robot();
-    robotList->push_back(robot);
-    return robot;
-}
-
-Obstacle* JsonHandler::createObstacle()
-{
-    Obstacle* obstacle = new Obstacle();
-    obstacleList->push_back(obstacle);
-    return obstacle;
 }
 
 void JsonHandler::read(const QJsonObject& json)
@@ -79,14 +68,9 @@ void JsonHandler::read(const QJsonObject& json)
 
         for ( const QJsonValue& obsValue : obstaclesArray )
         {
-            QJsonObject obstacleObject = obsValue.toObject();
-            double posX = obstacleObject["position_x"].toDouble();
-            double posY = obstacleObject["position_y"].toDouble();
-            double size = obstacleObject["size"].toDouble();
-
-            Obstacle* newObstacle = createObstacle();
-            newObstacle->setPos(posX, posY);
-            newObstacle->setSize(size);
+            QJsonObject obj = obsValue.toObject();
+            Obstacle* obst = new Obstacle(obj);
+            obstacleList->push_back(obst);
         }
     }
 
@@ -96,30 +80,21 @@ void JsonHandler::read(const QJsonObject& json)
 
         for ( const QJsonValue& robotValue : robotsArray )
         {
-            QJsonObject robotObject = robotValue.toObject();
-            double posX = robotObject["position_x"].toDouble();
-            double posY = robotObject["position_y"].toDouble();
-            double orientation = robotObject["orientation"].toDouble();
-            double rotation = robotObject["rotation"].toDouble();
-            double size = robotObject["size"].toDouble();
-            double speed = robotObject["speed"].toDouble();
-
-            Robot* newRobot = createRobot();
-            newRobot->setPos(posX, posY);
-            newRobot->setOrientation(orientation);
-            newRobot->setRotation(rotation);
-            newRobot->setSize(size);
-            newRobot->setSpeed(speed);
+            QJsonObject obj = robotValue.toObject();
+            Robot* rbt = new Robot(obj);
+            robotList->push_back(rbt);
         }
     }
 }
 
-void JsonHandler::load()
+void JsonHandler::load(const QString& filename)
 {
-    QFile loadFile("save.json");
+    QFile loadFile(filename);
 
     if ( !loadFile.open(QIODevice::ReadOnly) )
     {
+        QMessageBox::information(nullptr, "Unable to open file",
+                                 loadFile.errorString());
         WARN << "Couldn't open save file.";
         return;
     }
