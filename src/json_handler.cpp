@@ -98,9 +98,16 @@ void JsonHandler::load(const QString& filename)
         WARN << "Couldn't open save file.";
         return;
     }
+    QByteArray saveData;
+    if ( ( saveData = loadFile.readAll() ) == 0 )
+    {
+        QMessageBox::information(nullptr, "File empty!",
+                                 loadFile.errorString());
+        WARN << "File Empty!";
+        return;
+    }
 
-    QByteArray saveData = loadFile.readAll();
-
+    INFO << "read " << saveData.size();
     QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
 
     read(loadDoc.object());

@@ -15,7 +15,7 @@ private:
 
 
 public:
-    Robot() : orientation(0.0), speed(0.0), rotation(0.0), size(10) {};
+    Robot() : orientation(0.0), speed(0.0), rotation(0.0), size(50) {};
     Robot(double _orientation, double _speed, double _rotation, double _size)
         : orientation(_orientation), speed(_speed), rotation(_rotation), size(_size)
     {}
