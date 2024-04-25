@@ -29,10 +29,26 @@ void Simulation::loadLevelLayout()
 {
     QString fname = QFileDialog::getOpenFileName(nullptr, tr("Open existing layout"), "", tr("Json File (*.json);;All Files(*)"));
     if ( fname.isEmpty() )
+    {
+        WARN << "filename empty";
         return;
+    }
     else
     {
         json.load(fname);
+        int i = 0;
+        for ( auto& obj : robotList )
+        {
+            DEBUG << "Adding robot #" << ++i;
+            scene->addItem(obj);
+        }
+        i = 0;
+        for ( auto& obj : obstacleList )
+        {
+            DEBUG << "Adding obstacle #" << ++i;
+            scene->addItem(obj);
+        }
+
     }
 }
 
