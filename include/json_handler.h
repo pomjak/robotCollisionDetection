@@ -3,10 +3,9 @@
 #include <QtCore>
 #include <QList>
 
-#include "simulation.h"
 #include "robot.h"
 #include "obstacle.h"
-
+#include "debug.h"
 class JsonHandler
 {
 private:
@@ -24,6 +23,6 @@ public:
     {}
     ~JsonHandler() {}
 
-    void save();
-    void load();
+    void save(const QString& filename);
+    void load(const QString& filename);
 };

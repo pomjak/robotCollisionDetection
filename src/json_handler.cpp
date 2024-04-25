@@ -1,4 +1,6 @@
 #include "json_handler.h"
+#include <QMessageBox>
+
 
 QJsonObject JsonHandler::saveToJson(Robot* robot) const
 {
@@ -42,12 +44,14 @@ QJsonObject JsonHandler::getJsonObjects()
     return json;
 }
 
-void JsonHandler::save()
+void JsonHandler::save(const QString& filename)
 {
-    QFile saveFile("save.json");
+    QFile saveFile(filename);
 
     if ( !saveFile.open(QIODevice::WriteOnly) )
     {
+        QMessageBox::information(nullptr, "Unable to open file",
+                                 saveFile.errorString());
         WARN << "Couldn't open file";
         return;
     }
@@ -83,12 +87,14 @@ void JsonHandler::read(const QJsonObject& json)
     }
 }
 
-void JsonHandler::load()
+void JsonHandler::load(const QString& filename)
 {
-    QFile loadFile("save.json");
+    QFile loadFile(filename);
 
     if ( !loadFile.open(QIODevice::ReadOnly) )
     {
+        QMessageBox::information(nullptr, "Unable to open file",
+                                 loadFile.errorString());
         WARN << "Couldn't open save file.";
         return;
     }
