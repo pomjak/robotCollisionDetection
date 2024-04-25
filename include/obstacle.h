@@ -12,6 +12,7 @@ private:
 public:
     Obstacle() : size(20) {}
     Obstacle(double _size) : size(_size) {}
+    Obstacle(QJsonObject& json);
     ~Obstacle() {}
     double getSize() const { return size; }
 

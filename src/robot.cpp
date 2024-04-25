@@ -1,5 +1,27 @@
 #include "robot.h"
 
+Robot::Robot(QJsonObject& json)
+    : orientation(json["orientation"].toDouble()),
+    speed(json["speed"].toDouble()),
+    rotation(json["rotation"].toDouble()),
+    size(json["size"].toDouble())
+{
+    double pos_x = json["position_x"].toDouble();
+    double pos_y = json["position_y"].toDouble();
+    this->setPos(pos_x, pos_y);
+}
+
+QJsonObject Robot::saveToJson(void) const
+{
+    QJsonObject json;
+    json["orientation"] = orientation;
+    json["speed"] = speed;
+    json["rotation"] = rotation;
+    json["size"] = size;
+    json["position_x"] = scenePos().x();
+    json["position_y"] = scenePos().y();
+    return json;
+}
 
 QRectF Robot::boundingRect() const
 {
@@ -16,7 +38,7 @@ void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWi
 
     QPointF center = boundingRect().center();
     QPointF arrowEnd = QPointF(center.x() + getSize() / 2 * cos(orientation),
-        center.y() + getSize() / 2 * sin(orientation));
+                               center.y() + getSize() / 2 * sin(orientation));
 
     painter->drawLine(center, arrowEnd);
 }

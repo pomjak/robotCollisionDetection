@@ -17,6 +17,7 @@ public:
     Robot(double _orientation, double _speed, double _rotation, double _size)
         : orientation(_orientation), speed(_speed), rotation(_rotation), size(_size)
     {}
+    Robot(QJsonObject& json);
     ~Robot() {};
 
     double getOrientation() const { return orientation; }
