@@ -4,13 +4,15 @@
 #include <QtCore>
 #include <QPainter>
 
-class Robot : public QGraphicsItem
+class Robot : public QObject, public QGraphicsItem
 {
+    Q_OBJECT
 private:
     double orientation;
     double speed;
     double rotation;
     double size;
+
 
 public:
     Robot() : orientation(0.0), speed(0.0), rotation(0.0), size(10) {};
@@ -30,7 +32,7 @@ public:
     void setRotation(double _rotation) { rotation = _rotation; }
     void setSize(double _size) { size = _size; }
 
-
-    QRectF boundingRect() const override;
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
 };
