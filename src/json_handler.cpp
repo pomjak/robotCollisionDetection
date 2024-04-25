@@ -1,11 +1,32 @@
 #include "json_handler.h"
 
+QJsonObject JsonHandler::saveToJson(Robot* robot) const
+{
+    QJsonObject json;
+    json["orientation"] = robot->getOrientation();
+    json["speed"] = robot->getSpeed();
+    json["rotation"] = robot->getRotation();
+    json["size"] = robot->getSize();
+    json["position_x"] = robot->pos().x();
+    json["position_y"] = robot->pos().y();
+    return json;
+}
+
+QJsonObject JsonHandler::saveToJson(Obstacle* obs) const
+{
+    QJsonObject json;
+    json["size"] = obs->getSize();
+    json["position_x"] = obs->pos().x();
+    json["position_y"] = obs->pos().y();
+    return json;
+}
+
 QJsonObject JsonHandler::getJsonObjects()
 {
     QJsonArray obstacles;
     for ( const auto& obs : *obstacleList )
     {
-        obstacles.append(obs->saveToJson());
+        obstacles.append(saveToJson(obs));
     }
 
     QJsonObject json;
@@ -14,7 +35,7 @@ QJsonObject JsonHandler::getJsonObjects()
     QJsonArray robots;
     for ( const auto& robot : *robotList )
     {
-        robots.append(robot->saveToJson());
+        robots.append(saveToJson(robot));
     }
     json["robots"] = robots;
 

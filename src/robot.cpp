@@ -1,16 +1,5 @@
 #include "robot.h"
 
-QJsonObject Robot::saveToJson(void) const
-{
-    QJsonObject json;
-    json["orientation"] = orientation;
-    json["speed"] = speed;
-    json["rotation"] = rotation;
-    json["size"] = size;
-    json["position_x"] = scenePos().x();
-    json["position_y"] = scenePos().y();
-    return json;
-}
 
 QRectF Robot::boundingRect() const
 {

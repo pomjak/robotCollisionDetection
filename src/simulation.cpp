@@ -1,14 +1,5 @@
 #include "simulation.h"
 
-inline void Simulation::addRobot(Robot* robot)
-{
-    robotList.push_back(robot);
-}
-
-inline void Simulation::addObstacle(Obstacle* obstacle)
-{
-    obstacleList.push_back(obstacle);
-}
 
 void Simulation::printLists()
 {

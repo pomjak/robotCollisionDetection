@@ -10,8 +10,6 @@ MainWindow::MainWindow(QWidget* parent)
     setup();
     Simulation sim;
     JsonHandler json(sim.getRobotList(), sim.getObstacleList());
-    json.load();
-    sim.printLists();
     // connect(timer, &QTimer::timeout, this, &MainWindow::updateRobotPosition);
 }
 

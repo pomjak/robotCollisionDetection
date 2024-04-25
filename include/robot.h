@@ -29,7 +29,6 @@ public:
     inline void setRotation(double _rotation) { rotation = _rotation; }
     inline void setSize(double _size) { size = _size; }
 
-    QJsonObject saveToJson(void) const;
 
     QRectF boundingRect() const override;
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
