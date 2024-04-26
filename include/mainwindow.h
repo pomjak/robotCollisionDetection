@@ -1,11 +1,8 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
+#pragma once
 #include <QMainWindow>
 #include <QTimer>
 #include <memory>
-#include "robot.h"
-#include "obstacle.h"
+#include "json_handler.h"
 #include "simulation.h"
 
 #define SCENE_SIZE 800
@@ -27,10 +24,8 @@ public:
     ~MainWindow();
     void setup();
 
-private slots:
-
 private:
     Ui::MainWindow* ui;
+    Simulation* simulation;
 
 };
-#endif // MAINWINDOW_H

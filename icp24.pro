@@ -11,14 +11,16 @@ SOURCES += \
     mainwindow.cpp \
     robot.cpp \
     obstacle.cpp \
-    simulation.cpp
+    simulation.cpp \
+    json_handler.cpp
 
 HEADERS += \
     mainwindow.h \
     debug.h \
     robot.h \
     obstacle.h \
-    simulation.h
+    simulation.h \
+    json_handler.h
 
 
 FORMS += \

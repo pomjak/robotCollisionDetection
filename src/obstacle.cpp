@@ -1,12 +1,11 @@
 #include "obstacle.h"
 
-QJsonObject Obstacle::saveToJson(void) const
+Obstacle::Obstacle(QJsonObject& json)
+    :size(json["size"].toDouble())
 {
-    QJsonObject json;
-    json["size"] = size;
-    json["position_x"] = scenePos().x();
-    json["position_y"] = scenePos().y();
-    return json;
+    double pos_x = json["position_x"].toDouble();
+    double pos_y = json["position_y"].toDouble();
+    this->setPos(pos_x, pos_y);
 }
 
 QRectF Obstacle::boundingRect() const
@@ -14,7 +13,7 @@ QRectF Obstacle::boundingRect() const
     return QRectF(pos().x(), pos().y(), getSize(), getSize());
 }
 
-void Obstacle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Obstacle::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
