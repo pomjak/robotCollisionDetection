@@ -17,10 +17,10 @@ void Simulation::printLists()
 
     for ( const auto& rob : robotList )
     {
-        DEBUG << rob->getOrientation();
+        DEBUG << rob->getAngle();
         DEBUG << rob->pos().x() << rob->pos().y();
         DEBUG << rob->getRotation();
-        DEBUG << rob->getSize();
+        DEBUG << rob->size();
         DEBUG << rob->getSpeed();
     }
 }
