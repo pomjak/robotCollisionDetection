@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1147</width>
-    <height>900</height>
+    <width>1221</width>
+    <height>877</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -24,7 +24,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>30</y>
       <width>940</width>
       <height>820</height>
      </rect>
@@ -35,8 +35,8 @@
      <rect>
       <x>960</x>
       <y>30</y>
-      <width>171</width>
-      <height>601</height>
+      <width>251</width>
+      <height>821</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -48,7 +48,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QLCDNumber" name="timeElapsedLCD"/>
+      <widget class="QLCDNumber" name="timeElapsedLCD">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>23</height>
+        </size>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="verticalSpacer_3">
@@ -144,110 +151,127 @@
        </property>
       </spacer>
      </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="gridLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>960</x>
-      <y>650</y>
-      <width>243</width>
-      <height>201</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
+     <item>
       <widget class="QCheckBox" name="manualOverride">
        <property name="text">
         <string>Manual </string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
+     <item>
       <widget class="QPushButton" name="forwardButton">
        <property name="text">
         <string>Go</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QPushButton" name="rotateLeftButton">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QPushButton" name="rotateLeftButton">
+         <property name="text">
+          <string>Left</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="rotateRightButton">
+         <property name="text">
+          <string>Right</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>941</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="addRobotButton">
        <property name="text">
-        <string>Left</string>
+        <string>+ Robot</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QPushButton" name="stopActionButton">
+     <item>
+      <widget class="QPushButton" name="addObstacleButton">
        <property name="text">
-        <string>Stop</string>
+        <string>+ Obsatcle</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="2">
-      <widget class="QPushButton" name="rotateRightButton">
+     <item>
+      <widget class="QPushButton" name="deleteObjectButton">
        <property name="text">
-        <string>Right</string>
+        <string>- Delete object</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="deleteAllButton">
+       <property name="text">
+        <string>- Delete all</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="exportButton">
+       <property name="contextMenuPolicy">
+        <enum>Qt::NoContextMenu</enum>
+       </property>
+       <property name="text">
+        <string>Save layout</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="importButton">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Load layout</string>
        </property>
       </widget>
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="importButton">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>420</x>
-      <y>830</y>
-      <width>50</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Load</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="exportButton">
-    <property name="geometry">
-     <rect>
-      <x>470</x>
-      <y>830</y>
-      <width>50</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="contextMenuPolicy">
-     <enum>Qt::NoContextMenu</enum>
-    </property>
-    <property name="text">
-     <string>Save</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1147</width>
-     <height>22</height>
-    </rect>
-   </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <tabstops>
   <tabstop>graphicsView</tabstop>
+  <tabstop>addRobotButton</tabstop>
+  <tabstop>addObstacleButton</tabstop>
+  <tabstop>deleteObjectButton</tabstop>
+  <tabstop>exportButton</tabstop>
+  <tabstop>importButton</tabstop>
+  <tabstop>StartStopSimulationButton</tabstop>
   <tabstop>SpeedSlider</tabstop>
   <tabstop>RotationSlider</tabstop>
   <tabstop>distanceSlider</tabstop>
-  <tabstop>manualOverride</tabstop>
-  <tabstop>forwardButton</tabstop>
-  <tabstop>rotateLeftButton</tabstop>
-  <tabstop>stopActionButton</tabstop>
-  <tabstop>rotateRightButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>
