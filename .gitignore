@@ -60,3 +60,4 @@ icp24
 icp24_debug
 vgcore*
 *.json
+!examples/*.json

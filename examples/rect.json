@@ -1,12 +1,11 @@
 {
-    "obstacles": [
-    ],
     "robots": [
         {
             "orientation": 0,
-            "position_x": 426,
+            "position_x": 0,
             "position_y": 0,
             "rotation": 1.57079632679,
+            "detection_dist": 1,
             "speed": 3
         }
     ]

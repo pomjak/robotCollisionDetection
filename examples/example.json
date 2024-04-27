@@ -1,0 +1,37 @@
+{
+    "obstacles": [
+        {
+            "position_x": 10,
+            "position_y": 10,
+            "size": 50
+        },
+        {
+            "position_x": 0,
+            "position_y": 100,
+            "size": 50
+        },
+        {
+            "position_x": 50,
+            "position_y": 50,
+            "size": 75
+        }
+    ],
+    "robots": [
+        {
+            "orientation": 0,
+            "position_x": 0,
+            "position_y": 50,
+            "rotation": 0.5,
+            "detection_dist": 10,
+            "speed": 1
+        },
+        {
+            "orientation": 3.14159265359,
+            "position_x": 200,
+            "position_y": 100,
+            "rotation": 1.68,
+            "detection_dist": 25,
+            "speed": 1
+        }
+    ]
+}
