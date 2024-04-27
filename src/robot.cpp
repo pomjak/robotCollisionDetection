@@ -78,7 +78,7 @@ void Robot::advance(int phase)
     qreal dy = getSpeed() * ::sin(getAngle());
     QPointF newPos = pos() + QPointF(dx, dy);
 
-
+    /* check if new bound rect is still in scene */
     if ( scene()->sceneRect().contains(newBoundingRect(newPos).translated(newPos)) )
     {
         setPos(newPos);
@@ -90,11 +90,12 @@ void Robot::advance(int phase)
         return;
     }
 
-
+    /* get all objects in danger area */
     const QList<QGraphicsItem*> colliding_items = scene()->items(mapToScene(detectionArea()));
 
     for(const auto &item : colliding_items)
     {
+        /* ignore itself */
         if(item != this)
         {
             DEBUG << "Collision detected!";
