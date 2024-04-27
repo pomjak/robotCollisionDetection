@@ -17,7 +17,7 @@ void Simulation::printLists()
 
     for ( const auto& rob : robotList )
     {
-        DEBUG << rob->getAngle();
+        DEBUG << rob->rotation();
         DEBUG << rob->pos().x() << rob->pos().y();
         DEBUG << rob->getRotation();
         DEBUG << rob->size();
@@ -35,6 +35,7 @@ void Simulation::loadLevelLayout()
     }
     else
     {
+        scene->clear();
         json.load(fname);
         int i = 0;
         for ( auto& obj : robotList )
@@ -48,7 +49,11 @@ void Simulation::loadLevelLayout()
             DEBUG << "Adding obstacle #" << ++i;
             scene->addItem(obj);
         }
-
+        INFO << "Scene:";
+        INFO << " w: " << scene->width();
+        INFO << " h: " << scene->height();
+        INFO << " elem: " << scene->items().length();
+        INFO << scene->sceneRect();
     }
 }
 

@@ -5,7 +5,7 @@
 QJsonObject JsonHandler::saveToJson(Robot* robot) const
 {
     QJsonObject json;
-    json["orientation"] = robot->getAngle();
+    json["orientation"] = robot->rotation();
     json["speed"] = robot->getSpeed();
     json["rotation"] = robot->getRotation();
     json["position_x"] = robot->pos().x();
@@ -67,6 +67,7 @@ void JsonHandler::read(const QJsonObject& json)
 
         for ( const QJsonValue& obsValue : obstaclesArray )
         {
+            DEBUG << "LOADING OBSTACLE";
             QJsonObject obj = obsValue.toObject();
             Obstacle* obst = new Obstacle(obj);
             obstacleList->push_back(obst);
@@ -79,6 +80,7 @@ void JsonHandler::read(const QJsonObject& json)
 
         for ( const QJsonValue& robotValue : robotsArray )
         {
+            DEBUG << "LOADING ROBOT";
             QJsonObject obj = robotValue.toObject();
             Robot* rbt = new Robot(obj);
             robotList->push_back(rbt);

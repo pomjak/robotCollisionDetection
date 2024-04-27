@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     setup();
     simulation->printLists();
-    // connect(timer, &QTimer::timeout, this, &Robot::updatePosition);
+    connect(timer, &QTimer::timeout, simulation->getScene().get(), &QGraphicsScene::advance);
 }
 
 void MainWindow::setup()

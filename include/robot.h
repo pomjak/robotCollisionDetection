@@ -7,8 +7,12 @@
 
 #pragma once
 
+#include "debug.h"
+#include "obstacle.h"
 #include <QGraphicsItem>
+#include <QGraphicsScene>
 #include <QPainter>
+#include <QTransform>
 #include <QtCore>
 
 #define DEF_ROBOT_SIZE 50.0
@@ -28,11 +32,10 @@ private:
     double m_speed;          /// Speed of the robot
     double m_rotate_by;      /// Angle to rotate by when detecting a collision
     double m_detection_dist; /// Maximum distance from the robot to detect collisions
-    QColor m_color;          /// Color?
 
 public:
     /**
-     * \brief Construct a new Robot object
+     * \brief Create a new robot
      **/
     Robot();
 
@@ -100,22 +103,81 @@ public:
     void setSpeed(double _speed) { m_speed = _speed; }
 
     /**
-     * \brief Sets the angle an autonomous robot will rotate by to avoid collision
-     * \param _rotation
+     * \brief paints the contents of an item in local coordinates
+     * \param painter
+     * \param option
+     * \param widget
      **/
-    void setRotation(double _rotation) { m_rotate_by = _rotation; }
-
-    /**
-     * \brief Resize the robot
-     * \param _size new size
-     **/
-    void resize(double _size) { m_size = _size; }
-
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
                QWidget* widget) override;
+
+    /**
+     * \brief
+     * \return QRectF
+     **/
     QRectF boundingRect() const override;
+
+    /**
+     * \brief
+     * \return QPainterPath
+     **/
     QPainterPath shape() const override;
 
 protected:
+    /**
+     * \brief Called by GraphicsScene::advance slot; animates the object
+     * \param phase advance is called twice, once with phase 0, indicating items
+     * are about to advance, then with phase 1 to actually advance them
+     **/
     void advance(int phase) override;
+
+    /**
+     * \brief
+     * \return qreal
+     **/
+    qreal radius() const { return size() / 2; }
+
+    /**
+     * \brief Convenience function equvalent to boundingRect.center()
+     * \return QPointF
+     **/
+    QPointF center() const { return boundingRect().center(); }
+
+    /**
+     * \brief A point on the peri
+     * \return QPointF
+     **/
+    QPointF leftBumper() const
+    {
+        return QPointF(center().x() + radius() * ::cos(rotation() - ( M_PI / 2 )),
+                       center().y() + radius() * ::sin(rotation() - ( M_PI / 2 )));
+    }
+
+    /**
+     * \brief
+     * \return QPointF
+     **/
+    QPointF rightBumper() const
+    {
+        return QPointF(center().x() + radius() * ::cos(rotation() + ( M_PI / 2 )),
+                       center().y() + radius() * ::sin(rotation() + ( M_PI / 2 )));
+    }
+
+    /**
+     * \brief
+     * \return QPointF
+     **/
+    QPointF detectionPoint() const
+    {
+        return QPointF(( ( center().x() + radius() * ::cos(rotation()) ) +
+                        ( getDetectDistance() * ::cos(rotation()) ) ),
+                       ( ( center().y() + radius() * ::sin(rotation()) ) +
+                        ( getDetectDistance() * ::sin(rotation()) ) ));
+    }
+
+    /**
+     * \brief
+     * \return QRectF detection area
+     **/
+    QPolygonF detectionArea() const;
 };

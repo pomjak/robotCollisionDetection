@@ -17,6 +17,7 @@ void Obstacle::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, 
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    painter->setPen(Qt::blue);
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(Qt::gray);
     painter->drawRect(boundingRect());
 }
