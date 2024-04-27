@@ -17,7 +17,8 @@
 
 #define DEF_ROBOT_SIZE 50.0
 #define DEF_DETECT_DIST 25.0
-#define DEF_ROTATE_BY 15.0
+#define DEF_ROTATE_BY 1.0
+#define DEF_SPEED 2.0
 
  /**
   * \brief A graphical item to use in the main scene and perform collision
@@ -48,6 +49,13 @@ public:
      *detected
      **/
     Robot(double _angle, double _speed, double _rotate, double _dist);
+
+    /**
+     * @brief Construct a new Robot
+     * 
+     * @param _position initial position
+     */
+    Robot(QPointF _position);
 
     /**
      * \brief Construct a new Robot object
@@ -109,19 +117,19 @@ public:
      * \param widget
      **/
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
-               QWidget* widget) override;
+        QWidget* widget) override;
 
-    /**
-     * \brief
-     * \return QRectF
-     **/
+/**
+ * \brief
+ * \return QRectF
+ **/
     QRectF boundingRect() const override;
 
     /**
      * @brief returns bounding rect of object based on new position passed as argument
-     * 
+     *
      * @param newPos new position
-     * @return QRectF bounding rect 
+     * @return QRectF bounding rect
      */
     QRectF newBoundingRect(QPointF newPos) const;
 
@@ -158,7 +166,7 @@ protected:
     QPointF leftBumper() const
     {
         return QPointF(center().x() + radius() * ::cos(getAngle() - ( M_PI / 2 )),
-                       center().y() + radius() * ::sin(getAngle() - ( M_PI / 2 )));
+            center().y() + radius() * ::sin(getAngle() - ( M_PI / 2 )));
     }
 
     /**
@@ -168,7 +176,7 @@ protected:
     QPointF rightBumper() const
     {
         return QPointF(center().x() + radius() * ::cos(getAngle() + ( M_PI / 2 )),
-                       center().y() + radius() * ::sin(getAngle() + ( M_PI / 2 )));
+            center().y() + radius() * ::sin(getAngle() + ( M_PI / 2 )));
     }
 
     /**
@@ -178,9 +186,9 @@ protected:
     QPointF detectionPoint() const
     {
         return QPointF(( ( center().x() + radius() * ::cos(getAngle()) ) +
-                        ( getDetectDistance() * ::cos(getAngle()) ) ),
-                       ( ( center().y() + radius() * ::sin(getAngle()) ) +
-                        ( getDetectDistance() * ::sin(getAngle()) ) ));
+            ( getDetectDistance() * ::cos(getAngle()) ) ),
+            ( ( center().y() + radius() * ::sin(getAngle()) ) +
+                ( getDetectDistance() * ::sin(getAngle()) ) ));
     }
 
     /**

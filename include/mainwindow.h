@@ -23,6 +23,7 @@ public:
     MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
     void setup();
+    void connect_buttons();
 
 private:
     Ui::MainWindow* ui;

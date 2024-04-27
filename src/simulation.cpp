@@ -36,6 +36,8 @@ void Simulation::loadLevelLayout()
     else
     {
         scene->clear();
+        robotList.clear();
+        obstacleList.clear();
         json.load(fname);
         int i = 0;
         for ( auto& obj : robotList )
@@ -66,4 +68,50 @@ void Simulation::saveLevelLayout()
     {
         json.save(fname);
     }
+}
+
+void Simulation::spawnRobot()
+{
+
+
+    QPointF spawnPoint;
+    do
+    {
+        spawnPoint = { QRandomGenerator::global()->bounded(scene->sceneRect().width()),
+                        QRandomGenerator::global()->bounded(scene->sceneRect().height()) };
+
+        QSizeF robotSize(DEF_ROBOT_SIZE, DEF_ROBOT_SIZE);
+        QRectF spawnArea(spawnPoint, robotSize);
+
+        /* Check if there are any items at the spawn point */
+        QList<QGraphicsItem*> itemsAtSpawnPoint = scene->items(spawnArea);
+
+        /* If there are no items at the spawn point, exit the loop */
+        if ( itemsAtSpawnPoint.isEmpty() )
+            break;
+
+    }
+    while ( true );
+
+    Robot* robot = new Robot(spawnPoint);
+    addRobot(robot);
+    scene->addItem(robot);
+
+    INFO << "ROBOT SPAWNED at" << spawnPoint;
+    return;
+}
+void Simulation::spawnObstacle()
+{
+    return;
+}
+void Simulation::deleteObject()
+{
+    // TODO 
+    return;
+}
+void Simulation::purgeScene()
+{
+    scene->clear();
+    robotList.clear();
+    obstacleList.clear();
 }

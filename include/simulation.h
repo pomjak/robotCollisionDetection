@@ -35,4 +35,8 @@ public:
 public slots:
     void loadLevelLayout();
     void saveLevelLayout();
+    void spawnRobot();
+    void spawnObstacle();
+    void deleteObject();
+    void purgeScene();
 };
