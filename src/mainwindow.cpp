@@ -31,7 +31,6 @@ void MainWindow::setup()
     ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     ui->graphicsView->setCacheMode(QGraphicsView::CacheBackground);
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    ui->graphicsView->scale(qreal(0.8), qreal(0.8));
 
     ui->graphicsView->setWindowTitle(tr("ICP - 24"));
 }

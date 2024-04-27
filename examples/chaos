@@ -1,0 +1,874 @@
+{
+    "obstacles": [
+    ],
+    "robots": [
+        {
+            "orientation": 0,
+            "position_x": 891.8632385263405,
+            "position_y": 159.77519708891543,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 643.9858396546609,
+            "position_y": 308.92259898232885,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 25.562907010999883,
+            "position_y": 115.6693374819709,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 113.47264982550622,
+            "position_y": 708.418008433795,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 225.24308676141547,
+            "position_y": 114.78159089415357,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 374.4233786706037,
+            "position_y": 243.5776903150406,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 278.76594676467084,
+            "position_y": 234.60755758604924,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 403.72982685953116,
+            "position_y": 801.7648058766121,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 493.1560754814058,
+            "position_y": 89.05733883389567,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 685.0551361364274,
+            "position_y": 618.7122891807422,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 509.95319328193455,
+            "position_y": 599.4481355202273,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 750.4751642425331,
+            "position_y": 321.7721945768732,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 143.82601404897605,
+            "position_y": 552.4185336911563,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 462.4341023386461,
+            "position_y": 499.7629708689515,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 531.2908436816406,
+            "position_y": 228.5280250509093,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 464.0011043251949,
+            "position_y": 803.5687765672354,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 279.5763310704183,
+            "position_y": 635.1630934606785,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 229.04823972353563,
+            "position_y": 38.075465319919545,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 880.0000339509509,
+            "position_y": 432.20640015909305,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 711.134536109212,
+            "position_y": 131.7476079264214,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 333.4285800480019,
+            "position_y": 665.9131387842566,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 838.155368540356,
+            "position_y": 564.5832441628958,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 700.9851158478837,
+            "position_y": 99.7750197379762,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 625.3807538962782,
+            "position_y": 581.4105657127695,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 586.5254655594869,
+            "position_y": 669.9826997367318,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 179.35524785890345,
+            "position_y": 67.76513062216738,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 127.33416255125675,
+            "position_y": 47.48350028853222,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 909.4815481051996,
+            "position_y": 736.7455758145804,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 690.8183187592379,
+            "position_y": 520.9029887772261,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 730.0425288817825,
+            "position_y": 324.14436449005944,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 363.7841869218566,
+            "position_y": 616.8026902570978,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 488.02181817042555,
+            "position_y": 208.98847733540515,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 383.934455330174,
+            "position_y": 581.41264560121,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 703.6868187255244,
+            "position_y": 364.1230446334065,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 133.76480205914336,
+            "position_y": 246.35262799876625,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 72.08168873363961,
+            "position_y": 48.789990457277625,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 260.1028737465023,
+            "position_y": 56.009208410348776,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 598.8725237564694,
+            "position_y": 324.3833469256791,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 844.670199850866,
+            "position_y": 684.7311576592226,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 621.700031641731,
+            "position_y": 591.2999086136597,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 843.4920735309591,
+            "position_y": 58.70821629590455,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 477.59537121719256,
+            "position_y": 281.6973769741656,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 197.40015575690484,
+            "position_y": 365.6274753830403,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 167.93257171694924,
+            "position_y": 5.999900846810315,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 686.5361611511661,
+            "position_y": 783.7403199655407,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 789.5699585926859,
+            "position_y": 599.9518746036907,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 436.34664893375776,
+            "position_y": 228.2226686023174,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 806.7460719609237,
+            "position_y": 561.7419536676539,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 756.7632731129805,
+            "position_y": 634.7990821450134,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 648.3042636794441,
+            "position_y": 148.17017107562583,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 115.46644980621627,
+            "position_y": 673.6659398208561,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 289.56515969266434,
+            "position_y": 371.0678770128402,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 328.92034206255573,
+            "position_y": 590.3585555833434,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 676.2658890641437,
+            "position_y": 597.9047346572829,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 886.2991821331644,
+            "position_y": 538.2660402195748,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 914.5663193023194,
+            "position_y": 324.4512505444047,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 431.5251732289064,
+            "position_y": 547.6359576238481,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 253.49096412665511,
+            "position_y": 316.7771645681246,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 514.3768620612278,
+            "position_y": 722.2669711742274,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 813.5160311209905,
+            "position_y": 759.1042476386233,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 259.89003855878417,
+            "position_y": 720.8679335316248,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 82.98835236968011,
+            "position_y": 549.2029886550853,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 907.9875530890586,
+            "position_y": 504.7306396812179,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 25.38422532594585,
+            "position_y": 366.5675645075325,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 819.5573712077529,
+            "position_y": 160.6369661872868,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 222.88646500407836,
+            "position_y": 170.6824845972975,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 360.59730433567694,
+            "position_y": 357.61899980852144,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 62.795605616252864,
+            "position_y": 523.6442733543846,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 266.5669189105934,
+            "position_y": 803.341969850796,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 85.08265343854679,
+            "position_y": 175.72257387052528,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 182.60014052394214,
+            "position_y": 807.8667288035128,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 713.2352459953208,
+            "position_y": 248.9107560705844,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 684.0883416348361,
+            "position_y": 807.879445836739,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 621.606848443313,
+            "position_y": 322.95564884437505,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 694.920445900786,
+            "position_y": 323.60519996448477,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 389.6116381338865,
+            "position_y": 207.63624558167876,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 777.0468910110104,
+            "position_y": 616.4016915725574,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 441.05715693286174,
+            "position_y": 16.683416469166136,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 752.3643817564513,
+            "position_y": 570.6164483997505,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 46.641609265623416,
+            "position_y": 754.6975642169393,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 63.62290026196488,
+            "position_y": 818.2933751018045,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 263.85098084260875,
+            "position_y": 168.1216741880378,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 926.0088936197762,
+            "position_y": 670.184214540379,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 274.79312317145565,
+            "position_y": 124.44354683141992,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 420.84404605254554,
+            "position_y": 334.70113163694657,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 290.4237275582077,
+            "position_y": 340.76507553233614,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 539.0601357869571,
+            "position_y": 255.479766675621,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 232.5590591309669,
+            "position_y": 495.7407128898332,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 695.3606903835807,
+            "position_y": 725.9315265010707,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 920.1660899688766,
+            "position_y": 253.05955980836004,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 29.8051850569527,
+            "position_y": 471.1219508245413,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 546.039580131634,
+            "position_y": 140.16301953900955,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 186.93652120561183,
+            "position_y": 645.4824058788043,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 581.5193686910667,
+            "position_y": 287.2772123918916,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 917.5272453360479,
+            "position_y": 361.7526435479436,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 201.68949791656624,
+            "position_y": 218.51821306051428,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 427.19449504118603,
+            "position_y": 639.0340195992917,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 743.8587064043339,
+            "position_y": 74.46985558699393,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 664.5847281362139,
+            "position_y": 356.065267781081,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 71.355797272259,
+            "position_y": 634.8228383854021,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 236.86108361381062,
+            "position_y": 252.01360717005238,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 47.870789294667645,
+            "position_y": 421.06010545896913,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 722.5974874643242,
+            "position_y": 614.1009979292592,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 482.4081378071749,
+            "position_y": 353.5895916981,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 172.78756546947375,
+            "position_y": 251.5072718142584,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 192.40212865921558,
+            "position_y": 125.1381511463863,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 763.6067443127945,
+            "position_y": 761.3420476785213,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 346.7772667096598,
+            "position_y": 42.12224887652732,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 20.645795896083545,
+            "position_y": 551.8329631320426,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 813.1515806802873,
+            "position_y": 384.8100020201706,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 149.61707055546245,
+            "position_y": 778.2603331958118,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 175.9425675342739,
+            "position_y": 541.1831339770863,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 537.89288688738,
+            "position_y": 552.3321839950631,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 678.492487007535,
+            "position_y": 390.10970212193496,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 163.02993421388297,
+            "position_y": 474.5680430658664,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 718.1223769740367,
+            "position_y": 248.26721224668572,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 801.4383355764022,
+            "position_y": 482.4326589558406,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 325.3462168024498,
+            "position_y": 334.6189427974413,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 735.2552491014632,
+            "position_y": 620.9768796173997,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 354.77535216158594,
+            "position_y": 133.02843351321752,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 199.65772201671598,
+            "position_y": 585.1714258514749,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 750.9661071195767,
+            "position_y": 100.9643612226252,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 880.0679327506339,
+            "position_y": 249.3748670141278,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "orientation": 0,
+            "position_x": 390.45370763586885,
+            "position_y": 48.21596285039332,
+            "rotation": 1,
+            "speed": 2
+        }
+    ]
+}
