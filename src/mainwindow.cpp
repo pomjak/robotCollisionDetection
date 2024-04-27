@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     setup();
     simulation->printLists();
-    // connect(timer, &QTimer::timeout, this, &Robot::updatePosition);
+    connect(timer, &QTimer::timeout, simulation->getScene().get(), &QGraphicsScene::advance);
 }
 
 void MainWindow::setup()
@@ -21,8 +21,8 @@ void MainWindow::setup()
     ui->graphicsView->setRenderHint(QPainter::Antialiasing);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setFixedSize(SCENE_SIZE, SCENE_SIZE);
-    ui->graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QSizeF(SCENE_SIZE, SCENE_SIZE)));
+    ui->graphicsView->setFixedSize(SCENE_WIDTH, SCENE_HEIGHT);
+    ui->graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QSizeF(SCENE_WIDTH, SCENE_HEIGHT)));
     ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     ui->graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 

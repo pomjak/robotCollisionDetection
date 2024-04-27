@@ -1,9 +1,21 @@
+/**
+ * \file obstacle.h
+ * \brief Obstacle definitions
+ * \author Simon Cagala <xcagal00@stud.fit.vutbr.cz>
+ * \date 2024-04-26
+ **/
+
 #pragma once
 
 #include <QGraphicsItem>
 #include <QtCore>
 #include <QPainter>
 
+
+/**
+ * \brief Stationary obstacle graphical item
+ * \details Used as a wall for the simulation collision detection
+ **/
 class Obstacle : public QGraphicsItem
 {
 private:

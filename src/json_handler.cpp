@@ -5,10 +5,9 @@
 QJsonObject JsonHandler::saveToJson(Robot* robot) const
 {
     QJsonObject json;
-    json["orientation"] = robot->getOrientation();
+    json["orientation"] = robot->rotation();
     json["speed"] = robot->getSpeed();
     json["rotation"] = robot->getRotation();
-    json["size"] = robot->getSize();
     json["position_x"] = robot->pos().x();
     json["position_y"] = robot->pos().y();
     return json;
@@ -68,6 +67,7 @@ void JsonHandler::read(const QJsonObject& json)
 
         for ( const QJsonValue& obsValue : obstaclesArray )
         {
+            DEBUG << "LOADING OBSTACLE";
             QJsonObject obj = obsValue.toObject();
             Obstacle* obst = new Obstacle(obj);
             obstacleList->push_back(obst);
@@ -80,6 +80,7 @@ void JsonHandler::read(const QJsonObject& json)
 
         for ( const QJsonValue& robotValue : robotsArray )
         {
+            DEBUG << "LOADING ROBOT";
             QJsonObject obj = robotValue.toObject();
             Robot* rbt = new Robot(obj);
             robotList->push_back(rbt);
@@ -98,8 +99,8 @@ void JsonHandler::load(const QString& filename)
         WARN << "Couldn't open save file.";
         return;
     }
-    QByteArray saveData;
-    if ( ( saveData = loadFile.readAll() ) == 0 )
+    QByteArray saveData = loadFile.readAll();
+    if ( saveData.size() == 0 )
     {
         QMessageBox::information(nullptr, "File empty!",
                                  loadFile.errorString());

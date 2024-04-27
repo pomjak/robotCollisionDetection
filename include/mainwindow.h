@@ -5,8 +5,8 @@
 #include "json_handler.h"
 #include "simulation.h"
 
-#define SCENE_SIZE 800
-#define VIEW_SIZE 424
+#define SCENE_WIDTH 940
+#define SCENE_HEIGHT 820
 
 QT_BEGIN_NAMESPACE
 namespace Ui
