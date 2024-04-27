@@ -118,6 +118,14 @@ public:
     QRectF boundingRect() const override;
 
     /**
+     * @brief returns bounding rect of object based on new position passed as argument
+     * 
+     * @param newPos new position
+     * @return QRectF bounding rect 
+     */
+    QRectF newBoundingRect(QPointF newPos) const;
+
+    /**
      * \brief
      * \return QPainterPath
      **/
@@ -138,7 +146,7 @@ protected:
     qreal radius() const { return size() / 2; }
 
     /**
-     * \brief Convenience function equvalent to boundingRect.center()
+     * \brief Convenience function equivalent to boundingRect.center()
      * \return QPointF
      **/
     QPointF center() const { return boundingRect().center(); }
@@ -149,8 +157,8 @@ protected:
      **/
     QPointF leftBumper() const
     {
-        return QPointF(center().x() + radius() * ::cos(rotation() - ( M_PI / 2 )),
-                       center().y() + radius() * ::sin(rotation() - ( M_PI / 2 )));
+        return QPointF(center().x() + radius() * ::cos(getAngle() - ( M_PI / 2 )),
+                       center().y() + radius() * ::sin(getAngle() - ( M_PI / 2 )));
     }
 
     /**
@@ -159,8 +167,8 @@ protected:
      **/
     QPointF rightBumper() const
     {
-        return QPointF(center().x() + radius() * ::cos(rotation() + ( M_PI / 2 )),
-                       center().y() + radius() * ::sin(rotation() + ( M_PI / 2 )));
+        return QPointF(center().x() + radius() * ::cos(getAngle() + ( M_PI / 2 )),
+                       center().y() + radius() * ::sin(getAngle() + ( M_PI / 2 )));
     }
 
     /**
@@ -169,10 +177,10 @@ protected:
      **/
     QPointF detectionPoint() const
     {
-        return QPointF(( ( center().x() + radius() * ::cos(rotation()) ) +
-                        ( getDetectDistance() * ::cos(rotation()) ) ),
-                       ( ( center().y() + radius() * ::sin(rotation()) ) +
-                        ( getDetectDistance() * ::sin(rotation()) ) ));
+        return QPointF(( ( center().x() + radius() * ::cos(getAngle()) ) +
+                        ( getDetectDistance() * ::cos(getAngle()) ) ),
+                       ( ( center().y() + radius() * ::sin(getAngle()) ) +
+                        ( getDetectDistance() * ::sin(getAngle()) ) ));
     }
 
     /**

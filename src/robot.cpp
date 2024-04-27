@@ -24,11 +24,18 @@ QRectF Robot::boundingRect() const
 {
     qreal pen_width = 1;
     return QRectF(pos().x() + pen_width / 2, pos().y() + pen_width / 2,
-                  size() + pen_width, size() + pen_width);
+        size() + pen_width, size() + pen_width);
+}
+
+QRectF Robot::newBoundingRect(QPointF newPos) const
+{
+    qreal pen_width = 1;
+    return QRectF(newPos.x() + pen_width / 2, newPos.y() + pen_width / 2,
+        size() + pen_width, size() + pen_width);
 }
 
 void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
-                  QWidget* widget)
+    QWidget* widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
@@ -53,9 +60,9 @@ QPolygonF Robot::detectionArea() const
         << leftBumper()
         << rightBumper()
         << QPointF(( rightBumper().x() + ( getDetectDistance() + radius() ) * ::cos(getAngle()) ),
-                   ( rightBumper().y() + ( getDetectDistance() + radius() ) * ::sin(getAngle()) ))
+            ( rightBumper().y() + ( getDetectDistance() + radius() ) * ::sin(getAngle()) ))
         << QPointF(( leftBumper().x() + ( getDetectDistance() + radius() ) * ::cos(getAngle()) ),
-                   ( leftBumper().y() + ( getDetectDistance() + radius() ) * ::sin(getAngle()) ));
+            ( leftBumper().y() + ( getDetectDistance() + radius() ) * ::sin(getAngle()) ));
 }
 
 void Robot::advance(int phase)
@@ -63,8 +70,8 @@ void Robot::advance(int phase)
     if ( !phase )
         return;
 
-    DEBUG << "X: " << x();
-    DEBUG << "Y: " << y();
+    DEBUG << "X: " << pos().x();
+    DEBUG << "Y: " << pos().y();
     DEBUG << "Rot: " << getAngle();
     /* Move the robot */
     qreal dx = getSpeed() * ::cos(getAngle());
@@ -72,33 +79,30 @@ void Robot::advance(int phase)
     QPointF newPos = pos() + QPointF(dx, dy);
 
 
-    if ( scene()->sceneRect().contains(newPos) )
+    if ( scene()->sceneRect().contains(newBoundingRect(newPos).translated(newPos)) )
     {
         setPos(newPos);
-        return;
     }
     else
     {
-        // Reverse direction if hitting scene boundary
-        setAngle(-getAngle());
+        // Rotate if hitting scene boundary
+        setAngle(getAngle() + getRotation());
         return;
     }
 
 
     const QList<QGraphicsItem*> colliding_items = scene()->items(mapToScene(detectionArea()));
 
-    DEBUG << "Collisions: " << colliding_items.size();
-
-    for ( const QGraphicsItem* item : colliding_items )
+    for(const auto &item : colliding_items)
     {
-        if ( item != this && item->type() == Obstacle::Type )
+        if(item != this)
         {
+            DEBUG << "Collision detected!";
             // Rotate if obstacle detected
             setAngle(getAngle() + getRotation());
-            break;
         }
-
     }
+    
 
 
 }
