@@ -72,8 +72,6 @@ void Simulation::saveLevelLayout()
 
 void Simulation::spawnRobot()
 {
-
-
     QPointF spawnPoint;
     do
     {

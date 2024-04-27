@@ -92,7 +92,7 @@ void Robot::advance(int phase)
     }
     else
     {
-        // Rotate if hitting scene boundary
+        /* Rotate if hitting scene boundary */
         setAngle(getAngle() + getRotation());
         return;
     }

@@ -19,14 +19,21 @@ void MainWindow::setup()
 {
     ui->setupUi(this);
     ui->graphicsView->setScene(simulation->getScene().get());
-    ui->graphicsView->setRenderHint(QPainter::Antialiasing);
+    ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setFixedSize(SCENE_WIDTH, SCENE_HEIGHT);
-    ui->graphicsView->scene()->setSceneRect(QRectF(QPointF(0, 0), QPointF(SCENE_WIDTH, SCENE_HEIGHT)));
+    // ui->graphicsView->setFixedSize(SCENE_WIDTH, SCENE_HEIGHT);
+    ui->graphicsView->scene()->setSceneRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
+    ui->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     // ui->graphicsView->fitInView(ui->graphicsView->scene()->sceneRect(), Qt::KeepAspectRatio);
-    ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    ui->graphicsView->viewport()->update();
+    ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    ui->graphicsView->setCacheMode(QGraphicsView::CacheBackground);
+    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    ui->graphicsView->scale(qreal(0.8), qreal(0.8));
+
+    ui->graphicsView->setWindowTitle(tr("ICP - 24"));
 }
 
 void MainWindow::connect_buttons()
