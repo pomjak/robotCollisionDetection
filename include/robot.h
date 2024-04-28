@@ -2,6 +2,7 @@
  * \file robot.h
  * \brief
  * \author Simon Cagala <xcagal00@stud.fit.vutbr.cz>
+ * \author Pomsar Jakub (xpomsa00@stud.fit.vutbr.cz)
  * \date 2024-04-26
  **/
 
@@ -15,7 +16,7 @@
 #include <QTransform>
 #include <QtCore>
 
-#define DEF_ROBOT_SIZE  50.0
+#define DEF_ROBOT_SIZE  50.0    /* Default robot parameters */
 #define DEF_DETECT_DIST 25.0
 #define DEF_ROTATE_BY   0.1
 #define DEF_SPEED       2.0
