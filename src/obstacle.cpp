@@ -10,6 +10,7 @@ Obstacle::Obstacle(QPointF _position, double _size, double _angle)
     : size(_size)
 {
     setPos(_position);
+    /* find center and rotate if needed */
     setTransformOriginPoint(boundingRect().center());
     setRotation(_angle);
 }
@@ -20,6 +21,7 @@ Obstacle::Obstacle(QJsonObject &json)
     double pos_x = json["position_x"].toDouble();
     double pos_y = json["position_y"].toDouble();
     this->setPos(pos_x, pos_y);
+    /* find center and rotate if needed */
     setTransformOriginPoint(boundingRect().center());
     setRotation(json["orientation"].toInt());
 }
