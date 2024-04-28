@@ -88,6 +88,22 @@ void Robot::advance(int phase)
     /* check if new bound rect is still in scene */
     if ( scene()->sceneRect().contains(newBoundingRect(newPos).translated(newPos)) )
     {
+        /* get all objects in danger area */
+        const QList<QGraphicsItem *> colliding_items = scene ()->items (
+            mapToScene (detectionArea ()), Qt::IntersectsItemShape);
+
+        for (const auto &item : colliding_items)
+        {
+            /* ignore itself */
+            if (item != this)
+            {
+                DEBUG << "Collision detected!";
+                // Rotate if obstacle detected
+                setAngle (getAngle () + getRotation ());
+                return;
+            }
+        }
+
         setPos(newPos);
     }
     else
@@ -95,20 +111,6 @@ void Robot::advance(int phase)
         /* Rotate if hitting scene boundary */
         setAngle(getAngle() + getRotation());
         return;
-    }
-
-    /* get all objects in danger area */
-    const QList<QGraphicsItem*> colliding_items = scene()->items(mapToScene(detectionArea()), Qt::IntersectsItemShape);
-
-    for(const auto &item : colliding_items)
-    {
-        /* ignore itself */
-        if(item != this)
-        {
-            DEBUG << "Collision detected!";
-            // Rotate if obstacle detected
-            setAngle(getAngle() + getRotation());
-        }
     }
     
 

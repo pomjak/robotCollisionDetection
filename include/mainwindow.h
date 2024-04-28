@@ -7,7 +7,7 @@
 
 #define SCENE_WIDTH 940
 #define SCENE_HEIGHT 820
-#define MSEC 1000/33
+#define MSEC 1000/60
 
 QT_BEGIN_NAMESPACE
 namespace Ui
