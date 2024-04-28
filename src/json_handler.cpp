@@ -4,6 +4,7 @@
 QJsonObject JsonHandler::saveToJson(Robot *robot) const
 {
     QJsonObject json;
+    /* save parameters to json object */
     json["orientation"]    = robot->getAngle();
     json["speed"]          = robot->getSpeed();
     json["rotation"]       = robot->getRotation();
@@ -16,6 +17,7 @@ QJsonObject JsonHandler::saveToJson(Robot *robot) const
 QJsonObject JsonHandler::saveToJson(Obstacle *obs) const
 {
     QJsonObject json;
+    /* save parameters to json object */
     json["size"]        = obs->getSize();
     json["position_x"]  = obs->pos().x();
     json["position_y"]  = obs->pos().y();
@@ -27,6 +29,7 @@ QJsonObject JsonHandler::saveToJson(Obstacle *obs) const
 QJsonObject JsonHandler::getJsonObjects()
 {
     QJsonArray obstacles;
+    /* insert all obstacle objects into an array */
     for ( const auto &obs : *obstacleList )
     {
         obstacles.append(saveToJson(obs));
@@ -36,6 +39,7 @@ QJsonObject JsonHandler::getJsonObjects()
     json["obstacles"] = obstacles;
 
     QJsonArray robots;
+    /* insert all obstacle robot into an array */
     for ( const auto &robot : *robotList )
     {
         robots.append(saveToJson(robot));
@@ -63,10 +67,11 @@ void JsonHandler::save(const QString &filename)
 
 void JsonHandler::read(const QJsonObject &json)
 {
+    /* check if obstacles are present in file */
     if ( json.contains("obstacles") && json["obstacles"].isArray() )
     {
         QJsonArray obstaclesArray = json["obstacles"].toArray();
-
+        /* create obstacles from an array */
         for ( const QJsonValue &obsValue : obstaclesArray )
         {
             DEBUG << "LOADING OBSTACLE";
@@ -76,10 +81,12 @@ void JsonHandler::read(const QJsonObject &json)
         }
     }
 
+    /* check if robots are present in file */
     if ( json.contains("robots") && json["robots"].isArray() )
     {
         QJsonArray robotsArray = json["robots"].toArray();
 
+        /* create robots from an array */
         for ( const QJsonValue &robotValue : robotsArray )
         {
             DEBUG << "LOADING ROBOT";
