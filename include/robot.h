@@ -139,7 +139,6 @@ public:
      **/
     QPainterPath shape() const override;
 
-protected:
     /**
      * \brief Called by GraphicsScene::advance slot; animates the object
      * \param phase advance is called twice, once with phase 0, indicating items

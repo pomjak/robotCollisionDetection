@@ -6,12 +6,12 @@
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), simulation(new Simulation)
 {
-    QTimer* timer = new QTimer(this);
-    timer->start(1000 / 33);
 
     setup();
     connect_buttons();
+
     connect(timer, &QTimer::timeout, simulation->getScene().get(), &QGraphicsScene::advance);
+    
 
 }
 
@@ -44,7 +44,25 @@ void MainWindow::connect_buttons()
     connect(ui->addObstacleButton, &QPushButton::clicked, simulation, &Simulation::spawnObstacle);
     connect(ui->deleteObjectButton, &QPushButton::clicked, simulation, &Simulation::deleteObject);
     connect(ui->deleteAllButton, &QPushButton::clicked, simulation, &Simulation::purgeScene);
+    connect(ui->StartStopSimulationButton, &QPushButton::clicked, this, &MainWindow::toggleTimer);
 }
+
+void MainWindow::toggleTimer()
+{
+    if (simulation->getState() == State::RUNNING)
+    {
+        timer->stop();
+        simulation->setState(State::STOPPED);
+        INFO << "Simulation stopped";
+    }
+    else
+    {
+        timer->start(MSEC);
+        simulation->setState(State::RUNNING);
+        INFO << "Simulation running";
+    }
+}
+
 
 MainWindow::~MainWindow()
 {

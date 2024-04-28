@@ -10,11 +10,13 @@
 #include "json_handler.h"
 
 using std::shared_ptr;
+enum State {RUNNING,STOPPED};
 
 class Simulation : public QObject
 {
     Q_OBJECT
 private:
+    State state;
     QList<Robot*> robotList;
     QList<Obstacle*> obstacleList;
     shared_ptr<QGraphicsScene> scene;
@@ -31,6 +33,8 @@ public:
     void addObstacle(Obstacle* obstacle) { obstacleList.push_back(obstacle); }
     void printLists();
     shared_ptr<QGraphicsScene> getScene() const { return scene; }
+    State getState() const {return state;}
+    void setState(State _state) {state = _state;}
 
 public slots:
     void loadLevelLayout();

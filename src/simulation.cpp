@@ -4,7 +4,8 @@
 
 using std::shared_ptr, std::make_shared;
 
-Simulation::Simulation() : scene(make_shared<QGraphicsScene>(new QGraphicsScene)), json(&robotList, &obstacleList), time(0.0)
+Simulation::Simulation() : scene(make_shared<QGraphicsScene>(new QGraphicsScene)), 
+                            json(&robotList, &obstacleList), time(0.0), state{State::STOPPED}
 {}
 
 void Simulation::printLists()
