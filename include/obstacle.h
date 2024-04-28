@@ -27,7 +27,7 @@ class Obstacle : public QGraphicsItem
         : size(DEF_OBSTACLE_SIZE)
     {}
     Obstacle(QPointF _position);
-    Obstacle(QPointF _position, double _size);
+    Obstacle(QPointF _position, double _size, double _angle);
     Obstacle(QJsonObject &json);
     ~Obstacle() {}
     double getSize() const { return size; }

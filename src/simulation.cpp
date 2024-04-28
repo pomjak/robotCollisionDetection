@@ -77,13 +77,21 @@ void Simulation::saveLevelLayout()
 void Simulation::spawnObject(ObjectType type)
 {
     qreal defaultSize;
+    qreal rotateByDegree;
 
-    if ( type == ObjectType::ROBOT )
+        if ( type == ObjectType::ROBOT )
+    {
         defaultSize = DEF_ROBOT_SIZE;
+    }
 
     else if ( type == ObjectType::OBSTACLE )
+    {
         defaultSize =
             QRandomGenerator::global()->bounded(50, DEF_OBSTACLE_SIZE);
+
+        rotateByDegree =
+            QRandomGenerator::global()->bounded(90);
+    }
 
     QPointF spawnPoint;
     QSizeF  objectSize;
@@ -113,10 +121,11 @@ void Simulation::spawnObject(ObjectType type)
     }
     else if ( type == ObjectType::OBSTACLE )
     {
-        Obstacle *obstacle = new Obstacle(spawnPoint, defaultSize);
+        Obstacle *obstacle =
+            new Obstacle(spawnPoint, defaultSize, rotateByDegree);
         addObstacle(obstacle);
-        INFO << "Obstacle SPAWNED at" << spawnPoint << "size of"
-             << defaultSize;
+        INFO << "Obstacle SPAWNED at" << spawnPoint << "size:" << defaultSize
+             << "rot" << rotateByDegree;
     }
 }
 
