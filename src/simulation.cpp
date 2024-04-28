@@ -101,6 +101,30 @@ void Simulation::spawnRobot()
 }
 void Simulation::spawnObstacle()
 {
+    QPointF spawnPoint;
+    do
+    {
+        spawnPoint = { QRandomGenerator::global()->bounded(VIEW_WIDTH),
+                        QRandomGenerator::global()->bounded(VIEW_HEIGHT) };
+
+        QSizeF obstacleSize(DEF_OBSTACLE_SIZE, DEF_OBSTACLE_SIZE);
+        QRectF spawnArea(spawnPoint, obstacleSize);
+
+        /* Check if there are any items at the spawn point */
+        QList<QGraphicsItem*> itemsAtSpawnPoint = scene->items(spawnArea);
+
+        /* If there are no items at the spawn point, exit the loop */
+        if ( itemsAtSpawnPoint.isEmpty() )
+            break;
+
+    }
+    while ( true );
+
+    Obstacle* obstacle = new Obstacle(spawnPoint);
+    addObstacle(obstacle);
+    scene->addItem(obstacle);
+
+    INFO << "Obsatcle SPAWNED at" << spawnPoint;
     return;
 }
 void Simulation::deleteObject()

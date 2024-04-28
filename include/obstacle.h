@@ -16,13 +16,16 @@
  * \brief Stationary obstacle graphical item
  * \details Used as a wall for the simulation collision detection
  **/
+
+#define DEF_OBSTACLE_SIZE 100.0
 class Obstacle : public QGraphicsItem
 {
 private:
     double size;
 
 public:
-    Obstacle() : size(20) {}
+    Obstacle() : size(DEF_OBSTACLE_SIZE) {}
+    Obstacle(QPointF _position);
     Obstacle(double _size) : size(_size) {}
     Obstacle(QJsonObject& json);
     ~Obstacle() {}

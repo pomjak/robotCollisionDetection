@@ -1,5 +1,10 @@
 #include "obstacle.h"
 
+Obstacle::Obstacle(QPointF _position) : size(DEF_OBSTACLE_SIZE)
+{
+    setPos(_position);
+}
+
 Obstacle::Obstacle(QJsonObject& json)
     :size(json["size"].toDouble())
 {

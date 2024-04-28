@@ -1,0 +1,317 @@
+{
+    "obstacles": [
+        {
+            "position_x": 323.67813377739543,
+            "position_y": 207.89414543969696,
+            "size": 100
+        },
+        {
+            "position_x": 213.5446892761809,
+            "position_y": 30.111227959731536,
+            "size": 100
+        },
+        {
+            "position_x": 10.634397410905386,
+            "position_y": 258.07806958967467,
+            "size": 100
+        },
+        {
+            "position_x": 176.75003212207054,
+            "position_y": 68.98665890562366,
+            "size": 100
+        },
+        {
+            "position_x": 295.3877013358345,
+            "position_y": 16.887832541090503,
+            "size": 100
+        },
+        {
+            "position_x": 176.4256851274264,
+            "position_y": 232.2269626274309,
+            "size": 100
+        },
+        {
+            "position_x": 11.783650442330844,
+            "position_y": 155.39307514521158,
+            "size": 100
+        },
+        {
+            "position_x": 42.65871067730374,
+            "position_y": 19.63497021762359,
+            "size": 100
+        },
+        {
+            "position_x": 237.41689547545752,
+            "position_y": 119.50457459034773,
+            "size": 100
+        },
+        {
+            "position_x": 185.8832574533915,
+            "position_y": 355.61908862785873,
+            "size": 100
+        },
+        {
+            "position_x": 201.8366336239134,
+            "position_y": 234.73291343243207,
+            "size": 100
+        },
+        {
+            "position_x": 204.94060250851942,
+            "position_y": 10.19551885447271,
+            "size": 100
+        },
+        {
+            "position_x": 399.1116635325912,
+            "position_y": 363.42876250976053,
+            "size": 100
+        },
+        {
+            "position_x": 61.0732201582017,
+            "position_y": 142.4414372116261,
+            "size": 100
+        },
+        {
+            "position_x": 322.19829293457326,
+            "position_y": 263.1587436259517,
+            "size": 100
+        },
+        {
+            "position_x": 389.6724810040306,
+            "position_y": 358.5927916343233,
+            "size": 100
+        },
+        {
+            "position_x": 365.16865526292094,
+            "position_y": 255.88006493173296,
+            "size": 100
+        },
+        {
+            "position_x": 144.23073450064646,
+            "position_y": 183.3001966498668,
+            "size": 100
+        },
+        {
+            "position_x": 106.60132090354467,
+            "position_y": 171.2785499553238,
+            "size": 100
+        },
+        {
+            "position_x": 201.9591917271869,
+            "position_y": 94.05762661081657,
+            "size": 100
+        },
+        {
+            "position_x": 255.1951576393676,
+            "position_y": 31.739767120552386,
+            "size": 100
+        },
+        {
+            "position_x": 209.72420609673716,
+            "position_y": 167.96295649164136,
+            "size": 100
+        },
+        {
+            "position_x": 225.24966873649427,
+            "position_y": 75.52320161550267,
+            "size": 100
+        },
+        {
+            "position_x": 59.734873815293916,
+            "position_y": 165.38579127914352,
+            "size": 100
+        },
+        {
+            "position_x": 119.77105844968315,
+            "position_y": 160.86105264291166,
+            "size": 100
+        },
+        {
+            "position_x": 130.15019206900922,
+            "position_y": 177.37254973878424,
+            "size": 100
+        },
+        {
+            "position_x": 4.094036190712952,
+            "position_y": 155.62197562513103,
+            "size": 100
+        }
+    ],
+    "robots": [
+        {
+            "detection_dist": 25,
+            "orientation": 115,
+            "position_x": 13.294633708331766,
+            "position_y": 73.32848879328958,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 131,
+            "position_x": 28.060825315219823,
+            "position_y": 93.22645077823141,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 64,
+            "position_x": 148.4395922615242,
+            "position_y": 346.1818702937671,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 51,
+            "position_x": 439.53941709465903,
+            "position_y": 81.97180708831581,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 1849,
+            "position_x": 407.65131588328865,
+            "position_y": 381.4157657519082,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 81,
+            "position_x": 305.67730730535334,
+            "position_y": 116.68075768067905,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 770,
+            "position_x": 308.81159812215833,
+            "position_y": 158.23935518502583,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 46,
+            "position_x": 430.71720212472917,
+            "position_y": 174.99262795101475,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 109,
+            "position_x": 268.607536204465,
+            "position_y": 271.8359935455174,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 193,
+            "position_x": 106.50794266424688,
+            "position_y": 267.1828525568216,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 64,
+            "position_x": 79.21914782154597,
+            "position_y": 301.1835499458134,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 53,
+            "position_x": 390.2971490349371,
+            "position_y": 134.5589421147106,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 236,
+            "position_x": 150.75999205424694,
+            "position_y": 120.22734452431072,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 748,
+            "position_x": 316.3864481833689,
+            "position_y": 78.26869221133325,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 60,
+            "position_x": 409.1294687008913,
+            "position_y": 24.5714162620705,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 961,
+            "position_x": 319.57572565838336,
+            "position_y": 0.665222445022186,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 892,
+            "position_x": 120.52087264943911,
+            "position_y": 34.53821715686893,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 758,
+            "position_x": 374.36711891240867,
+            "position_y": 187.39987518048636,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 49,
+            "position_x": 437.98625560095945,
+            "position_y": 258.5035303486786,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 78,
+            "position_x": 112.67207661652509,
+            "position_y": 5.411461650634049,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 107,
+            "position_x": 82.37015206002968,
+            "position_y": 89.22454016067968,
+            "rotation": 1,
+            "speed": 2
+        },
+        {
+            "detection_dist": 25,
+            "orientation": 1021,
+            "position_x": 271.2874158186181,
+            "position_y": 2.310030727652668,
+            "rotation": 1,
+            "speed": 2
+        }
+    ]
+}
