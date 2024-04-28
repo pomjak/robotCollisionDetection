@@ -26,7 +26,7 @@ private:
 public:
     Obstacle() : size(DEF_OBSTACLE_SIZE) {}
     Obstacle(QPointF _position);
-    Obstacle(double _size) : size(_size) {}
+    Obstacle (QPointF _position, double _size);
     Obstacle(QJsonObject& json);
     ~Obstacle() {}
     double getSize() const { return size; }

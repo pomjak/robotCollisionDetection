@@ -79,8 +79,7 @@ void Simulation::spawnObject(ObjectType type)
         defaultSize = DEF_ROBOT_SIZE;
     
     else if ( type == ObjectType::OBSTACLE )
-        defaultSize = DEF_OBSTACLE_SIZE;
-    
+        defaultSize = QRandomGenerator::global ()->bounded (50, DEF_OBSTACLE_SIZE);
 
     QPointF spawnPoint;
     QSizeF objectSize;
@@ -112,9 +111,9 @@ void Simulation::spawnObject(ObjectType type)
     }
     else if ( type == ObjectType::OBSTACLE )
     {
-        Obstacle* obstacle = new Obstacle(spawnPoint);
+        Obstacle* obstacle = new Obstacle(spawnPoint,defaultSize);
         addObstacle(obstacle);
-        INFO << "Obstacle SPAWNED at" << spawnPoint;
+        INFO << "Obstacle SPAWNED at" << spawnPoint << "size of" << defaultSize;
     }
 }
 
