@@ -92,9 +92,10 @@ void Simulation::spawnObject(ObjectType type)
         objectSize.setWidth(defaultSize);
         objectSize.setHeight(defaultSize);
         QRectF spawnArea(spawnPoint, objectSize);
+        QRectF sceneSpawnArea = spawnArea.translated(spawnPoint);
 
         /* Check if there are any items at the spawn point */
-        QList<QGraphicsItem*> itemsAtSpawnPoint = scene->items(spawnArea, Qt::IntersectsItemShape);
+        QList<QGraphicsItem*> itemsAtSpawnPoint = scene->items(sceneSpawnArea, Qt::IntersectsItemShape);
 
         /* If there are no items at the spawn point, exit the loop */
         if ( itemsAtSpawnPoint.isEmpty() )
