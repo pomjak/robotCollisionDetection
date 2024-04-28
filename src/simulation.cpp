@@ -76,8 +76,8 @@ void Simulation::spawnRobot()
     QPointF spawnPoint;
     do
     {
-        spawnPoint = { QRandomGenerator::global()->bounded(scene->sceneRect().width()),
-                        QRandomGenerator::global()->bounded(scene->sceneRect().height()) };
+        spawnPoint = { QRandomGenerator::global()->bounded(VIEW_WIDTH),
+                        QRandomGenerator::global()->bounded(VIEW_HEIGHT) };
 
         QSizeF robotSize(DEF_ROBOT_SIZE, DEF_ROBOT_SIZE);
         QRectF spawnArea(spawnPoint, robotSize);

@@ -9,6 +9,9 @@
 #include "debug.h"
 #include "json_handler.h"
 
+#define VIEW_WIDTH 444.0
+#define VIEW_HEIGHT 384.0
+
 using std::shared_ptr;
 enum State {RUNNING,STOPPED};
 
@@ -22,7 +25,7 @@ private:
     JsonHandler json;
     double time;
     State state;
-    
+
 
 public:
     Simulation();
