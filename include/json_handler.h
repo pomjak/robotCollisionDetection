@@ -1,31 +1,31 @@
 #pragma once
 
-#include <QtCore>
 #include <QList>
+#include <QtCore>
 
-#include "robot.h"
-#include "obstacle.h"
 #include "debug.h"
+#include "obstacle.h"
+#include "robot.h"
 class JsonHandler
 {
-private:
-    QList<Robot*>* robotList;
-    QList<Obstacle*>* obstacleList;
+  private:
+    QList<Robot *>    *robotList;
+    QList<Obstacle *> *obstacleList;
 
-    QJsonObject saveToJson(Robot* _) const;
-    QJsonObject saveToJson(Obstacle* _) const;
+    QJsonObject saveToJson(Robot *_) const;
+    QJsonObject saveToJson(Obstacle *_) const;
     QJsonObject getJsonObjects();
-    void read(const QJsonObject& json);
-    void addRobot(Robot* robot) { robotList->push_back(robot); }
-    void addObstacle(Obstacle* obstacle) { obstacleList->push_back(obstacle); }
+    void        read(const QJsonObject &json);
+    void        addRobot(Robot *robot) { robotList->push_back(robot); }
+    void addObstacle(Obstacle *obstacle) { obstacleList->push_back(obstacle); }
 
-
-public:
-    JsonHandler(QList<Robot*>* _rList, QList<Obstacle*>* _oList)
-        : robotList(_rList), obstacleList(_oList)
+  public:
+    JsonHandler(QList<Robot *> *_rList, QList<Obstacle *> *_oList)
+        : robotList(_rList)
+        , obstacleList(_oList)
     {}
     ~JsonHandler() {}
 
-    void save(const QString& filename);
-    void load(const QString& filename);
+    void save(const QString &filename);
+    void load(const QString &filename);
 };

@@ -1,18 +1,18 @@
 #pragma once
+#include "json_handler.h"
+#include "simulation.h"
 #include <QMainWindow>
 #include <QTimer>
 #include <memory>
-#include "json_handler.h"
-#include "simulation.h"
 
-#define SCENE_WIDTH 940
+#define SCENE_WIDTH  940
 #define SCENE_HEIGHT 820
-#define MSEC 1000/60
+#define MSEC         1000 / 60
 
 QT_BEGIN_NAMESPACE
 namespace Ui
 {
-    class MainWindow;
+class MainWindow;
 }
 QT_END_NAMESPACE
 
@@ -20,18 +20,18 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-public:
-    MainWindow(QWidget* parent = nullptr);
+  public:
+    MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void setup();
-    void connect_buttons();
-    QTimer* timer = new QTimer(this);
 
-private:
-    Ui::MainWindow* ui;
-    Simulation* simulation;
+    void    setup();
+    void    connect_buttons();
+    QTimer *timer = new QTimer(this);
 
-public slots:
+  private:
+    Ui::MainWindow *ui;
+    Simulation     *simulation;
+
+  public slots:
     void toggleTimer();
-
 };

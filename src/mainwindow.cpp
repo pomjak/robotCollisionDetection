@@ -2,30 +2,32 @@
 #include "ui_mainwindow.h"
 #include <QPushButton>
 
-
-MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), simulation(new Simulation)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+    , simulation(new Simulation)
 {
 
     setup();
     connect_buttons();
 
-    connect(timer, &QTimer::timeout, simulation->getScene().get(), &QGraphicsScene::advance);
-    
-
+    connect(timer, &QTimer::timeout, simulation->getScene().get(),
+            &QGraphicsScene::advance);
 }
 
 void MainWindow::setup()
 {
     ui->setupUi(this);
     ui->graphicsView->setScene(simulation->getScene().get());
-    ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
+    ui->graphicsView->setRenderHints(QPainter::Antialiasing |
+                                     QPainter::TextAntialiasing);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     // ui->graphicsView->setFixedSize(SCENE_WIDTH, SCENE_HEIGHT);
     ui->graphicsView->scene()->setSceneRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
     ui->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    // ui->graphicsView->fitInView(ui->graphicsView->scene()->sceneRect(), Qt::KeepAspectRatio);
+    // ui->graphicsView->fitInView(ui->graphicsView->scene()->sceneRect(),
+    // Qt::KeepAspectRatio);
     ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     ui->graphicsView->viewport()->update();
     ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -38,18 +40,25 @@ void MainWindow::setup()
 void MainWindow::connect_buttons()
 {
     /* Buttons */
-    connect(ui->importButton, &QPushButton::clicked, simulation, &Simulation::loadLevelLayout);
-    connect(ui->exportButton, &QPushButton::clicked, simulation, &Simulation::saveLevelLayout);
-    connect(ui->addRobotButton, &QPushButton::clicked, simulation, &Simulation::spawnRobot);
-    connect(ui->addObstacleButton, &QPushButton::clicked, simulation, &Simulation::spawnObstacle);
-    connect(ui->deleteObjectButton, &QPushButton::clicked, simulation, &Simulation::deleteObject);
-    connect(ui->deleteAllButton, &QPushButton::clicked, simulation, &Simulation::purgeScene);
-    connect(ui->StartStopSimulationButton, &QPushButton::clicked, this, &MainWindow::toggleTimer);
+    connect(ui->importButton, &QPushButton::clicked, simulation,
+            &Simulation::loadLevelLayout);
+    connect(ui->exportButton, &QPushButton::clicked, simulation,
+            &Simulation::saveLevelLayout);
+    connect(ui->addRobotButton, &QPushButton::clicked, simulation,
+            &Simulation::spawnRobot);
+    connect(ui->addObstacleButton, &QPushButton::clicked, simulation,
+            &Simulation::spawnObstacle);
+    connect(ui->deleteObjectButton, &QPushButton::clicked, simulation,
+            &Simulation::deleteObject);
+    connect(ui->deleteAllButton, &QPushButton::clicked, simulation,
+            &Simulation::purgeScene);
+    connect(ui->StartStopSimulationButton, &QPushButton::clicked, this,
+            &MainWindow::toggleTimer);
 }
 
 void MainWindow::toggleTimer()
 {
-    if (simulation->getState() == State::RUNNING)
+    if ( simulation->getState() == State::RUNNING )
     {
         timer->stop();
         simulation->setState(State::STOPPED);
@@ -63,11 +72,8 @@ void MainWindow::toggleTimer()
     }
 }
 
-
 MainWindow::~MainWindow()
 {
     delete simulation;
     delete ui;
 }
-
-

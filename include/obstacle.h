@@ -8,9 +8,8 @@
 #pragma once
 
 #include <QGraphicsItem>
-#include <QtCore>
 #include <QPainter>
-
+#include <QtCore>
 
 /**
  * \brief Stationary obstacle graphical item
@@ -20,19 +19,22 @@
 #define DEF_OBSTACLE_SIZE 100.0
 class Obstacle : public QGraphicsItem
 {
-private:
+  private:
     double size;
 
-public:
-    Obstacle() : size(DEF_OBSTACLE_SIZE) {}
+  public:
+    Obstacle()
+        : size(DEF_OBSTACLE_SIZE)
+    {}
     Obstacle(QPointF _position);
-    Obstacle (QPointF _position, double _size);
-    Obstacle(QJsonObject& json);
+    Obstacle(QPointF _position, double _size);
+    Obstacle(QJsonObject &json);
     ~Obstacle() {}
     double getSize() const { return size; }
 
     void setSize(double _size) { size = _size; }
 
     QRectF boundingRect() const override;
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
+    void   paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                 QWidget *widget) override;
 };

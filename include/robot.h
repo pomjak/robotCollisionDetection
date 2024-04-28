@@ -15,26 +15,29 @@
 #include <QTransform>
 #include <QtCore>
 
-#define DEF_ROBOT_SIZE 50.0
+#define DEF_ROBOT_SIZE  50.0
 #define DEF_DETECT_DIST 25.0
-#define DEF_ROTATE_BY 0.1
-#define DEF_SPEED 2.0
+#define DEF_ROTATE_BY   0.1
+#define DEF_SPEED       2.0
 
- /**
-  * \brief A graphical item to use in the main scene and perform collision
-  * detection on
-  */
-class Robot : public QObject, public QGraphicsItem
+/**
+ * \brief A graphical item to use in the main scene and perform collision
+ * detection on
+ */
+class Robot
+    : public QObject
+    , public QGraphicsItem
 {
     Q_OBJECT
-private:
+  private:
     double m_size;           /// Size of the robot (diameter)
     double m_angle;          /// Current angle of the robot
     double m_speed;          /// Speed of the robot
     double m_rotate_by;      /// Angle to rotate by when detecting a collision
-    double m_detection_dist; /// Maximum distance from the robot to detect collisions
+    double m_detection_dist; /// Maximum distance from the robot to detect
+                             /// collisions
 
-public:
+  public:
     /**
      * \brief Create a new robot
      **/
@@ -44,15 +47,16 @@ public:
      * \brief Create a new robot
      * \param _angle default angle of the robot
      * \param _speed default speed of the robot
-     * \param _rotate default angle to rotate by in case of a detected collision
-     * \param _detect Maximum distance from the robot at which collision is
-     *detected
+     * \param _rotate default angle to rotate by in case of a detected
+     *collision
+     * \param _detect Maximum distance from the robot at which
+     *collision is detected
      **/
     Robot(double _angle, double _speed, double _rotate, double _dist);
 
     /**
      * @brief Construct a new Robot
-     * 
+     *
      * @param _position initial position
      */
     Robot(QPointF _position);
@@ -61,12 +65,12 @@ public:
      * \brief Construct a new Robot object
      * \param json
      **/
-    Robot(QJsonObject& json);
+    Robot(QJsonObject &json);
 
     /**
      * \brief Destroy the \c Robot
      **/
-    ~Robot() {};
+    ~Robot(){};
 
     /**
      * \brief
@@ -116,17 +120,18 @@ public:
      * \param option
      * \param widget
      **/
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
-        QWidget* widget) override;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+               QWidget *widget) override;
 
-/**
- * \brief
- * \return QRectF
- **/
+    /**
+     * \brief
+     * \return QRectF
+     **/
     QRectF boundingRect() const override;
 
     /**
-     * @brief returns bounding rect of object based on new position passed as argument
+     * @brief returns bounding rect of object based on new position passed as
+     * argument
      *
      * @param newPos new position
      * @return QRectF bounding rect
@@ -141,8 +146,8 @@ public:
 
     /**
      * \brief Called by GraphicsScene::advance slot; animates the object
-     * \param phase advance is called twice, once with phase 0, indicating items
-     * are about to advance, then with phase 1 to actually advance them
+     * \param phase advance is called twice, once with phase 0, indicating
+     *items are about to advance, then with phase 1 to actually advance them
      **/
     void advance(int phase) override;
 
@@ -164,8 +169,9 @@ public:
      **/
     QPointF leftBumper() const
     {
-        return QPointF(center().x() + radius() * ::cos(getAngle() - ( M_PI / 2 )),
-            center().y() + radius() * ::sin(getAngle() - ( M_PI / 2 )));
+        return QPointF(
+            center().x() + radius() * ::cos(getAngle() - (M_PI / 2)),
+            center().y() + radius() * ::sin(getAngle() - (M_PI / 2)));
     }
 
     /**
@@ -174,8 +180,9 @@ public:
      **/
     QPointF rightBumper() const
     {
-        return QPointF(center().x() + radius() * ::cos(getAngle() + ( M_PI / 2 )),
-            center().y() + radius() * ::sin(getAngle() + ( M_PI / 2 )));
+        return QPointF(
+            center().x() + radius() * ::cos(getAngle() + (M_PI / 2)),
+            center().y() + radius() * ::sin(getAngle() + (M_PI / 2)));
     }
 
     /**
@@ -184,10 +191,10 @@ public:
      **/
     QPointF detectionPoint() const
     {
-        return QPointF(( ( center().x() + radius() * ::cos(getAngle()) ) +
-            ( getDetectDistance() * ::cos(getAngle()) ) ),
-            ( ( center().y() + radius() * ::sin(getAngle()) ) +
-                ( getDetectDistance() * ::sin(getAngle()) ) ));
+        return QPointF(((center().x() + radius() * ::cos(getAngle())) +
+                        (getDetectDistance() * ::cos(getAngle()))),
+                       ((center().y() + radius() * ::sin(getAngle())) +
+                        (getDetectDistance() * ::sin(getAngle()))));
     }
 
     /**
