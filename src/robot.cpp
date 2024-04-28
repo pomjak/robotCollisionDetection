@@ -2,9 +2,16 @@
 
 Robot::Robot()
     : QObject(), QGraphicsItem(), m_size(DEF_ROBOT_SIZE),
-    m_speed(0), m_rotate_by(DEF_ROTATE_BY), m_detection_dist(DEF_DETECT_DIST)
+    m_speed(DEF_SPEED), m_rotate_by(DEF_ROTATE_BY), m_detection_dist(DEF_DETECT_DIST)
 {
     setPos(0, 0);
+};
+
+Robot::Robot(QPointF _position)
+    : QObject(), QGraphicsItem(), m_size(DEF_ROBOT_SIZE),
+    m_speed(DEF_SPEED), m_rotate_by(DEF_ROTATE_BY), m_detection_dist(DEF_DETECT_DIST)
+{
+    setPos(_position);
 };
 
 Robot::Robot(QJsonObject& json)
@@ -43,7 +50,7 @@ void Robot::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
     painter->drawEllipse(boundingRect());
     painter->setPen(Qt::green);
     painter->drawPolygon(detectionArea());
-    painter->setPen(Qt::white);
+    painter->setPen(Qt::black);
     painter->drawLine(center(), detectionPoint());
 }
 
@@ -70,9 +77,9 @@ void Robot::advance(int phase)
     if ( !phase )
         return;
 
-    DEBUG << "X: " << pos().x();
-    DEBUG << "Y: " << pos().y();
-    DEBUG << "Rot: " << getAngle();
+    // DEBUG << "X: " << pos().x();
+    // DEBUG << "Y: " << pos().y();
+    // DEBUG << "Rot: " << getAngle();
     /* Move the robot */
     qreal dx = getSpeed() * ::cos(getAngle());
     qreal dy = getSpeed() * ::sin(getAngle());
@@ -85,13 +92,13 @@ void Robot::advance(int phase)
     }
     else
     {
-        // Rotate if hitting scene boundary
+        /* Rotate if hitting scene boundary */
         setAngle(getAngle() + getRotation());
         return;
     }
 
     /* get all objects in danger area */
-    const QList<QGraphicsItem*> colliding_items = scene()->items(mapToScene(detectionArea()));
+    const QList<QGraphicsItem*> colliding_items = scene()->items(mapToScene(detectionArea()), Qt::IntersectsItemShape);
 
     for(const auto &item : colliding_items)
     {

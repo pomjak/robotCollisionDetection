@@ -34,6 +34,7 @@ run: all
 
 debug: all
 	./$(TARGET_DEBUG)
+	rm -rf $(BUILD_DIR)/
 
 doxygen: cleandoc
 	doxygen doc/Doxyfile

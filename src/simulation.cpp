@@ -4,7 +4,8 @@
 
 using std::shared_ptr, std::make_shared;
 
-Simulation::Simulation() : scene(make_shared<QGraphicsScene>(new QGraphicsScene)), json(&robotList, &obstacleList), time(0.0)
+Simulation::Simulation() : scene(make_shared<QGraphicsScene>(new QGraphicsScene)),
+json(&robotList, &obstacleList), time(0.0), state{ State::STOPPED }
 {}
 
 void Simulation::printLists()
@@ -36,6 +37,8 @@ void Simulation::loadLevelLayout()
     else
     {
         scene->clear();
+        robotList.clear();
+        obstacleList.clear();
         json.load(fname);
         int i = 0;
         for ( auto& obj : robotList )
@@ -66,4 +69,75 @@ void Simulation::saveLevelLayout()
     {
         json.save(fname);
     }
+}
+
+void Simulation::spawnObject(ObjectType type)
+{
+    qreal defaultSize;
+
+    if ( type == ObjectType::ROBOT )
+        defaultSize = DEF_ROBOT_SIZE;
+    
+    else if ( type == ObjectType::OBSTACLE )
+        defaultSize = DEF_OBSTACLE_SIZE;
+    
+
+    QPointF spawnPoint;
+    QSizeF objectSize;
+    do
+    {
+        spawnPoint = { QRandomGenerator::global()->bounded(VIEW_WIDTH),
+                        QRandomGenerator::global()->bounded(VIEW_HEIGHT) };
+
+        objectSize.setWidth(defaultSize);
+        objectSize.setHeight(defaultSize);
+        QRectF spawnArea(spawnPoint, objectSize);
+        QRectF sceneSpawnArea = spawnArea.translated(spawnPoint);
+
+        /* Check if there are any items at the spawn point */
+        QList<QGraphicsItem*> itemsAtSpawnPoint = scene->items(sceneSpawnArea, Qt::IntersectsItemShape);
+
+        /* If there are no items at the spawn point, exit the loop */
+        if ( itemsAtSpawnPoint.isEmpty() )
+            break;
+
+    }
+    while ( true );
+
+    if ( type == ObjectType::ROBOT )
+    {
+        Robot* robot = new Robot(spawnPoint);
+        addRobot(robot);
+        INFO << "ROBOT SPAWNED at" << spawnPoint;
+    }
+    else if ( type == ObjectType::OBSTACLE )
+    {
+        Obstacle* obstacle = new Obstacle(spawnPoint);
+        addObstacle(obstacle);
+        INFO << "Obstacle SPAWNED at" << spawnPoint;
+    }
+}
+
+void Simulation::spawnRobot()
+{
+    spawnObject(ObjectType::ROBOT);
+}
+
+void Simulation::spawnObstacle()
+{
+    spawnObject(ObjectType::OBSTACLE);
+}
+
+
+void Simulation::deleteObject()
+{
+    // TODO 
+    return;
+}
+
+void Simulation::purgeScene()
+{
+    scene->clear();
+    robotList.clear();
+    obstacleList.clear();
 }

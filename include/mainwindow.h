@@ -7,6 +7,7 @@
 
 #define SCENE_WIDTH 940
 #define SCENE_HEIGHT 820
+#define MSEC 1000/33
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -23,9 +24,14 @@ public:
     MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
     void setup();
+    void connect_buttons();
+    QTimer* timer = new QTimer(this);
 
 private:
     Ui::MainWindow* ui;
     Simulation* simulation;
+
+public slots:
+    void toggleTimer();
 
 };
