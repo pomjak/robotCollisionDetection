@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     setup();
     connect_buttons();
 
+    /* connect timer timeout event to start simulation */
     connect(timer, &QTimer::timeout, simulation->getScene().get(),
             &QGraphicsScene::advance);
 }
