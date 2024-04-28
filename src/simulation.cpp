@@ -1,3 +1,13 @@
+/**
+ * \file simulation.cpp
+ * \author Pomsar Jakub (xpomsa00@stud.fit.vutbr.cz)
+ * \author Simon Cagala <xcagal00@stud.fit.vutbr.cz>
+ * \version 0.1
+ * \date 2024-04-29
+ *
+ * @copyright Copyright (c) 2024
+ *
+ */
 #include "simulation.h"
 #include <QFileDialog>
 
@@ -12,6 +22,7 @@ Simulation::Simulation()
 
 void Simulation::printLists()
 {
+    /* iterate over lists and print parameters */
     for ( const auto &obs : obstacleList )
     {
         DEBUG << obs->pos().x() << obs->pos().y();
@@ -40,11 +51,17 @@ void Simulation::loadLevelLayout()
     }
     else
     {
+        /* clear scene before loading  */
         scene->clear();
         robotList.clear();
         obstacleList.clear();
+
+        /* load file and process it */
         json.load(fname);
         int i = 0;
+
+        /* objects are already added to simulation list */
+        /* now just add the to scene                    */
         for ( auto &obj : robotList )
         {
             DEBUG << "Adding robot #" << ++i;
@@ -79,29 +96,31 @@ void Simulation::spawnObject(ObjectType type)
     qreal defaultSize;
     qreal rotateByDegree;
 
-        if ( type == ObjectType::ROBOT )
-    {
-        defaultSize = DEF_ROBOT_SIZE;
-    }
+    if ( type == ObjectType::ROBOT ) { defaultSize = DEF_ROBOT_SIZE; }
 
     else if ( type == ObjectType::OBSTACLE )
     {
+        /* generate random size and rotation of an obstacle  */
         defaultSize =
             QRandomGenerator::global()->bounded(50, DEF_OBSTACLE_SIZE);
 
-        rotateByDegree =
-            QRandomGenerator::global()->bounded(90);
+        rotateByDegree = QRandomGenerator::global()->bounded(90);
     }
 
     QPointF spawnPoint;
     QSizeF  objectSize;
     do {
+        /* generate random point in the view */
         spawnPoint = {QRandomGenerator::global()->bounded(VIEW_WIDTH),
                       QRandomGenerator::global()->bounded(VIEW_HEIGHT)};
 
         objectSize.setWidth(defaultSize);
         objectSize.setHeight(defaultSize);
+
+        /* find an area of object */
         QRectF spawnArea(spawnPoint, objectSize);
+
+        /* and place it into the scene */
         QRectF sceneSpawnArea = spawnArea.translated(spawnPoint);
 
         /* Check if there are any items at the spawn point */
@@ -124,8 +143,7 @@ void Simulation::spawnObject(ObjectType type)
         Obstacle *obstacle =
             new Obstacle(spawnPoint, defaultSize, rotateByDegree);
         addObstacle(obstacle);
-        INFO << "Obstacle SPAWNED at" << spawnPoint << "size:" << defaultSize
-             << "rot" << rotateByDegree;
+        INFO << "Obstacle SPAWNED at" << spawnPoint;
     }
 }
 

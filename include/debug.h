@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-// Using Qt's debug function to print file, line number, and function
+/* Using Qt's debug function to print file, line number, and function */
 #ifdef QT_DEBUG
 #define DEBUG                                                                 \
     qDebug() << "[DEBUG]: " << __FILE__ << ": " << __LINE__ << ": "           \
