@@ -16,12 +16,13 @@ class Simulation : public QObject
 {
     Q_OBJECT
 private:
-    State state;
     QList<Robot*> robotList;
     QList<Obstacle*> obstacleList;
     shared_ptr<QGraphicsScene> scene;
     JsonHandler json;
     double time;
+    State state;
+    
 
 public:
     Simulation();
