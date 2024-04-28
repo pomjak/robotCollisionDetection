@@ -38,6 +38,7 @@ Robot::Robot(QJsonObject &json)
 
 QRectF Robot::boundingRect() const
 {
+    /* it is important to include half the pen width in the bounding rect */
     qreal pen_width = 1;
     return QRectF(pos().x() + pen_width / 2, pos().y() + pen_width / 2,
                   size() + pen_width, size() + pen_width);
@@ -45,6 +46,7 @@ QRectF Robot::boundingRect() const
 
 QRectF Robot::newBoundingRect(QPointF newPos) const
 {
+    /* it is important to include half the pen width in the bounding rect */
     qreal pen_width = 1;
     return QRectF(newPos.x() + pen_width / 2, newPos.y() + pen_width / 2,
                   size() + pen_width, size() + pen_width);
@@ -55,10 +57,15 @@ void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
+    /* paint circular robot body */
     painter->setPen(Qt::red);
     painter->drawEllipse(boundingRect());
+
+    /* paint detection area */
     painter->setPen(Qt::green);
     painter->drawPolygon(detectionArea());
+
+    /* paint direction arrow */
     painter->setPen(Qt::black);
     painter->drawLine(center(), detectionPoint());
 }
@@ -73,11 +80,16 @@ QPainterPath Robot::shape() const
 QPolygonF Robot::detectionArea() const
 {
     return QPolygonF()
-           << leftBumper() << rightBumper()
+           /* add left and right bumper based on orientation of robot */
+           << leftBumper()
+           << rightBumper()
+           /* from right side move at the end of detection zone in direction of
+              orientation */
            << QPointF((rightBumper().x() +
                        (getDetectDistance() + radius()) * ::cos(getAngle())),
                       (rightBumper().y() +
                        (getDetectDistance() + radius()) * ::sin(getAngle())))
+           /* same as before */
            << QPointF((leftBumper().x() +
                        (getDetectDistance() + radius()) * ::cos(getAngle())),
                       (leftBumper().y() +
@@ -86,6 +98,8 @@ QPolygonF Robot::detectionArea() const
 
 void Robot::advance(int phase)
 {
+    /* advance() is called twice: once with step == 0, indicating that item  */
+    /* are about to advance, and then with step == 1 for the actual advance. */
     if ( !phase ) return;
 
     // DEBUG << "X: " << pos().x();
@@ -110,12 +124,12 @@ void Robot::advance(int phase)
             if ( item != this )
             {
                 DEBUG << "Collision detected!";
-                // Rotate if obstacle detected
+                /* Rotate if obstacle detected */
                 setAngle(getAngle() + getRotation());
                 return;
             }
         }
-
+        /* set new position if no item is in detection area */
         setPos(newPos);
     }
     else
