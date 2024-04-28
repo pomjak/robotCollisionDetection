@@ -17,7 +17,7 @@
 
 #define DEF_ROBOT_SIZE 50.0
 #define DEF_DETECT_DIST 25.0
-#define DEF_ROTATE_BY 1.0
+#define DEF_ROTATE_BY 0.1
 #define DEF_SPEED 2.0
 
  /**
