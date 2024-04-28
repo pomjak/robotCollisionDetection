@@ -4,8 +4,8 @@
 
 using std::shared_ptr, std::make_shared;
 
-Simulation::Simulation() : scene(make_shared<QGraphicsScene>(new QGraphicsScene)), 
-                            json(&robotList, &obstacleList), time(0.0), state{State::STOPPED}
+Simulation::Simulation() : scene(make_shared<QGraphicsScene>(new QGraphicsScene)),
+json(&robotList, &obstacleList), time(0.0), state{ State::STOPPED }
 {}
 
 void Simulation::printLists()
@@ -71,67 +71,69 @@ void Simulation::saveLevelLayout()
     }
 }
 
+void Simulation::spawnObject(ObjectType type)
+{
+    qreal defaultSize;
+
+    if ( type == ObjectType::ROBOT )
+        defaultSize = DEF_ROBOT_SIZE;
+    
+    else if ( type == ObjectType::OBSTACLE )
+        defaultSize = DEF_OBSTACLE_SIZE;
+    
+
+    QPointF spawnPoint;
+    QSizeF objectSize;
+    do
+    {
+        spawnPoint = { QRandomGenerator::global()->bounded(VIEW_WIDTH),
+                        QRandomGenerator::global()->bounded(VIEW_HEIGHT) };
+
+        objectSize.setWidth(defaultSize);
+        objectSize.setHeight(defaultSize);
+        QRectF spawnArea(spawnPoint, objectSize);
+
+        /* Check if there are any items at the spawn point */
+        QList<QGraphicsItem*> itemsAtSpawnPoint = scene->items(spawnArea, Qt::IntersectsItemShape);
+
+        /* If there are no items at the spawn point, exit the loop */
+        if ( itemsAtSpawnPoint.isEmpty() )
+            break;
+
+    }
+    while ( true );
+
+    if ( type == ObjectType::ROBOT )
+    {
+        Robot* robot = new Robot(spawnPoint);
+        addRobot(robot);
+        INFO << "ROBOT SPAWNED at" << spawnPoint;
+    }
+    else if ( type == ObjectType::OBSTACLE )
+    {
+        Obstacle* obstacle = new Obstacle(spawnPoint);
+        addObstacle(obstacle);
+        INFO << "Obstacle SPAWNED at" << spawnPoint;
+    }
+}
+
 void Simulation::spawnRobot()
 {
-    QPointF spawnPoint;
-    do
-    {
-        spawnPoint = { QRandomGenerator::global()->bounded(VIEW_WIDTH),
-                        QRandomGenerator::global()->bounded(VIEW_HEIGHT) };
-
-        QSizeF robotSize(DEF_ROBOT_SIZE, DEF_ROBOT_SIZE);
-        QRectF spawnArea(spawnPoint, robotSize);
-
-        /* Check if there are any items at the spawn point */
-        QList<QGraphicsItem*> itemsAtSpawnPoint = scene->items(spawnArea);
-
-        /* If there are no items at the spawn point, exit the loop */
-        if ( itemsAtSpawnPoint.isEmpty() )
-            break;
-
-    }
-    while ( true );
-
-    Robot* robot = new Robot(spawnPoint);
-    addRobot(robot);
-    scene->addItem(robot);
-
-    INFO << "ROBOT SPAWNED at" << spawnPoint;
-    return;
+    spawnObject(ObjectType::ROBOT);
 }
+
 void Simulation::spawnObstacle()
 {
-    QPointF spawnPoint;
-    do
-    {
-        spawnPoint = { QRandomGenerator::global()->bounded(VIEW_WIDTH),
-                        QRandomGenerator::global()->bounded(VIEW_HEIGHT) };
-
-        QSizeF obstacleSize(DEF_OBSTACLE_SIZE, DEF_OBSTACLE_SIZE);
-        QRectF spawnArea(spawnPoint, obstacleSize);
-
-        /* Check if there are any items at the spawn point */
-        QList<QGraphicsItem*> itemsAtSpawnPoint = scene->items(spawnArea);
-
-        /* If there are no items at the spawn point, exit the loop */
-        if ( itemsAtSpawnPoint.isEmpty() )
-            break;
-
-    }
-    while ( true );
-
-    Obstacle* obstacle = new Obstacle(spawnPoint);
-    addObstacle(obstacle);
-    scene->addItem(obstacle);
-
-    INFO << "Obsatcle SPAWNED at" << spawnPoint;
-    return;
+    spawnObject(ObjectType::OBSTACLE);
 }
+
+
 void Simulation::deleteObject()
 {
     // TODO 
     return;
 }
+
 void Simulation::purgeScene()
 {
     scene->clear();

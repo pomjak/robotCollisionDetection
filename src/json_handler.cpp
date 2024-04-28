@@ -70,8 +70,9 @@ void JsonHandler::read(const QJsonObject& json)
         {
             DEBUG << "LOADING OBSTACLE";
             QJsonObject obj = obsValue.toObject();
-            Obstacle* obst = new Obstacle(obj);
-            obstacleList->push_back(obst);
+            Obstacle* obstacle = new Obstacle(obj);
+            addObstacle(obstacle);
+            
         }
     }
 
@@ -84,7 +85,7 @@ void JsonHandler::read(const QJsonObject& json)
             DEBUG << "LOADING ROBOT";
             QJsonObject obj = robotValue.toObject();
             Robot* rbt = new Robot(obj);
-            robotList->push_back(rbt);
+            addRobot(rbt);
         }
     }
 }

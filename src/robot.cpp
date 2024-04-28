@@ -98,7 +98,7 @@ void Robot::advance(int phase)
     }
 
     /* get all objects in danger area */
-    const QList<QGraphicsItem*> colliding_items = scene()->items(mapToScene(detectionArea()));
+    const QList<QGraphicsItem*> colliding_items = scene()->items(mapToScene(detectionArea()), Qt::IntersectsItemShape);
 
     for(const auto &item : colliding_items)
     {

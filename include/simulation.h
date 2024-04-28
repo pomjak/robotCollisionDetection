@@ -13,7 +13,8 @@
 #define VIEW_HEIGHT 384.0
 
 using std::shared_ptr;
-enum State {RUNNING,STOPPED};
+enum class State { RUNNING, STOPPED };
+enum class ObjectType { ROBOT, OBSTACLE };
 
 class Simulation : public QObject
 {
@@ -33,12 +34,13 @@ public:
 
     QList<Robot*>* getRobotList() const { return new QList<Robot*>(robotList); }
     QList<Obstacle*>* getObstacleList() const { return new QList<Obstacle*>(obstacleList); }
-    void addRobot(Robot* robot) { robotList.push_back(robot); }
-    void addObstacle(Obstacle* obstacle) { obstacleList.push_back(obstacle); }
+    void addRobot(Robot* robot) { robotList.push_back(robot); scene->addItem(robot); }
+    void addObstacle(Obstacle* obstacle) { obstacleList.push_back(obstacle);scene->addItem(obstacle); }
     void printLists();
     shared_ptr<QGraphicsScene> getScene() const { return scene; }
-    State getState() const {return state;}
-    void setState(State _state) {state = _state;}
+    State getState() const { return state; }
+    void setState(State _state) { state = _state; }
+    void spawnObject(ObjectType type);
 
 public slots:
     void loadLevelLayout();
