@@ -6,10 +6,12 @@ Obstacle::Obstacle(QPointF _position)
     setPos(_position);
 }
 
-Obstacle::Obstacle(QPointF _position, double _size)
+Obstacle::Obstacle(QPointF _position, double _size, double _angle)
     : size(_size)
 {
     setPos(_position);
+    setTransformOriginPoint(boundingRect().center());
+    setRotation(_angle);
 }
 
 Obstacle::Obstacle(QJsonObject &json)
