@@ -27,6 +27,33 @@ void SimView::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void SimView::zoomIn() { scaleView(qreal(1.2)); }
+void SimView::zoomIn() { scaleView(qreal(1.1)); }
 
-void SimView::zoomOut() { scaleView(1 / qreal(1.2)); }
+void SimView::zoomOut() { scaleView(1 / qreal(1.1)); }
+
+void SimView::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    // scene rectangle
+    QFont font = painter->font();
+    font.setBold(true);
+    font.setPointSize(14);
+    painter->setFont(font);
+
+    // painter->fillRect(rect, Qt::darkGray);
+    QRectF sr = this->sceneRect();
+
+    painter->setBrush(Qt::NoBrush);
+    painter->drawRect(sr);
+    QRectF  msgRect(sr.left() + 785, sr.top() + 390, 350, 150);
+    QString message = {tr("Ctrl+O - load a new layout\n"
+                          "Ctrl+S - save current layout\n"
+                          "Ctrl+L - clear screen\n"
+                          "Ctrl+N - spawn a new robot\n"
+                          "Ctrl+M - spawn a new obstacle\n"
+                          "Space  - Play / Pause\n"
+                          "'+/-'  - zoom in/out\n")};
+
+    painter->setBrush(Qt::darkGreen);
+    painter->setPen(Qt::black);
+    painter->drawText(msgRect, message);
+}

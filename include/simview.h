@@ -23,6 +23,7 @@ class SimView : public QGraphicsView
   protected:
     void keyPressEvent(QKeyEvent *event) override;
     void scaleView(qreal factor);
+    void drawBackground(QPainter *painter, const QRectF &rect) override;
 
   private:
 };
