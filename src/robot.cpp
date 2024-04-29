@@ -1,4 +1,5 @@
 #include "robot.h"
+#include <QWidget>
 
 Robot::Robot()
     : QObject()
@@ -7,10 +8,11 @@ Robot::Robot()
     , m_speed(DEF_SPEED)
     , m_rotate_by(DEF_ROTATE_BY)
     , m_detection_dist(DEF_DETECT_DIST)
-// , m_sim(nullptr)
 {
     setPos(0, 0);
-    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
+    setFlag(ItemIsMovable);
+    setFlag(ItemSendsGeometryChanges);
+    setAcceptDrops(true);
 };
 
 Robot::Robot(QPointF _position)
@@ -20,10 +22,11 @@ Robot::Robot(QPointF _position)
     , m_speed(DEF_SPEED)
     , m_rotate_by(DEF_ROTATE_BY)
     , m_detection_dist(DEF_DETECT_DIST)
-// , m_sim(nullptr)
 {
     setPos(_position);
-    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
+    setFlag(ItemIsMovable);
+    setFlag(ItemSendsGeometryChanges);
+    setAcceptDrops(true);
 };
 
 Robot::Robot(QJsonObject &json)
@@ -32,14 +35,15 @@ Robot::Robot(QJsonObject &json)
     , m_speed(json["speed"].toDouble())
     , m_rotate_by(json["rotation"].toDouble())
     , m_detection_dist(json["detection_dist"].toDouble())
-// , m_sim(nullptr)
 {
     /* Set the initial position of the robot */
     qreal pos_x = json["position_x"].toDouble();
     qreal pos_y = json["position_y"].toDouble();
 
     setPos(pos_x, pos_y);
-    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
+    setFlag(ItemIsMovable);
+    setFlag(ItemSendsGeometryChanges);
+    setAcceptDrops(true);
 }
 
 QRectF Robot::boundingRect() const
@@ -94,9 +98,6 @@ void Robot::advance(int phase)
 {
     if ( !phase ) return;
 
-    // DEBUG << "X: " << pos().x();
-    // DEBUG << "Y: " << pos().y();
-    // DEBUG << "Rot: " << getAngle();
     /* Move the robot */
     qreal   dx     = getSpeed() * ::cos(getAngle());
     qreal   dy     = getSpeed() * ::sin(getAngle());
@@ -115,8 +116,7 @@ void Robot::advance(int phase)
             /* ignore itself */
             if ( item != this )
             {
-                // DEBUG << "Collision detected!";
-                // Rotate if obstacle detected
+                // Rotate if obstacle detected  
                 setAngle(getAngle() + getRotation());
                 return;
             }
@@ -132,16 +132,23 @@ void Robot::advance(int phase)
     }
 }
 
-// void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
-// {
-//     INFO << "Robot pressed";
-//     // update();
-//     QGraphicsItem::mousePressEvent(event);
-// }
+void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    m_offset = event->scenePos();
+}
 
-// void Robot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-// {
-//     INFO << "Robot released";
-//     // update();
-//     QGraphicsItem::mouseReleaseEvent(event);
-// }
+void Robot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) { update(); }
+
+void Robot::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    QPointF delta  = event->scenePos() - m_offset;
+    QPointF newPos = pos() + (delta * 0.5);
+    if ( scene()->sceneRect().contains(
+             newBoundingRect(newPos).translated(newPos)) )
+    {
+        DEBUG << "pos: " << mapToScene(pos());
+        setPos(newPos);
+        DEBUG << "newPos: " << mapToScene(pos());
+    }
+    m_offset = event->scenePos();
+}

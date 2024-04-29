@@ -10,8 +10,10 @@
 
 #include "debug.h"
 #include "obstacle.h"
+#include <QCursor>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QTransform>
 #include <QtCore>
@@ -33,11 +35,12 @@ class Robot
     Q_OBJECT
 
   private:
-    double m_size;           /// Size of the robot (diameter)
-    double m_angle;          /// Current angle of the robot
-    double m_speed;          /// Speed of the robot
-    double m_rotate_by;      /// Angle to rotate by when detecting a collision
-    double m_detection_dist; /// Maximum collision detec distance
+    double  m_size;           /// Size of the robot (diameter)
+    double  m_angle;          /// Current angle of the robot
+    double  m_speed;          /// Speed of the robot
+    double  m_rotate_by;      /// Angle to rotate by when detecting a collision
+    double  m_detection_dist; /// Maximum collision detec distance
+    QPointF m_offset;
 
   public:
     /**
@@ -206,6 +209,7 @@ class Robot
     QPolygonF detectionArea() const;
 
   protected:
-    // void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    // void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 };
