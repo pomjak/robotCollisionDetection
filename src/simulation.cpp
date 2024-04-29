@@ -8,7 +8,9 @@ Simulation::Simulation()
     , json(&robotList, &obstacleList)
     , time(0.0)
     , state{State::STOPPED}
-{}
+{
+    scene->setSceneRect(0, 0, 1920, 1080);
+}
 
 void Simulation::printLists()
 {
