@@ -23,8 +23,6 @@ HEADERS += \
     json_handler.h
 
 
-FORMS += \
-    mainwindow.ui
 
 CONFIG(debug, debug|release) {
     TARGET = icp24_debug
