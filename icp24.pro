@@ -24,7 +24,9 @@ HEADERS += \
 
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    obstacle-properties-dialog.ui \
+    robot-properties-dialog.ui
 
 CONFIG(debug, debug|release) {
     TARGET = icp24_debug
