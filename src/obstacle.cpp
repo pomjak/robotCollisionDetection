@@ -4,6 +4,7 @@ Obstacle::Obstacle(QPointF _position)
     : size(DEF_OBSTACLE_SIZE)
 {
     setPos(_position);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
 }
 
 Obstacle::Obstacle(QPointF _position, double _size, double _angle)
@@ -12,6 +13,7 @@ Obstacle::Obstacle(QPointF _position, double _size, double _angle)
     setPos(_position);
     setTransformOriginPoint(boundingRect().center());
     setRotation(_angle);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
 }
 
 Obstacle::Obstacle(QJsonObject &json)
@@ -22,6 +24,7 @@ Obstacle::Obstacle(QJsonObject &json)
     this->setPos(pos_x, pos_y);
     setTransformOriginPoint(boundingRect().center());
     setRotation(json["orientation"].toInt());
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
 }
 
 QRectF Obstacle::boundingRect() const

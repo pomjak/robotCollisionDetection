@@ -7,8 +7,10 @@ Robot::Robot()
     , m_speed(DEF_SPEED)
     , m_rotate_by(DEF_ROTATE_BY)
     , m_detection_dist(DEF_DETECT_DIST)
+// , m_sim(nullptr)
 {
     setPos(0, 0);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
 };
 
 Robot::Robot(QPointF _position)
@@ -18,8 +20,10 @@ Robot::Robot(QPointF _position)
     , m_speed(DEF_SPEED)
     , m_rotate_by(DEF_ROTATE_BY)
     , m_detection_dist(DEF_DETECT_DIST)
+// , m_sim(nullptr)
 {
     setPos(_position);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
 };
 
 Robot::Robot(QJsonObject &json)
@@ -28,12 +32,14 @@ Robot::Robot(QJsonObject &json)
     , m_speed(json["speed"].toDouble())
     , m_rotate_by(json["rotation"].toDouble())
     , m_detection_dist(json["detection_dist"].toDouble())
+// , m_sim(nullptr)
 {
     /* Set the initial position of the robot */
     qreal pos_x = json["position_x"].toDouble();
     qreal pos_y = json["position_y"].toDouble();
 
     setPos(pos_x, pos_y);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable);
 }
 
 QRectF Robot::boundingRect() const
@@ -109,7 +115,7 @@ void Robot::advance(int phase)
             /* ignore itself */
             if ( item != this )
             {
-                DEBUG << "Collision detected!";
+                // DEBUG << "Collision detected!";
                 // Rotate if obstacle detected
                 setAngle(getAngle() + getRotation());
                 return;
@@ -125,3 +131,17 @@ void Robot::advance(int phase)
         return;
     }
 }
+
+// void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
+// {
+//     INFO << "Robot pressed";
+//     // update();
+//     QGraphicsItem::mousePressEvent(event);
+// }
+
+// void Robot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+// {
+//     INFO << "Robot released";
+//     // update();
+//     QGraphicsItem::mouseReleaseEvent(event);
+// }

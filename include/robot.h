@@ -16,7 +16,7 @@
 #include <QTransform>
 #include <QtCore>
 
-#define DEF_ROBOT_SIZE  50.0    /* Default robot parameters */
+#define DEF_ROBOT_SIZE  50.0 /* Default robot parameters */
 #define DEF_DETECT_DIST 25.0
 #define DEF_ROTATE_BY   0.1
 #define DEF_SPEED       2.0
@@ -29,14 +29,15 @@ class Robot
     : public QObject
     , public QGraphicsItem
 {
+    // friend class Simulation;
     Q_OBJECT
+
   private:
     double m_size;           /// Size of the robot (diameter)
     double m_angle;          /// Current angle of the robot
     double m_speed;          /// Speed of the robot
     double m_rotate_by;      /// Angle to rotate by when detecting a collision
-    double m_detection_dist; /// Maximum distance from the robot to detect
-                             /// collisions
+    double m_detection_dist; /// Maximum collision detec distance
 
   public:
     /**
@@ -69,7 +70,7 @@ class Robot
     Robot(QJsonObject &json);
 
     /**
-     * \brief Destroy the \c Robot
+     * \brief Destroy the Robot
      **/
     ~Robot(){};
 
@@ -203,4 +204,8 @@ class Robot
      * \return QRectF detection area
      **/
     QPolygonF detectionArea() const;
+
+  protected:
+    // void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    // void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 };
