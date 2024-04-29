@@ -3,13 +3,13 @@
 
 using std::shared_ptr, std::make_shared;
 
-Simulation::Simulation()
-    : scene(make_shared<QGraphicsScene>(new QGraphicsScene))
+Simulation::Simulation(QWidget *parent)
+    : scene(make_shared<QGraphicsScene>(new QGraphicsScene(parent)))
     , json(&robotList, &obstacleList)
     , time(0.0)
     , state{State::STOPPED}
 {
-    scene->setSceneRect(0, 0, 1920, 1080);
+    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(1920, 1080)));
 }
 
 void Simulation::printLists()
@@ -58,11 +58,6 @@ void Simulation::loadLevelLayout()
             DEBUG << "Adding obstacle #" << ++i;
             scene->addItem(obj);
         }
-        INFO << "Scene:";
-        INFO << " w: " << scene->width();
-        INFO << " h: " << scene->height();
-        INFO << " elem: " << scene->items().length();
-        INFO << scene->sceneRect();
     }
 }
 
@@ -80,7 +75,6 @@ void Simulation::spawnObject(ObjectType type)
 {
     qreal defaultSize;
     qreal rotateByDegree;
-    DEBUG << "Scene rect: " << scene->sceneRect();
     if ( type == ObjectType::ROBOT ) { defaultSize = DEF_ROBOT_SIZE; }
 
     else if ( type == ObjectType::OBSTACLE )
@@ -88,16 +82,16 @@ void Simulation::spawnObject(ObjectType type)
         defaultSize =
             QRandomGenerator::global()->bounded(50, DEF_OBSTACLE_SIZE);
 
-        rotateByDegree = QRandomGenerator::global()->bounded(90);
+        rotateByDegree = QRandomGenerator::global()->bounded(M_PI / 2);
     }
 
     QPointF spawnPoint;
-    QSizeF  objectSize;
+    QSizeF  objectSize(defaultSize, defaultSize);
     do {
         spawnPoint = {QRandomGenerator::global()->bounded(SCENE_WIDTH),
-                      QRandomGenerator::global()->bounded(SCENE_HEIGHT)};
-        objectSize.setWidth(defaultSize);
-        objectSize.setHeight(defaultSize);
+                      QRandomGenerator::global()->bounded(SCENE_HEIGHT / 2)};
+        // objectSize.setWidth(defaultSize);
+        // objectSize.setHeight(defaultSize);
         QRectF spawnArea(spawnPoint, objectSize);
         QRectF sceneSpawnArea = spawnArea.translated(spawnPoint);
 
@@ -109,12 +103,15 @@ void Simulation::spawnObject(ObjectType type)
         if ( itemsAtSpawnPoint.isEmpty() ) break;
     }
     while ( true );
-
+    DEBUG << scene->sceneRect();
+    DEBUG << "scene contains spawn: "
+          << scene->sceneRect().contains(spawnPoint);
     if ( type == ObjectType::ROBOT )
     {
         Robot *robot = new Robot(spawnPoint);
         addRobot(robot);
         INFO << "ROBOT SPAWNED at" << spawnPoint;
+        DEBUG << robot->scenePos();
     }
     else if ( type == ObjectType::OBSTACLE )
     {

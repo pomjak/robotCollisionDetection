@@ -79,8 +79,8 @@ class MainWindow : public QMainWindow
 
   private:
     // Ui::MainWindow *ui;
-    Simulation *simulation;
     SimView    *view;
+    Simulation *simulation;
     QTimer     *timer;
     QMenu      *file_menu;
     QMenu      *edit_menu;
@@ -89,6 +89,7 @@ class MainWindow : public QMainWindow
     QAction    *addObstacleAction;
     QAction    *loadLevelAction;
     QAction    *saveLevelAction;
+    QAction    *clearSceneAction;
     QAction    *exitAction;
 
   public slots:

@@ -5,8 +5,8 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     // , ui(new Ui::MainWindow)
-    , simulation(new Simulation)
     , view(new SimView)
+    , simulation(new Simulation(view))
     , timer(new QTimer(this))
 {
     setup();
@@ -24,9 +24,6 @@ void MainWindow::setup()
     view->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
     view->setContextMenuPolicy(Qt::ActionsContextMenu);
 
-    // view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    // view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setDragMode(QGraphicsView::ScrollHandDrag);
     view->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     view->setMaximumWidth(1920);
     view->setMinimumWidth(800);
@@ -67,9 +64,14 @@ void MainWindow::setupActions()
             &Simulation::saveLevelLayout);
 
     toggleSimAction = new QAction(tr("Play / Pause"), this);
-    toggleSimAction->setShortcut(QKeySequence(tr("F5")));
+    toggleSimAction->setShortcut(QKeySequence(tr("Space")));
     connect(toggleSimAction, &QAction::triggered, this,
             &MainWindow::toggleTimer);
+
+    clearSceneAction = new QAction(tr("Clear Scene"), this);
+    clearSceneAction->setShortcut(QKeySequence(tr("Ctrl+L")));
+    connect(clearSceneAction, &QAction::triggered, simulation,
+            &Simulation::purgeScene);
 }
 
 void MainWindow::setupMenus()
@@ -84,6 +86,7 @@ void MainWindow::setupMenus()
     edit_menu->addAction(toggleSimAction);
     edit_menu->addAction(addRobotAction);
     edit_menu->addAction(addObstacleAction);
+    edit_menu->addAction(clearSceneAction);
 }
 
 void MainWindow::toggleTimer()
@@ -107,5 +110,4 @@ MainWindow::~MainWindow()
     delete timer;
     delete simulation;
     delete view;
-    // delete ui;
 }

@@ -67,7 +67,7 @@ class Simulation : public QObject
      *
      * This constructor initializes a new instance of the Simulation class.
      */
-    Simulation();
+    Simulation(QWidget *parent = nullptr);
 
     /**
      * \brief Destroys the Simulation object.
