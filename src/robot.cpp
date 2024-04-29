@@ -65,11 +65,15 @@ void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    painter->setPen(Qt::red);
-    painter->drawEllipse(boundingRect());
-    painter->setPen(Qt::green);
-    painter->drawPolygon(detectionArea());
     painter->setPen(Qt::black);
+    painter->setOpacity(0.2);
+    painter->setBrush(Qt::darkYellow);
+    painter->drawPolygon(detectionArea());
+    painter->setPen(Qt::darkCyan);
+    painter->setBrush(Qt::darkGray);
+    painter->setOpacity(1);
+    painter->drawEllipse(boundingRect());
+    painter->setPen(Qt::darkYellow); painter->setBrush(Qt::NoBrush);
     painter->drawLine(center(), detectionPoint());
 }
 
@@ -83,7 +87,7 @@ QPainterPath Robot::shape() const
 QPolygonF Robot::detectionArea() const
 {
     return QPolygonF()
-           << leftBumper() << rightBumper()
+           << center()
            << QPointF((rightBumper().x() +
                        (getDetectDistance() + radius()) * ::cos(getAngle())),
                       (rightBumper().y() +
@@ -107,6 +111,7 @@ void Robot::advance(int phase)
     if ( scene()->sceneRect().contains(
              newBoundingRect(newPos).translated(newPos)) )
     {
+        DEBUG << scene()->sceneRect().size();
         /* get all objects in danger area */
         const QList<QGraphicsItem *> colliding_items = scene()->items(
             mapToScene(detectionArea()), Qt::IntersectsItemShape);
@@ -116,7 +121,7 @@ void Robot::advance(int phase)
             /* ignore itself */
             if ( item != this )
             {
-                // Rotate if obstacle detected  
+                // Rotate if obstacle detected
                 setAngle(getAngle() + getRotation());
                 return;
             }
