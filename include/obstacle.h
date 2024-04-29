@@ -8,7 +8,10 @@
 
 #pragma once
 
+#include "debug.h"
 #include <QGraphicsItem>
+#include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QtCore>
 
@@ -21,7 +24,9 @@
 class Obstacle : public QGraphicsItem
 {
   private:
-    double size; /* obstacle size */
+    qreal   m_size; /* obstacle size */
+    qreal   m_orientation;
+    QPointF m_offset;
 
   public:
     /**
@@ -30,7 +35,7 @@ class Obstacle : public QGraphicsItem
      * Initializes an obstacle with the default size.
      */
     Obstacle()
-        : size(DEF_OBSTACLE_SIZE) /* Initialize size with the default size */
+        : m_size(DEF_OBSTACLE_SIZE) /* Initialize size with the default size */
     {}
 
     /**
@@ -67,14 +72,14 @@ class Obstacle : public QGraphicsItem
      *
      * \return The size of the obstacle.
      */
-    double getSize() const { return size; }
+    double getSize() const { return m_size; }
 
     /**
      * \brief Sets the size of the obstacle.
      *
      * \param _size The new size of the obstacle.
      */
-    void setSize(double _size) { size = _size; }
+    void setSize(double _size) { m_size = _size; }
 
     /**
      * \brief Returns the bounding rectangle of the obstacle.
@@ -92,4 +97,11 @@ class Obstacle : public QGraphicsItem
      */
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget) override;
+
+    QPainterPath shape() const override;
+
+  protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 };
