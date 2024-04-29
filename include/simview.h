@@ -9,12 +9,13 @@
 
 #include <QGraphicsView>
 #include <QKeyEvent>
+#include <QWidget>
 
 class SimView : public QGraphicsView
 {
     Q_OBJECT
   public:
-    SimView();
+    SimView(QWidget *parent = nullptr);
   public slots:
     void zoomIn();
     void zoomOut();

@@ -1,8 +1,10 @@
 #include "simview.h"
 
-SimView::SimView()
-    : QGraphicsView()
-{}
+SimView::SimView(QWidget *parent)
+    : QGraphicsView(parent)
+{
+    setTransformationAnchor(AnchorUnderMouse);
+}
 
 void SimView::scaleView(qreal scale_factor)
 {
@@ -19,7 +21,6 @@ void SimView::keyPressEvent(QKeyEvent *event)
 {
     switch ( event->key() )
     {
-
         case Qt::Key_Plus :  zoomIn(); break;
         case Qt::Key_Minus : zoomOut(); break;
         default :            QGraphicsView::keyPressEvent(event);
