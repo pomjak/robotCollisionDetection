@@ -20,10 +20,11 @@
 #include <iostream>
 #include <memory>
 
-#define VIEW_WIDTH  444.0 /* view size */
-#define VIEW_HEIGHT 384.0
+#define SCENE_WIDTH  940.0 /* Scene size */
+#define SCENE_HEIGHT 860.0
 
 using std::shared_ptr;
+
 /**
  * \brief Enum class representing the state of the simulation.
  */

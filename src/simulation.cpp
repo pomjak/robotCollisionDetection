@@ -78,27 +78,22 @@ void Simulation::spawnObject(ObjectType type)
 {
     qreal defaultSize;
     qreal rotateByDegree;
-
-        if ( type == ObjectType::ROBOT )
-    {
-        defaultSize = DEF_ROBOT_SIZE;
-    }
+    DEBUG << "Scene rect: " << scene->sceneRect();
+    if ( type == ObjectType::ROBOT ) { defaultSize = DEF_ROBOT_SIZE; }
 
     else if ( type == ObjectType::OBSTACLE )
     {
         defaultSize =
             QRandomGenerator::global()->bounded(50, DEF_OBSTACLE_SIZE);
 
-        rotateByDegree =
-            QRandomGenerator::global()->bounded(90);
+        rotateByDegree = QRandomGenerator::global()->bounded(90);
     }
 
     QPointF spawnPoint;
     QSizeF  objectSize;
     do {
-        spawnPoint = {QRandomGenerator::global()->bounded(VIEW_WIDTH),
-                      QRandomGenerator::global()->bounded(VIEW_HEIGHT)};
-
+        spawnPoint = {QRandomGenerator::global()->bounded(SCENE_WIDTH),
+                      QRandomGenerator::global()->bounded(SCENE_HEIGHT)};
         objectSize.setWidth(defaultSize);
         objectSize.setHeight(defaultSize);
         QRectF spawnArea(spawnPoint, objectSize);
