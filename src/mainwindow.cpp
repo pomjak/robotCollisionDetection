@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     // , ui(new Ui::MainWindow)
     , simulation(new Simulation)
-    , view(new QGraphicsView)
+    , view(new SimView)
     , timer(new QTimer(this))
 {
     setup();
@@ -18,12 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::setup()
 {
-    // ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    // ui->graphicsView->setCacheMode(QGraphicsView::CacheBackground);
-    // ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-
-    // ui->graphicsView->setWindowTitle(tr("ICP - 24"));
-
     // simulation->getScene()->setSceneRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
     view->setScene(simulation->getScene().get());
     view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
@@ -32,7 +26,8 @@ void MainWindow::setup()
 
     // view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     // view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    view->setDragMode(QGraphicsView::ScrollHandDrag);
+    view->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     view->setMaximumWidth(1920);
     view->setMinimumWidth(800);
     view->setMaximumHeight(1080);

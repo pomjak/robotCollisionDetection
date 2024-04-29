@@ -14,6 +14,7 @@
 
 #include "json_handler.h"
 #include "simulation.h"
+#include "simview.h"
 #include <QAction>
 #include <QGraphicsView>
 #include <QMainWindow>
@@ -78,17 +79,17 @@ class MainWindow : public QMainWindow
 
   private:
     // Ui::MainWindow *ui;
-    Simulation    *simulation;
-    QGraphicsView *view;
-    QTimer        *timer;
-    QMenu         *file_menu;
-    QMenu         *edit_menu;
-    QAction       *toggleSimAction;
-    QAction       *addRobotAction;
-    QAction       *addObstacleAction;
-    QAction       *loadLevelAction;
-    QAction       *saveLevelAction;
-    QAction       *exitAction;
+    Simulation *simulation;
+    SimView    *view;
+    QTimer     *timer;
+    QMenu      *file_menu;
+    QMenu      *edit_menu;
+    QAction    *toggleSimAction;
+    QAction    *addRobotAction;
+    QAction    *addObstacleAction;
+    QAction    *loadLevelAction;
+    QAction    *saveLevelAction;
+    QAction    *exitAction;
 
   public slots:
     /**
