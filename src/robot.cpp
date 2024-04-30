@@ -203,6 +203,7 @@ void Robot::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
              newBoundingRect(newPos).translated(newPos)) )
     {
         DEBUG << "pos: " << mapToScene(pos());
+        
         setPos(newPos);
         DEBUG << "newPos: " << mapToScene(pos());
     }
