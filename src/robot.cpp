@@ -46,19 +46,17 @@ Robot::Robot(QJsonObject &json)
     setAcceptDrops(true);
 }
 
-QRectF Robot::boundingRect() const
-{
-    qreal pen_width = 1;
-    return QRectF(pos().x() + pen_width / 2, pos().y() + pen_width / 2,
-                  size() + pen_width, size() + pen_width);
-}
+qreal Robot::size() const { return m_size; }
+qreal Robot::angle() const { return m_angle; }
+qreal Robot::speed() const { return m_speed; }
+qreal Robot::rotateBy() const { return m_rotate_by; }
+qreal Robot::detectionDistance() const { return m_detection_dist; }
 
-QRectF Robot::newBoundingRect(QPointF newPos) const
-{
-    qreal pen_width = 1;
-    return QRectF(newPos.x() + pen_width / 2, newPos.y() + pen_width / 2,
-                  size() + pen_width, size() + pen_width);
-}
+void Robot::setSize(qreal size) { m_size = size; }
+void Robot::setAngle(qreal angle) { m_angle = angle; }
+void Robot::setSpeed(qreal speed) { m_speed = speed; }
+void Robot::setRotateBy(qreal rotate_by) { m_rotate_by = rotate_by; }
+void Robot::setDetectionDistance(qreal dist) { m_detection_dist = dist; }
 
 void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                   QWidget *widget)
@@ -73,7 +71,8 @@ void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setBrush(Qt::darkGray);
     painter->setOpacity(1);
     painter->drawEllipse(boundingRect());
-    painter->setPen(Qt::darkYellow); painter->setBrush(Qt::NoBrush);
+    painter->setPen(Qt::darkYellow);
+    painter->setBrush(Qt::NoBrush);
     painter->drawLine(center(), detectionPoint());
 }
 
@@ -84,18 +83,52 @@ QPainterPath Robot::shape() const
     return path;
 }
 
+QRectF Robot::boundingRect() const
+{
+    return QRectF(pos().x(), pos().y(), size(), size());
+}
+
+QRectF Robot::newBoundingRect(QPointF newPos) const
+{
+    return QRectF(newPos.x(), newPos.y(), size(), size());
+}
+
+qreal Robot::radius() const { return size() / 2; }
+
+QPointF Robot::center() const { return boundingRect().center(); }
+
+QPointF Robot::leftBumper() const
+{
+    return QPointF(center().x() + radius() * ::cos(angle() - (M_PI / 2)),
+                   center().y() + radius() * ::sin(angle() - (M_PI / 2)));
+}
+
+QPointF Robot::rightBumper() const
+{
+    return QPointF(center().x() + radius() * ::cos(angle() + (M_PI / 2)),
+                   center().y() + radius() * ::sin(angle() + (M_PI / 2)));
+}
+
+QPointF Robot::detectionPoint() const
+{
+    return QPointF(((center().x() + radius() * ::cos(angle())) +
+                    (detectionDistance() * ::cos(angle()))),
+                   ((center().y() + radius() * ::sin(angle())) +
+                    (detectionDistance() * ::sin(angle()))));
+}
+
 QPolygonF Robot::detectionArea() const
 {
     return QPolygonF()
            << center()
            << QPointF((rightBumper().x() +
-                       (getDetectDistance() + radius()) * ::cos(getAngle())),
+                       (detectionDistance() + radius()) * ::cos(angle())),
                       (rightBumper().y() +
-                       (getDetectDistance() + radius()) * ::sin(getAngle())))
+                       (detectionDistance() + radius()) * ::sin(angle())))
            << QPointF((leftBumper().x() +
-                       (getDetectDistance() + radius()) * ::cos(getAngle())),
+                       (detectionDistance() + radius()) * ::cos(angle())),
                       (leftBumper().y() +
-                       (getDetectDistance() + radius()) * ::sin(getAngle())));
+                       (detectionDistance() + radius()) * ::sin(angle())));
 }
 
 void Robot::advance(int phase)
@@ -103,15 +136,14 @@ void Robot::advance(int phase)
     if ( !phase ) return;
 
     /* Move the robot */
-    qreal   dx     = getSpeed() * ::cos(getAngle());
-    qreal   dy     = getSpeed() * ::sin(getAngle());
+    qreal   dx     = speed() * ::cos(angle());
+    qreal   dy     = speed() * ::sin(angle());
     QPointF newPos = pos() + QPointF(dx, dy);
 
     /* check if new bound rect is still in scene */
     if ( scene()->sceneRect().contains(
              newBoundingRect(newPos).translated(newPos)) )
     {
-        DEBUG << scene()->sceneRect().size();
         /* get all objects in danger area */
         const QList<QGraphicsItem *> colliding_items = scene()->items(
             mapToScene(detectionArea()), Qt::IntersectsItemShape);
@@ -122,7 +154,7 @@ void Robot::advance(int phase)
             if ( item != this )
             {
                 // Rotate if obstacle detected
-                setAngle(getAngle() + getRotation());
+                setAngle(angle() + rotateBy());
                 return;
             }
         }
@@ -132,7 +164,7 @@ void Robot::advance(int phase)
     else
     {
         /* Rotate if hitting scene boundary */
-        setAngle(getAngle() + getRotation());
+        setAngle(angle() + rotateBy());
         return;
     }
 }
@@ -142,7 +174,11 @@ void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
     m_offset = event->scenePos();
 }
 
-void Robot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) { update(); }
+void Robot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    INFO << "Robot released...";
+    update();
+}
 
 void Robot::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
