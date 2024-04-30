@@ -4,23 +4,48 @@
 using std::shared_ptr, std::make_shared;
 
 Simulation::Simulation(QWidget *parent)
-    : scene(make_shared<QGraphicsScene>(new QGraphicsScene(parent)))
-    , json(&robotList, &obstacleList)
-    , time(0.0)
-    , state{State::STOPPED}
+    : QGraphicsView(parent)
+    , m_scene(new QGraphicsScene(parent))
+    , json(robotList(), obstacleList())
+    , m_state{State::STOPPED}
 {
-    scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(1920, 1080)));
+    m_scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(1920, 1080)));
+    setTransformationAnchor(AnchorUnderMouse);
+    setScene(m_scene);
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
+    setContextMenuPolicy(Qt::ActionsContextMenu);
+    setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    setMaximumWidth(1920);
+    setMinimumWidth(800);
+    setMaximumHeight(1080);
+    setMinimumHeight(600);
+}
+
+QList<Robot *>    *Simulation::robotList() { return &m_robot_list; }
+QList<Obstacle *> *Simulation::obstacleList() { return &m_obstacle_list; }
+
+void Simulation::addRobot(Robot *robot)
+{
+    m_robot_list.push_back(robot);
+    m_scene->addItem(robot);
+}
+
+void Simulation::addObstacle(Obstacle *obstacle)
+{
+    m_obstacle_list.push_back(obstacle);
+    m_scene->addItem(obstacle);
 }
 
 void Simulation::printLists()
 {
-    for ( const auto &obs : obstacleList )
+    for ( const auto &obs : m_obstacle_list )
     {
         DEBUG << obs->pos().x() << obs->pos().y();
         DEBUG << obs->getSize();
     }
 
-    for ( const auto &rob : robotList )
+    for ( const auto &rob : m_robot_list )
     {
         DEBUG << rob->rotation();
         DEBUG << rob->pos().x() << rob->pos().y();
@@ -30,46 +55,9 @@ void Simulation::printLists()
     }
 }
 
-void Simulation::loadLevelLayout()
-{
-    QString fname =
-        QFileDialog::getOpenFileName(nullptr, tr("Open existing layout"), "",
-                                     tr("Json File (*.json);;All Files(*)"));
-    if ( fname.isEmpty() )
-    {
-        WARN << "filename empty";
-        return;
-    }
-    else
-    {
-        scene->clear();
-        robotList.clear();
-        obstacleList.clear();
-        json.load(fname);
-        int i = 0;
-        for ( auto &obj : robotList )
-        {
-            DEBUG << "Adding robot #" << ++i;
-            scene->addItem(obj);
-        }
-        i = 0;
-        for ( auto &obj : obstacleList )
-        {
-            DEBUG << "Adding obstacle #" << ++i;
-            scene->addItem(obj);
-        }
-    }
-}
+State Simulation::getState() const { return m_state; }
 
-void Simulation::saveLevelLayout()
-{
-    QString fname =
-        QFileDialog::getSaveFileName(nullptr, tr("Save current layout"), "",
-                                     tr("Json File (*.json);;All Files(*)"));
-    if ( fname.isEmpty() )
-        return;
-    else { json.save(fname); }
-}
+void Simulation::setState(State _state) { m_state = _state; }
 
 void Simulation::spawnObject(ObjectType type)
 {
@@ -97,15 +85,15 @@ void Simulation::spawnObject(ObjectType type)
 
         /* Check if there are any items at the spawn point */
         QList<QGraphicsItem *> itemsAtSpawnPoint =
-            scene->items(sceneSpawnArea, Qt::IntersectsItemShape);
+            m_scene->items(sceneSpawnArea, Qt::IntersectsItemShape);
 
         /* If there are no items at the spawn point, exit the loop */
         if ( itemsAtSpawnPoint.isEmpty() ) break;
     }
     while ( true );
-    DEBUG << scene->sceneRect();
+    DEBUG << m_scene->sceneRect();
     DEBUG << "scene contains spawn: "
-          << scene->sceneRect().contains(spawnPoint);
+          << m_scene->sceneRect().contains(spawnPoint);
     if ( type == ObjectType::ROBOT )
     {
         Robot *robot = new Robot(spawnPoint);
@@ -123,6 +111,47 @@ void Simulation::spawnObject(ObjectType type)
     }
 }
 
+void Simulation::loadLevelLayout()
+{
+    QString fname =
+        QFileDialog::getOpenFileName(nullptr, tr("Open existing layout"), "",
+                                     tr("Json File (*.json);;All Files(*)"));
+    if ( fname.isEmpty() )
+    {
+        WARN << "filename empty";
+        return;
+    }
+    else
+    {
+        m_scene->clear();
+        m_robot_list.clear();
+        m_obstacle_list.clear();
+        json.load(fname);
+        int i = 0;
+        for ( auto &obj : m_robot_list )
+        {
+            DEBUG << "Adding robot #" << ++i;
+            m_scene->addItem(obj);
+        }
+        i = 0;
+        for ( auto &obj : m_obstacle_list )
+        {
+            DEBUG << "Adding obstacle #" << ++i;
+            m_scene->addItem(obj);
+        }
+    }
+}
+
+void Simulation::saveLevelLayout()
+{
+    QString fname =
+        QFileDialog::getSaveFileName(nullptr, tr("Save current layout"), "",
+                                     tr("Json File (*.json);;All Files(*)"));
+    if ( fname.isEmpty() )
+        return;
+    else { json.save(fname); }
+}
+
 void Simulation::spawnRobot() { spawnObject(ObjectType::ROBOT); }
 
 void Simulation::spawnObstacle() { spawnObject(ObjectType::OBSTACLE); }
@@ -135,7 +164,58 @@ void Simulation::deleteObject()
 
 void Simulation::purgeScene()
 {
-    scene->clear();
-    robotList.clear();
-    obstacleList.clear();
+    m_scene->clear();
+    m_robot_list.clear();
+    m_obstacle_list.clear();
+}
+
+void Simulation::zoomIn() { scaleView(qreal(1.1)); }
+
+void Simulation::zoomOut() { scaleView(1 / qreal(1.1)); }
+
+void Simulation::scaleView(qreal scale_factor)
+{
+    qreal factor = transform()
+                       .scale(scale_factor, scale_factor)
+                       .mapRect(QRectF(0, 0, 1, 1))
+                       .width();
+    if ( factor < 0.07 || factor > 100 ) return;
+
+    scale(scale_factor, scale_factor);
+}
+void Simulation::keyPressEvent(QKeyEvent *event)
+{
+    switch ( event->key() )
+    {
+        case Qt::Key_Plus :  zoomIn(); break;
+        case Qt::Key_Minus : zoomOut(); break;
+        default :            QGraphicsView::keyPressEvent(event);
+    }
+}
+
+void Simulation::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    // scene rectangle
+    QFont font = painter->font();
+    font.setBold(true);
+    font.setPointSize(14);
+    painter->setFont(font);
+
+    // painter->fillRect(rect, Qt::darkGray);
+    QRectF sr = this->sceneRect();
+
+    painter->setBrush(Qt::NoBrush);
+    painter->drawRect(sr);
+    QRectF  msgRect(sr.left() + 785, sr.top() + 390, 350, 150);
+    QString message = {tr("Ctrl+O - load a new layout\n"
+                          "Ctrl+S - save current layout\n"
+                          "Ctrl+L - clear screen\n"
+                          "Ctrl+N - spawn a new robot\n"
+                          "Ctrl+M - spawn a new obstacle\n"
+                          "Space  - Play / Pause\n"
+                          "'+/-'  - zoom in/out\n")};
+
+    painter->setBrush(Qt::darkGreen);
+    painter->setPen(Qt::black);
+    painter->drawText(msgRect, message);
 }
