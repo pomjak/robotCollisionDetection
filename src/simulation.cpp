@@ -210,7 +210,7 @@ void Simulation::drawBackground(QPainter *painter, const QRectF &rect)
     font.setPointSize(14);
     painter->setFont(font);
 
-    // painter->fillRect(rect, Qt::darkGray);
+    // painter->fillRect(rect, Qt::darkGray);  
     QRectF sr = this->sceneRect();
 
     painter->setBrush(Qt::NoBrush);

@@ -155,33 +155,34 @@ void Robot::advance(int phase)
     qreal   dy     = speed() * ::sin(angle());
     QPointF newPos = pos() + QPointF(dx, dy);
 
-    /* check if new bound rect is still in scene */
-    if ( scene()->sceneRect().contains(
-             newBoundingRect(newPos).translated(newPos)) )
+    /*  Check if the detection area is entirely within the scene rect */
+    if ( !scene()->sceneRect().contains(detectionArea().boundingRect()) )
     {
-        /* get all objects in danger area */
-        const QList<QGraphicsItem *> colliding_items = scene()->items(
-            mapToScene(detectionArea()), Qt::IntersectsItemShape);
-
-        for ( const auto &item : colliding_items )
-        {
-            /* ignore itself */
-            if ( item != this )
-            {
-                // Rotate if obstacle detected
-                setAngle(angle() + rotateBy());
-                return;
-            }
-        }
-        /* set new position if no item is in detection area */
-        setPos(newPos);
-    }
-    else
-    {
-        /* Rotate if hitting scene boundary */
+        /* Rotate if the detection area is partially or completely outside  */
+        /* the scene                                                        */
         setAngle(angle() + rotateBy());
+        INFO << "rotating away from scene rect";
+        update();
         return;
     }
+
+    /* get all objects in danger area */
+    const QList<QGraphicsItem *> colliding_items =
+        scene()->items(mapToScene(detectionArea()), Qt::IntersectsItemShape);
+
+    for ( const auto &item : colliding_items )
+    {
+        /* ignore itself */
+        if ( item != this )
+        {
+            // Rotate if obstacle detected
+            setAngle(angle() + rotateBy());
+            update();
+            return;
+        }
+    }
+    /* set new position if no item is in detection area */
+    setPos(newPos);
 }
 
 void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -204,7 +205,7 @@ void Robot::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
              newBoundingRect(newPos).translated(newPos)) )
     {
         DEBUG << "pos: " << mapToScene(pos());
-        
+
         setPos(newPos);
         DEBUG << "newPos: " << mapToScene(pos());
     }
