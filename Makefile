@@ -14,7 +14,7 @@ FOR_PATH = forms
 
 SOURCES = $(SRC_PATH)/*.cpp
 HEADERS = $(INC_PATH)/*.h
-FORMS   = $(FOR_PATH)/*.ui
+# FORMS   = $(FOR_PATH)/*.ui
 PROJ    = $(TARGET).pro
 OBJECTS = $(SOURCES:.cpp=.o) # mby useless idk
 TRASH 	= vgcore.*
@@ -27,7 +27,7 @@ all: build
 
 build: clean
 	mkdir $(BUILD_DIR)
-	cp $(SOURCES) $(HEADERS) $(PROJ) $(FORMS) $(BUILD_DIR)/
+	cp $(SOURCES) $(HEADERS) $(PROJ) $(BUILD_DIR)/
 
 run: all
 	./$(TARGET)
