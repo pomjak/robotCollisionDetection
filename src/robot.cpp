@@ -191,6 +191,7 @@ void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void Robot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    Q_UNUSED(event);
     INFO << "Robot released...";
     update();
 }

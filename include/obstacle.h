@@ -29,7 +29,6 @@ class Obstacle : public QGraphicsItem
 {
   private:
     qreal   m_size;        /// Size of the obstacle
-    qreal   m_orientation; /// Angle the obstacle is facing
     QPointF m_offset;      /// offset used for mouse movements
 
   public:

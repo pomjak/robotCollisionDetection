@@ -12,7 +12,6 @@
 
 Obstacle::Obstacle()
     : m_size(DEF_OBSTACLE_SIZE)
-    , m_orientation(0)
 {
     setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
              QGraphicsItem::ItemSendsGeometryChanges);
@@ -20,7 +19,6 @@ Obstacle::Obstacle()
 
 Obstacle::Obstacle(QPointF p, qreal s)
     : m_size(s)
-    , m_orientation(0)
 {
     setPos(p);
     setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
@@ -29,7 +27,6 @@ Obstacle::Obstacle(QPointF p, qreal s)
 
 Obstacle::Obstacle(QPointF p, qreal s, qreal a)
     : m_size(s)
-    , m_orientation(a)
 {
     setPos(p);
     prepareGeometryChange();
@@ -43,22 +40,24 @@ Obstacle::Obstacle(QPointF p, qreal s, qreal a)
 
 Obstacle::Obstacle(QJsonObject &json)
 {
+    /* find center and rotate if needed */
+    prepareGeometryChange();
+    setTransformOriginPoint(boundingRect().center());
+
     qreal size  = qBound(0.0, json["size"].toDouble(), MAX_OBS_SIZE);
     qreal pos_x = qBound(0.0, json["x"].toDouble(), (MAX_W - size));
     qreal pos_y = qBound(0.0, json["y"].toDouble(), (MAX_H - size));
-    qreal orient =
-        qBound(0.0, json["orientation"].toDouble(), 360.0); // ? TODO
+    setRotation(qBound(0.0, json["orientation"].toDouble(), 360.0));
+
     this->setPos(pos_x, pos_y);
-    /* find center and rotate if needed */
-    setTransformOriginPoint(boundingRect().center());
+    update();
+
     setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
              QGraphicsItem::ItemSendsGeometryChanges);
 }
 
-qreal Obstacle::angle() const { return m_orientation; }
 qreal Obstacle::size() const { return m_size; }
 
-void Obstacle::setAngle(qreal a) { m_orientation = a; }
 void Obstacle::setSize(qreal s) { m_size = s; }
 
 QRectF Obstacle::boundingRect() const
@@ -67,7 +66,8 @@ QRectF Obstacle::boundingRect() const
     return QRectF(pos().x(), pos().y(), size(), size());
 }
 
-QRectF Obstacle::newBoundingRect(QPointF newPos) const{
+QRectF Obstacle::newBoundingRect(QPointF newPos) const
+{
 
     return QRectF(newPos.x(), newPos.y(), size(), size());
 }
@@ -100,19 +100,19 @@ void Obstacle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if ( event->buttons() & Qt::LeftButton )
     {
-        // Calculate the new position based on the cursor position
+        /* Calculate the new position based on the cursor position */
         QPointF delta = event->scenePos() - m_offset;
 
         QTransform transform;
-
+        /* transform ( or try ) position into original coordinates */
         transform.translate(delta.x(), delta.y());
         transform.rotate(-rotation());
 
         delta = transform.map(delta);
-
+        
         QPointF newPos = pos() + (delta * 0.45);
         if ( scene()->sceneRect().contains(
-                 newBoundingRect(newPos).translated(newPos)) )
+                 newBoundingRect(newPos).translated(newPos)) ) //! FIXME
         {
             setPos(newPos);
         }
