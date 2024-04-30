@@ -12,8 +12,7 @@ SOURCES += \
     robot.cpp \
     obstacle.cpp \
     simulation.cpp \
-    json_handler.cpp \
-    simview.cpp
+    json_handler.cpp 
 
 HEADERS += \
     mainwindow.h \
@@ -21,8 +20,7 @@ HEADERS += \
     robot.h \
     obstacle.h \
     simulation.h \
-    json_handler.h \
-    simview.h
+    json_handler.h 
 
 
 
