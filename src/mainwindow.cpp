@@ -1,40 +1,16 @@
 #include "mainwindow.h"
-// #include "ui_mainwindow.h"
-#include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    // , ui(new Ui::MainWindow)
-    , view(new SimView)
-    , simulation(new Simulation(view))
+    , simulation(new Simulation(this))
     , timer(new QTimer(this))
 {
-    setup();
-    // connect_buttons();
-
-    connect(timer, &QTimer::timeout, simulation->getScene().get(),
-            &QGraphicsScene::advance);
-}
-
-void MainWindow::setup()
-{
-    // simulation->getScene()->setSceneRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
-    view->setScene(simulation->getScene().get());
-    view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-    view->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
-    view->setContextMenuPolicy(Qt::ActionsContextMenu);
-
-    view->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    view->setMaximumWidth(1920);
-    view->setMinimumWidth(800);
-    view->setMaximumHeight(1080);
-    view->setMinimumHeight(600);
-
     setWindowTitle(tr("ICP24 - Robot collision simulation"));
-    setCentralWidget(view);
-
     setupActions();
     setupMenus();
+    setCentralWidget(simulation);
+    connect(timer, &QTimer::timeout, simulation->scene(),
+            &QGraphicsScene::advance);
 }
 
 void MainWindow::setupActions()
@@ -63,12 +39,12 @@ void MainWindow::setupActions()
     connect(saveLevelAction, &QAction::triggered, simulation,
             &Simulation::saveLevelLayout);
 
-    toggleSimAction = new QAction(tr("Play / Pause"), this);
+    toggleSimAction = new QAction(tr("&Play / Pause"), this);
     toggleSimAction->setShortcut(QKeySequence(tr("Space")));
     connect(toggleSimAction, &QAction::triggered, this,
             &MainWindow::toggleTimer);
 
-    clearSceneAction = new QAction(tr("Clear Scene"), this);
+    clearSceneAction = new QAction(tr("C&lear Scene"), this);
     clearSceneAction->setShortcut(QKeySequence(tr("Ctrl+L")));
     connect(clearSceneAction, &QAction::triggered, simulation,
             &Simulation::purgeScene);
@@ -77,7 +53,6 @@ void MainWindow::setupActions()
 void MainWindow::setupMenus()
 {
     file_menu = menuBar()->addMenu(tr("&File"));
-    // TODO
     file_menu->addAction(saveLevelAction);
     file_menu->addAction(loadLevelAction);
     file_menu->addAction(exitAction);
@@ -109,5 +84,4 @@ MainWindow::~MainWindow()
 {
     delete timer;
     delete simulation;
-    delete view;
 }

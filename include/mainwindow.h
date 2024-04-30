@@ -14,7 +14,6 @@
 
 #include "json_handler.h"
 #include "simulation.h"
-#include "simview.h"
 #include <QAction>
 #include <QGraphicsView>
 #include <QMainWindow>
@@ -55,12 +54,6 @@ class MainWindow : public QMainWindow
     ~MainWindow();
 
     /**
-     * \brief Sets all gui options
-     *
-     */
-    void setup();
-
-    /**
      * \brief Connects all used buttons
      *
      */
@@ -78,8 +71,6 @@ class MainWindow : public QMainWindow
     void setupActions();
 
   private:
-    // Ui::MainWindow *ui;
-    SimView    *view;
     Simulation *simulation;
     QTimer     *timer;
     QMenu      *file_menu;
