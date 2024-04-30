@@ -79,7 +79,7 @@ void Simulation::spawnObject(ObjectType type)
     {
         defaultSize = QRandomGenerator::global()->bounded(50, MAX_OBS_SIZE);
 
-        rotateByDegree = QRandomGenerator::global()->bounded(M_PI / 2);
+        rotateByDegree = QRandomGenerator::global()->bounded(90);
     }
 
     QPointF spawnPoint;

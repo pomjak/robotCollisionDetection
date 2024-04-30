@@ -191,6 +191,7 @@ void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void Robot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    Q_UNUSED(event);
     INFO << "Robot released...";
     update();
 }
@@ -203,6 +204,7 @@ void Robot::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
              newBoundingRect(newPos).translated(newPos)) )
     {
         DEBUG << "pos: " << mapToScene(pos());
+        
         setPos(newPos);
         DEBUG << "newPos: " << mapToScene(pos());
     }

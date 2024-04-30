@@ -29,7 +29,6 @@ class Obstacle : public QGraphicsItem
 {
   private:
     qreal   m_size;        /// Size of the obstacle
-    qreal   m_orientation; /// Angle the obstacle is facing
     QPointF m_offset;      /// offset used for mouse movements
 
   public:
@@ -101,6 +100,16 @@ class Obstacle : public QGraphicsItem
     QRectF boundingRect() const override;
 
     /**
+     * \brief Returns the bounding rectangle of the obstacle based on new
+     * position.
+     *
+     * \param QPointF new position
+     *
+     * \return The bounding rectangle of the obstacle.
+     */
+    QRectF newBoundingRect(QPointF newPos) const;
+
+    /**
      * \brief Paints the obstacle on the graphics scene.
      *
      * \param painter The QPainter object used for painting.
@@ -110,21 +119,9 @@ class Obstacle : public QGraphicsItem
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget) override;
 
-    QPainterPath shape() const override;
-
   protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 
-  private:
-    QPointF center() const;
-    QPointF midTop() const;
-    QPointF midBottom() const;
-    QPointF topLeft() const;
-    QPointF topRight() const;
-    QPointF bottomLeft() const;
-    QPointF bottomRight() const;
-    qreal   dx(qreal angle_mod = 0) const;
-    qreal   dy(qreal angle_mod = 0) const;
 };
