@@ -42,7 +42,7 @@ void Simulation::printLists()
     for ( const auto &obs : m_obstacle_list )
     {
         DEBUG << obs->pos().x() << obs->pos().y();
-        DEBUG << obs->getSize();
+        DEBUG << obs->size();
     }
 
     for ( const auto &rob : m_robot_list )
@@ -67,8 +67,7 @@ void Simulation::spawnObject(ObjectType type)
 
     else if ( type == ObjectType::OBSTACLE )
     {
-        defaultSize =
-            QRandomGenerator::global()->bounded(50, DEF_OBSTACLE_SIZE);
+        defaultSize = QRandomGenerator::global()->bounded(50, MAX_OBS_SIZE);
 
         rotateByDegree = QRandomGenerator::global()->bounded(M_PI / 2);
     }

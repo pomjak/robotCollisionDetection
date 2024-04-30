@@ -1,5 +1,6 @@
 #include "robot.h"
 #include <QWidget>
+#include <QtGlobal>
 
 Robot::Robot()
     : QObject()
@@ -37,8 +38,8 @@ Robot::Robot(QJsonObject &json)
     , m_detection_dist(json["detection_dist"].toDouble())
 {
     /* Set the initial position of the robot */
-    qreal pos_x = json["position_x"].toDouble();
-    qreal pos_y = json["position_y"].toDouble();
+    qreal pos_x = qBound(0.0, json["x"].toDouble(), (MAX_W - size()));
+    qreal pos_y = qBound(0.0, json["y"].toDouble(), (MAX_H - size()));
 
     setPos(pos_x, pos_y);
     setFlag(ItemIsMovable);
