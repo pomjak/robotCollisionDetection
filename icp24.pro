@@ -24,7 +24,6 @@ HEADERS += \
 
 
 FORMS += \
-    mainwindow.ui \
     obstacle-properties-dialog.ui \
     robot-properties-dialog.ui
 
