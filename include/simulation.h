@@ -57,7 +57,6 @@ class Simulation : public QGraphicsView
   private:
     QList<Robot *>    m_robot_list;    /* list of robots               */
     QList<Obstacle *> m_obstacle_list; /* list of obstacles            */
-    QGraphicsScene   *m_scene;         /* pointer to scene             */
     JsonHandler       json;            /* instance of json interface   */
     State             m_state;         /* state of simulation          */
 

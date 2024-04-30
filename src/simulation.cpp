@@ -5,13 +5,13 @@ using std::shared_ptr, std::make_shared;
 
 Simulation::Simulation(QWidget *parent)
     : QGraphicsView(parent)
-    , m_scene(new QGraphicsScene(parent))
     , json(robotList(), obstacleList())
     , m_state{State::STOPPED}
 {
-    m_scene->setSceneRect(QRectF(QPointF(0, 0), QPointF(1920, 1080)));
+    QGraphicsScene *newscene = new QGraphicsScene(this);
+    newscene->setSceneRect(QRectF(QPointF(0, 0), QPointF(1920, 1080)));
     setTransformationAnchor(AnchorUnderMouse);
-    setScene(m_scene);
+    setScene(newscene);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
     setContextMenuPolicy(Qt::ActionsContextMenu);
@@ -28,13 +28,13 @@ QList<Obstacle *> *Simulation::obstacleList() { return &m_obstacle_list; }
 void Simulation::addRobot(Robot *robot)
 {
     m_robot_list.push_back(robot);
-    m_scene->addItem(robot);
+    scene()->addItem(robot);
 }
 
 void Simulation::addObstacle(Obstacle *obstacle)
 {
     m_obstacle_list.push_back(obstacle);
-    m_scene->addItem(obstacle);
+    scene()->addItem(obstacle);
 }
 
 void Simulation::printLists()
@@ -85,15 +85,15 @@ void Simulation::spawnObject(ObjectType type)
 
         /* Check if there are any items at the spawn point */
         QList<QGraphicsItem *> itemsAtSpawnPoint =
-            m_scene->items(sceneSpawnArea, Qt::IntersectsItemShape);
+            scene()->items(sceneSpawnArea, Qt::IntersectsItemShape);
 
         /* If there are no items at the spawn point, exit the loop */
         if ( itemsAtSpawnPoint.isEmpty() ) break;
     }
     while ( true );
-    DEBUG << m_scene->sceneRect();
+    DEBUG << scene()->sceneRect();
     DEBUG << "scene contains spawn: "
-          << m_scene->sceneRect().contains(spawnPoint);
+          << scene()->sceneRect().contains(spawnPoint);
     if ( type == ObjectType::ROBOT )
     {
         Robot *robot = new Robot(spawnPoint);
@@ -123,7 +123,7 @@ void Simulation::loadLevelLayout()
     }
     else
     {
-        m_scene->clear();
+        scene()->clear();
         m_robot_list.clear();
         m_obstacle_list.clear();
         json.load(fname);
@@ -131,13 +131,13 @@ void Simulation::loadLevelLayout()
         for ( auto &obj : m_robot_list )
         {
             DEBUG << "Adding robot #" << ++i;
-            m_scene->addItem(obj);
+            scene()->addItem(obj);
         }
         i = 0;
         for ( auto &obj : m_obstacle_list )
         {
             DEBUG << "Adding obstacle #" << ++i;
-            m_scene->addItem(obj);
+            scene()->addItem(obj);
         }
     }
 }
@@ -164,7 +164,7 @@ void Simulation::deleteObject()
 
 void Simulation::purgeScene()
 {
-    m_scene->clear();
+    scene()->clear();
     m_robot_list.clear();
     m_obstacle_list.clear();
 }
