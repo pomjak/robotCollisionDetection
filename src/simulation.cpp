@@ -49,9 +49,9 @@ void Simulation::printLists()
     {
         DEBUG << rob->rotation();
         DEBUG << rob->pos().x() << rob->pos().y();
-        DEBUG << rob->getRotation();
+        DEBUG << rob->rotateBy();
         DEBUG << rob->size();
-        DEBUG << rob->getSpeed();
+        DEBUG << rob->speed();
     }
 }
 

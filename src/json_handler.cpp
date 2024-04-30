@@ -4,12 +4,12 @@
 QJsonObject JsonHandler::saveToJson(Robot *robot) const
 {
     QJsonObject json;
-    json["orientation"]    = robot->getAngle();
-    json["speed"]          = robot->getSpeed();
-    json["rotation"]       = robot->getRotation();
+    json["orientation"]    = robot->angle();
+    json["speed"]          = robot->speed();
+    json["rotation"]       = robot->rotateBy();
     json["position_x"]     = robot->pos().x();
     json["position_y"]     = robot->pos().y();
-    json["detection_dist"] = robot->getDetectDistance();
+    json["detection_dist"] = robot->detectionDistance();
     return json;
 }
 
