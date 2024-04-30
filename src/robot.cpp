@@ -1,3 +1,13 @@
+/**
+ * \file robot.cpp
+ * \author Pomsar Jakub (xpomsa00@stud.fit.vutbr.cz)
+ * \author Simon Cagala <xcagal00@stud.fit.vutbr.cz>
+ * \version 0.1
+ * \date 2024-04-29
+ *
+ * @copyright Copyright (c) 2024
+ *
+ */
 #include "robot.h"
 #include <QWidget>
 #include <QtGlobal>
@@ -136,6 +146,8 @@ QPolygonF Robot::detectionArea() const
 
 void Robot::advance(int phase)
 {
+    /* advance() is called twice: once with step == 0, indicating that item  */
+    /* are about to advance, and then with step == 1 for the actual advance. */
     if ( !phase ) return;
 
     /* Move the robot */
@@ -161,7 +173,7 @@ void Robot::advance(int phase)
                 return;
             }
         }
-
+        /* set new position if no item is in detection area */
         setPos(newPos);
     }
     else

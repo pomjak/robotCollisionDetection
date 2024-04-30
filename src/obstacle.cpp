@@ -1,3 +1,13 @@
+/**
+ * \file obstacle.cpp
+ * \author Pomsar Jakub (xpomsa00@stud.fit.vutbr.cz)
+ * \author Simon Cagala <xcagal00@stud.fit.vutbr.cz>
+ * \version 0.1
+ * \date 2024-04-29
+ *
+ * @copyright Copyright (c) 2024
+ *
+ */
 #include "obstacle.h"
 
 Obstacle::Obstacle()
@@ -35,6 +45,7 @@ Obstacle::Obstacle(QJsonObject &json)
     qreal orient =
         qBound(0.0, json["orientation"].toDouble(), 360.0); // ? TODO
     this->setPos(pos_x, pos_y);
+    /* find center and rotate if needed */
     setTransformOriginPoint(boundingRect().center());
     setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
              QGraphicsItem::ItemSendsGeometryChanges);
