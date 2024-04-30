@@ -161,62 +161,6 @@ void Simulation::saveLevelLayout()
     else { json.save(fname); }
 }
 
-void Simulation::spawnObject(ObjectType type)
-{
-    qreal defaultSize;
-    qreal rotateByDegree;
-
-    if ( type == ObjectType::ROBOT ) { defaultSize = DEF_ROBOT_SIZE; }
-
-    else if ( type == ObjectType::OBSTACLE )
-    {
-        /* generate random size and rotation of an obstacle  */
-        defaultSize =
-            QRandomGenerator::global()->bounded(50, DEF_OBSTACLE_SIZE);
-
-        rotateByDegree = QRandomGenerator::global()->bounded(90);
-    }
-
-    QPointF spawnPoint;
-    QSizeF  objectSize;
-    do {
-        /* generate random point in the view */
-        spawnPoint = {QRandomGenerator::global()->bounded(VIEW_WIDTH),
-                      QRandomGenerator::global()->bounded(VIEW_HEIGHT)};
-
-        objectSize.setWidth(defaultSize);
-        objectSize.setHeight(defaultSize);
-
-        /* find an area of object */
-        QRectF spawnArea(spawnPoint, objectSize);
-
-        /* and place it into the scene */
-        QRectF sceneSpawnArea = spawnArea.translated(spawnPoint);
-
-        /* Check if there are any items at the spawn point */
-        QList<QGraphicsItem *> itemsAtSpawnPoint =
-            scene->items(sceneSpawnArea, Qt::IntersectsItemShape);
-
-        /* If there are no items at the spawn point, exit the loop */
-        if ( itemsAtSpawnPoint.isEmpty() ) break;
-    }
-    while ( true );
-
-    if ( type == ObjectType::ROBOT )
-    {
-        Robot *robot = new Robot(spawnPoint);
-        addRobot(robot);
-        INFO << "ROBOT SPAWNED at" << spawnPoint;
-    }
-    else if ( type == ObjectType::OBSTACLE )
-    {
-        Obstacle *obstacle =
-            new Obstacle(spawnPoint, defaultSize, rotateByDegree);
-        addObstacle(obstacle);
-        INFO << "Obstacle SPAWNED at" << spawnPoint;
-    }
-}
-
 void Simulation::spawnRobot() { spawnObject(ObjectType::ROBOT); }
 
 void Simulation::spawnObstacle() { spawnObject(ObjectType::OBSTACLE); }
