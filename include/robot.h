@@ -10,13 +10,15 @@
 
 #include "debug.h"
 #include "obstacle.h"
+#include <QCursor>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QTransform>
 #include <QtCore>
 
-#define DEF_ROBOT_SIZE  50.0    /* Default robot parameters */
+#define DEF_ROBOT_SIZE  50.0 /* Default robot parameters */
 #define DEF_DETECT_DIST 25.0
 #define DEF_ROTATE_BY   0.1
 #define DEF_SPEED       2.0
@@ -29,14 +31,16 @@ class Robot
     : public QObject
     , public QGraphicsItem
 {
+    // friend class Simulation;
     Q_OBJECT
+
   private:
-    double m_size;           /// Size of the robot (diameter)
-    double m_angle;          /// Current angle of the robot
-    double m_speed;          /// Speed of the robot
-    double m_rotate_by;      /// Angle to rotate by when detecting a collision
-    double m_detection_dist; /// Maximum distance from the robot to detect
-                             /// collisions
+    double  m_size;           /// Size of the robot (diameter)
+    double  m_angle;          /// Current angle of the robot
+    double  m_speed;          /// Speed of the robot
+    double  m_rotate_by;      /// Angle to rotate by when detecting a collision
+    double  m_detection_dist; /// Maximum collision detec distance
+    QPointF m_offset;
 
   public:
     /**
@@ -69,7 +73,7 @@ class Robot
     Robot(QJsonObject &json);
 
     /**
-     * \brief Destroy the \c Robot
+     * \brief Destroy the Robot
      **/
     ~Robot(){};
 
@@ -77,43 +81,61 @@ class Robot
      * \brief
      * \return double Size of the robot (diameter)
      **/
-    double size() const { return m_size; }
+    qreal size() const;
 
     /**
      * \brief current angle of the robot
      * \return double angle (rad)
      **/
-    double getAngle() const { return m_angle; }
+    qreal angle() const;
 
     /**
      * \brief Get the speed of the robot
      * \return double
      **/
-    double getSpeed() const { return m_speed; }
+    qreal speed() const;
 
     /**
      * \brief Get the angle an autonomous robot rotates by to avoid collision
      * \return double
      **/
-    double getRotation() const { return m_rotate_by; }
+    qreal rotateBy() const;
 
     /**
      * \brief Get the Detect Distance object
      * \return double
      **/
-    double getDetectDistance() const { return m_detection_dist; }
+    qreal detectionDistance() const;
+
+    /**
+     * \brief Set the size of the robot
+     * \param _size
+     **/
+    void setSize(qreal _size);
 
     /**
      * \brief Sets the current angle of the robot
      * \param _dir
      **/
-    void setAngle(double _dir) { m_angle = _dir; }
+    void setAngle(qreal _dir);
 
     /**
      * \brief Set the speed of the robot
      * \param _speed
      **/
-    void setSpeed(double _speed) { m_speed = _speed; }
+    void setSpeed(qreal _speed);
+
+    /**
+     * \brief Sets the angle a robot rotates by upon detection a collision
+     * \param rotate_by
+     **/
+    void setRotateBy(qreal rotate_by);
+
+    /**
+     * \brief Sets max distance in front of a robot scanned for collisions
+     * \param dist
+     **/
+    void setDetectionDistance(qreal dist);
 
     /**
      * \brief paints the contents of an item in local coordinates
@@ -125,7 +147,13 @@ class Robot
                QWidget *widget) override;
 
     /**
-     * \brief
+     * \brief The shape to draw in scene
+     * \return QPainterPath
+     **/
+    QPainterPath shape() const override;
+
+    /**
+     * \brief bouding rectangle of the robot
      * \return QRectF
      **/
     QRectF boundingRect() const override;
@@ -140,10 +168,41 @@ class Robot
     QRectF newBoundingRect(QPointF newPos) const;
 
     /**
-     * \brief
-     * \return QPainterPath
+     * \brief get the radius of the robot
+     * \return qreal
      **/
-    QPainterPath shape() const override;
+    qreal radius() const;
+
+    /**
+     * \brief Convenience function equivalent to boundingRect.center()
+     * \return QPointF
+     **/
+    QPointF center() const;
+
+    /**
+     * \brief A point on the left side of the center line (1Pi on the unit
+     * circle)
+     * \return QPointF
+     **/
+    QPointF leftBumper() const;
+
+    /**
+     * \brief A point on the right side of the center line (0 on Unit Circle)
+     * \return QPointF
+     **/
+    QPointF rightBumper() const;
+
+    /**
+     * \brief Furthest point from the center where collisions are detected
+     * \return QPointF
+     **/
+    QPointF detectionPoint() const;
+
+    /**
+     * \brief The area in front of the robot which scans for collisions
+     * \return QRectF detection area
+     **/
+    QPolygonF detectionArea() const;
 
     /**
      * \brief Called by GraphicsScene::advance slot; animates the object
@@ -152,55 +211,8 @@ class Robot
      **/
     void advance(int phase) override;
 
-    /**
-     * \brief
-     * \return qreal
-     **/
-    qreal radius() const { return size() / 2; }
-
-    /**
-     * \brief Convenience function equivalent to boundingRect.center()
-     * \return QPointF
-     **/
-    QPointF center() const { return boundingRect().center(); }
-
-    /**
-     * \brief A point on the peri
-     * \return QPointF
-     **/
-    QPointF leftBumper() const
-    {
-        return QPointF(
-            center().x() + radius() * ::cos(getAngle() - (M_PI / 2)),
-            center().y() + radius() * ::sin(getAngle() - (M_PI / 2)));
-    }
-
-    /**
-     * \brief
-     * \return QPointF
-     **/
-    QPointF rightBumper() const
-    {
-        return QPointF(
-            center().x() + radius() * ::cos(getAngle() + (M_PI / 2)),
-            center().y() + radius() * ::sin(getAngle() + (M_PI / 2)));
-    }
-
-    /**
-     * \brief
-     * \return QPointF
-     **/
-    QPointF detectionPoint() const
-    {
-        return QPointF(((center().x() + radius() * ::cos(getAngle())) +
-                        (getDetectDistance() * ::cos(getAngle()))),
-                       ((center().y() + radius() * ::sin(getAngle())) +
-                        (getDetectDistance() * ::sin(getAngle()))));
-    }
-
-    /**
-     * \brief
-     * \return QRectF detection area
-     **/
-    QPolygonF detectionArea() const;
+  protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 };

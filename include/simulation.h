@@ -16,14 +16,16 @@
 #include "obstacle.h"
 #include "robot.h"
 #include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QKeyEvent>
 #include <QList>
+#include <QWidget>
 #include <iostream>
 #include <memory>
 
-#define VIEW_WIDTH  444.0 /* view size */
-#define VIEW_HEIGHT 384.0
+#define SCENE_WIDTH  940.0
+#define SCENE_HEIGHT 860.0
 
-using std::shared_ptr;
 /**
  * \brief Enum class representing the state of the simulation.
  */
@@ -49,16 +51,14 @@ enum class ObjectType
  * including robots and obstacles. It also manages the simulation's state,
  * timing, and interaction with a QGraphicsScene for visualization.
  */
-class Simulation : public QObject
+class Simulation : public QGraphicsView
 {
     Q_OBJECT
   private:
-    QList<Robot *>             robotList;    /* list of robots               */
-    QList<Obstacle *>          obstacleList; /* list of obstacles            */
-    shared_ptr<QGraphicsScene> scene;        /* pointer to scene             */
-    JsonHandler                json;         /* instance of json interface   */
-    double                     time;         /* time of simulation           */
-    State                      state;        /* state of simulation          */
+    QList<Robot *>    m_robot_list;    /* list of robots               */
+    QList<Obstacle *> m_obstacle_list; /* list of obstacles            */
+    JsonHandler       json;            /* instance of json interface   */
+    State             m_state;         /* state of simulation          */
 
   public:
     /**
@@ -66,7 +66,8 @@ class Simulation : public QObject
      *
      * This constructor initializes a new instance of the Simulation class.
      */
-    Simulation();
+
+    Simulation(QWidget *parent = nullptr);
 
     /**
      * \brief Destroys the Simulation object.
@@ -84,10 +85,7 @@ class Simulation : public QObject
      *
      * \return A pointer to the list of Robot objects.
      */
-    QList<Robot *> *getRobotList() const
-    {
-        return new QList<Robot *>(robotList);
-    }
+    QList<Robot *> *robotList();
 
     /**
      * \brief Retrieves a pointer to the list of obstacles.
@@ -97,24 +95,17 @@ class Simulation : public QObject
      *
      * \return A pointer to the list of Robot objects.
      */
-    QList<Obstacle *> *getObstacleList() const
-    {
-        return new QList<Obstacle *>(obstacleList);
-    }
+    QList<Obstacle *> *obstacleList();
 
     /**
      * \brief Adds a robot object to the simulation.
      *
-     * This function adds a robot object to both the internal list of robots
-     * and the graphics scene of the simulation.
+     * This function adds a robot object to both the internal list of
+     * robots and the graphics scene of the simulation.
      *
      * \param robot A pointer to the robot object to be added.
      */
-    void addRobot(Robot *robot)
-    {
-        robotList.push_back(robot);
-        scene->addItem(robot);
-    }
+    void addRobot(Robot *robot);
 
     /**
      * \brief Adds a obstacle object to the simulation.
@@ -124,11 +115,7 @@ class Simulation : public QObject
      *
      * \param obstacle A pointer to the obstacle object to be added.
      */
-    void addObstacle(Obstacle *obstacle)
-    {
-        obstacleList.push_back(obstacle);
-        scene->addItem(obstacle);
-    }
+    void addObstacle(Obstacle *obstacle);
 
     /**
      * \brief [Debug] Prints the lists of robots and obstacles.
@@ -139,23 +126,13 @@ class Simulation : public QObject
     void printLists();
 
     /**
-     * \brief Retrieves a shared pointer to the graphics scene.
-     *
-     * This function returns a shared pointer to the QGraphicsScene object
-     * used in the simulation.
-     *
-     * \return A shared pointer to the QGraphicsScene object.
-     */
-    shared_ptr<QGraphicsScene> getScene() const { return scene; }
-
-    /**
      * \brief Retrieves the current state of the simulation.
      *
      * This function returns the current state of the simulation.
      *
      * \return The state of the simulation.
      */
-    State getState() const { return state; }
+    State getState() const;
 
     /**
      * \brief Sets the state of the simulation.
@@ -164,7 +141,7 @@ class Simulation : public QObject
      *
      * \param _state The state to be set.
      */
-    void setState(State _state) { state = _state; }
+    void setState(State _state);
 
     /**
      * \brief Creates an object at a random available place in the simulation.
@@ -222,4 +199,34 @@ class Simulation : public QObject
      * of the simulation.
      */
     void purgeScene();
+
+    /**
+     * \brief Zooms in the view
+     **/
+    void zoomIn();
+
+    /**
+     * \brief Zooms out the view
+     **/
+    void zoomOut();
+
+  protected:
+    /**
+     * \brief Handle '+/-' keys for zooming
+     * \param event Keypress event
+     **/
+    void keyPressEvent(QKeyEvent *event) override;
+
+    /**
+     * \brief Scales the view of the scene
+     * \param factor Scale factor
+     **/
+    void scaleView(qreal factor);
+
+    /**
+     * \brief Draw the background of the view
+     * \param painter
+     * \param rect
+     **/
+    void drawBackground(QPainter *painter, const QRectF &rect) override;
 };

@@ -9,62 +9,69 @@
  *
  */
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-    , simulation(new Simulation)
+    , simulation(new Simulation(this))
+    , timer(new QTimer(this))
 {
-
-    setup();
-    connect_buttons();
-
-    /* connect timer timeout event to start simulation */
-    connect(timer, &QTimer::timeout, simulation->getScene().get(),
+    setWindowTitle(tr("ICP24 - Robot collision simulation"));
+    setupActions();
+    setupMenus();
+    setCentralWidget(simulation);
+    connect(timer, &QTimer::timeout, simulation->scene(),
             &QGraphicsScene::advance);
 }
 
-void MainWindow::setup()
+void MainWindow::setupActions()
 {
-    ui->setupUi(this);
-    ui->graphicsView->setScene(simulation->getScene().get());
-    ui->graphicsView->setRenderHints(QPainter::Antialiasing |
-                                     QPainter::TextAntialiasing);
-    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    // ui->graphicsView->setFixedSize(SCENE_WIDTH, SCENE_HEIGHT);
-    ui->graphicsView->scene()->setSceneRect(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
-    ui->graphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    // ui->graphicsView->fitInView(ui->graphicsView->scene()->sceneRect(),
-    // Qt::KeepAspectRatio);
-    ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
-    ui->graphicsView->viewport()->update();
-    ui->graphicsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    ui->graphicsView->setCacheMode(QGraphicsView::CacheBackground);
-    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    exitAction = new QAction(tr("E&xit"), this);
+    exitAction->setShortcut(QKeySequence(tr("Ctrl+Q")));
+    connect(exitAction, &QAction::triggered, this, &QWidget::close);
 
-    ui->graphicsView->setWindowTitle(tr("ICP - 24"));
+    addRobotAction = new QAction(tr("Add Robot"), this);
+    addRobotAction->setShortcut(QKeySequence(tr("Ctrl+N")));
+    connect(addRobotAction, &QAction::triggered, simulation,
+            &Simulation::spawnRobot);
+
+    addObstacleAction = new QAction(tr("Add Obstacle"), this);
+    addObstacleAction->setShortcut(QKeySequence(tr("Ctrl+M")));
+    connect(addObstacleAction, &QAction::triggered, simulation,
+            &Simulation::spawnObstacle);
+
+    loadLevelAction = new QAction(tr("L&oad Level"), this);
+    loadLevelAction->setShortcut(QKeySequence(tr("Ctrl+O")));
+    connect(loadLevelAction, &QAction::triggered, simulation,
+            &Simulation::loadLevelLayout);
+
+    saveLevelAction = new QAction(tr("&Save Level"), this);
+    saveLevelAction->setShortcut(QKeySequence(tr("Ctrl+S")));
+    connect(saveLevelAction, &QAction::triggered, simulation,
+            &Simulation::saveLevelLayout);
+
+    toggleSimAction = new QAction(tr("&Play / Pause"), this);
+    toggleSimAction->setShortcut(QKeySequence(tr("Space")));
+    connect(toggleSimAction, &QAction::triggered, this,
+            &MainWindow::toggleTimer);
+
+    clearSceneAction = new QAction(tr("C&lear Scene"), this);
+    clearSceneAction->setShortcut(QKeySequence(tr("Ctrl+L")));
+    connect(clearSceneAction, &QAction::triggered, simulation,
+            &Simulation::purgeScene);
 }
 
-void MainWindow::connect_buttons()
+void MainWindow::setupMenus()
 {
-    /* Buttons */
-    connect(ui->importButton, &QPushButton::clicked, simulation,
-            &Simulation::loadLevelLayout);
-    connect(ui->exportButton, &QPushButton::clicked, simulation,
-            &Simulation::saveLevelLayout);
-    connect(ui->addRobotButton, &QPushButton::clicked, simulation,
-            &Simulation::spawnRobot);
-    connect(ui->addObstacleButton, &QPushButton::clicked, simulation,
-            &Simulation::spawnObstacle);
-    connect(ui->deleteObjectButton, &QPushButton::clicked, simulation,
-            &Simulation::deleteObject);
-    connect(ui->deleteAllButton, &QPushButton::clicked, simulation,
-            &Simulation::purgeScene);
-    connect(ui->StartStopSimulationButton, &QPushButton::clicked, this,
-            &MainWindow::toggleTimer);
+    file_menu = menuBar()->addMenu(tr("&File"));
+    file_menu->addAction(saveLevelAction);
+    file_menu->addAction(loadLevelAction);
+    file_menu->addAction(exitAction);
+
+    edit_menu = menuBar()->addMenu(tr("&Simulation"));
+    edit_menu->addAction(toggleSimAction);
+    edit_menu->addAction(addRobotAction);
+    edit_menu->addAction(addObstacleAction);
+    edit_menu->addAction(clearSceneAction);
 }
 
 void MainWindow::toggleTimer()
@@ -85,6 +92,6 @@ void MainWindow::toggleTimer()
 
 MainWindow::~MainWindow()
 {
+    delete timer;
     delete simulation;
-    delete ui;
 }

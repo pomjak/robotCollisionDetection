@@ -2,7 +2,7 @@
  * \file mainwindow.h
  * \author Pomsar Jakub (xpomsa00@stud.fit.vutbr.cz)
  * \author Simon Cagala <xcagal00@stud.fit.vutbr.cz>
- * \brief Header file  
+ * \brief Header file
  * \version 0.1
  * \date 2024-04-28
  *
@@ -14,13 +14,15 @@
 
 #include "json_handler.h"
 #include "simulation.h"
+#include <QAction>
+#include <QGraphicsView>
 #include <QMainWindow>
+#include <QMenu>
+#include <QMenuBar>
 #include <QTimer>
 #include <memory>
 
-#define SCENE_WIDTH  940        /* Scene size */
-#define SCENE_HEIGHT 820
-#define MSEC         1000 / 60  /* Ticks for timer in msec */
+#define MSEC 1000 / 60 /* Ticks for timer in msec */
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -31,7 +33,7 @@ QT_END_NAMESPACE
 
 /**
  * \brief Interface class for Qt's gui
- * 
+ *
  */
 class MainWindow : public QMainWindow
 {
@@ -40,39 +42,52 @@ class MainWindow : public QMainWindow
   public:
     /**
      * \brief Construct a new Main Window object
-     * 
-     * \param parent 
+     *
+     * \param parent
      */
     MainWindow(QWidget *parent = nullptr);
 
     /**
      * \brief Destroy the Main Window object
-     * 
+     *
      */
     ~MainWindow();
 
     /**
-     * \brief Sets all gui options
-     * 
+     * \brief Connects all used buttons
+     *
      */
-    void    setup();
+    void connect_buttons();
 
     /**
-     * \brief Connects all used buttons
-     * 
-     */
-    void    connect_buttons();
+     * \brief Creates toolbar menus
+     **/
+    void setupMenus();
 
-    QTimer *timer = new QTimer(this); 
+    /**
+     * \brief Creates actions for toolbar buttons
+     *
+     **/
+    void setupActions();
 
   private:
-    Ui::MainWindow *ui;
-    Simulation     *simulation;
+    Simulation *simulation;
+    QTimer     *timer;
+    QMenu      *file_menu;
+    QMenu      *edit_menu;
+    QAction    *toggleSimAction;
+    QAction    *addRobotAction;
+    QAction    *addObstacleAction;
+    QAction    *loadLevelAction;
+    QAction    *saveLevelAction;
+    QAction    *clearSceneAction;
+    QAction    *exitAction;
 
   public slots:
     /**
-     * \brief Toggles timer [ON/OFF] and sets simulation state based on timer
-     * 
+     * \brief Toggles timer [ON/OFF] and sets simulation state based on
+     * timer
+     *
      */
     void toggleTimer();
 };

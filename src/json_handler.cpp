@@ -14,23 +14,21 @@
 QJsonObject JsonHandler::saveToJson(Robot *robot) const
 {
     QJsonObject json;
-    /* save parameters to json object */
-    json["orientation"]    = robot->getAngle();
-    json["speed"]          = robot->getSpeed();
-    json["rotation"]       = robot->getRotation();
-    json["position_x"]     = robot->pos().x();
-    json["position_y"]     = robot->pos().y();
-    json["detection_dist"] = robot->getDetectDistance();
+    json["orientation"]    = robot->angle();
+    json["speed"]          = robot->speed();
+    json["rotation"]       = robot->rotateBy();
+    json["x"]              = robot->pos().x();
+    json["y"]              = robot->pos().y();
+    json["detection_dist"] = robot->detectionDistance();
     return json;
 }
 
 QJsonObject JsonHandler::saveToJson(Obstacle *obs) const
 {
     QJsonObject json;
-    /* save parameters to json object */
-    json["size"]        = obs->getSize();
-    json["position_x"]  = obs->pos().x();
-    json["position_y"]  = obs->pos().y();
+    json["size"]        = obs->size();
+    json["x"]           = obs->pos().x();
+    json["y"]           = obs->pos().y();
     json["orientation"] = obs->rotation();
 
     return json;

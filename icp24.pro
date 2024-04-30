@@ -12,7 +12,7 @@ SOURCES += \
     robot.cpp \
     obstacle.cpp \
     simulation.cpp \
-    json_handler.cpp
+    json_handler.cpp 
 
 HEADERS += \
     mainwindow.h \
@@ -20,11 +20,9 @@ HEADERS += \
     robot.h \
     obstacle.h \
     simulation.h \
-    json_handler.h
+    json_handler.h 
 
 
-FORMS += \
-    mainwindow.ui
 
 CONFIG(debug, debug|release) {
     TARGET = icp24_debug
