@@ -32,14 +32,16 @@ Robot::Robot(QPointF _position)
 
 Robot::Robot(QJsonObject &json)
     : m_size(DEF_ROBOT_SIZE)
-    , m_angle(json["orientation"].toDouble())
-    , m_speed(json["speed"].toDouble())
-    , m_rotate_by(json["rotation"].toDouble())
-    , m_detection_dist(json["detection_dist"].toDouble())
 {
     /* Set the initial position of the robot */
     qreal pos_x = qBound(0.0, json["x"].toDouble(), (MAX_W - size()));
     qreal pos_y = qBound(0.0, json["y"].toDouble(), (MAX_H - size()));
+    /* ? TODO Possibly change min/max values */
+    m_angle     = qBound(0.0, json["orientation"].toDouble(), 360.0);
+    m_speed     = qBound(1.0, json["speed"].toDouble(), 10.0);
+    m_rotate_by = qBound(1.0, json["rotation"].toDouble(), 90.0);
+    m_detection_dist =
+        qBound(DEF_DETECT_DIST, json["detection_dist"].toDouble(), 100.0);
 
     setPos(pos_x, pos_y);
     setFlag(ItemIsMovable);
