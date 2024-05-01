@@ -20,6 +20,7 @@ Simulation::Simulation(QWidget *parent)
 {
     QGraphicsScene *newscene = new QGraphicsScene(this);
     newscene->setSceneRect(QRectF(QPointF(0, 0), QPointF(1920, 1080)));
+    DEBUG << sceneRect();
     setTransformationAnchor(AnchorUnderMouse);
     setScene(newscene);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
@@ -169,11 +170,9 @@ void Simulation::spawnRobot() { spawnObject(ObjectType::ROBOT); }
 
 void Simulation::spawnObstacle() { spawnObject(ObjectType::OBSTACLE); }
 
-void Simulation::deleteObject()
-{
-    // TODO
-    return;
-}
+void Simulation::deleteRobot() { deleteObject(ObjectType::ROBOT); }
+
+void Simulation::deleteObstacle() { deleteObject(ObjectType::OBSTACLE); }
 
 void Simulation::purgeScene()
 {
@@ -230,4 +229,35 @@ void Simulation::drawBackground(QPainter *painter, const QRectF &rect)
     painter->setBrush(Qt::darkGreen);
     painter->setPen(Qt::black);
     painter->drawText(msgRect, message);
+}
+
+void Simulation::deleteObject(ObjectType type)
+{
+    QList<QGraphicsItem *>                items = scene()->selectedItems();
+    QMutableListIterator<QGraphicsItem *> it(items);
+    if ( type == ObjectType::ROBOT )
+    {
+        while ( it.hasNext() )
+        {
+            Robot *robot = dynamic_cast<Robot *>(it.next());
+            if ( robot )
+            {
+                delete robot;
+                it.remove();
+            }
+        }
+    }
+    else if ( type == ObjectType::OBSTACLE )
+    {
+        while ( it.hasNext() )
+        {
+            Obstacle *obs = dynamic_cast<Obstacle *>(it.next());
+            if ( obs )
+            {
+                delete obs;
+                it.remove();
+            }
+        }
+    }
+    qDeleteAll(items);
 }

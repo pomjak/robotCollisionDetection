@@ -78,6 +78,8 @@ class MainWindow : public QMainWindow
     QAction    *toggleSimAction;
     QAction    *addRobotAction;
     QAction    *addObstacleAction;
+    QAction    *deleteRobotAction;
+    QAction    *deleteObstacleAction;
     QAction    *loadLevelAction;
     QAction    *saveLevelAction;
     QAction    *clearSceneAction;
