@@ -161,7 +161,6 @@ void Robot::advance(int phase)
         /* Rotate if the detection area is partially or completely outside  */
         /* the scene                                                        */
         setAngle(angle() + rotateBy());
-        INFO << "rotating away from scene rect";
         update();
         return;
     }

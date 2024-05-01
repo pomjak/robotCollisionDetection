@@ -212,9 +212,6 @@ void Simulation::drawBackground(QPainter *painter, const QRectF &rect)
 
     // painter->fillRect(rect, Qt::darkGray);  
     QRectF sr = scene()->sceneRect();
-    DEBUG << this->sceneRect();
-    DEBUG << scene()->sceneRect();
-
     painter->setBrush(Qt::NoBrush);
     painter->drawRect(sr);
     QRectF  msgRect(sr.left() + 785, sr.top() + 390, 350, 150);
