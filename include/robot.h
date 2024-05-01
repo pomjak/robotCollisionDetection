@@ -227,15 +227,24 @@ class Robot
     void rotate();
 
     /**
-     * \brief 
+     * \brief returns true when detection area of robot is out of scene 
      * 
-     * \return true 
-     * \return false 
+     * \return true out of the scene
+     * \return false within the scene
      */
     bool isOutOfBounds();
 
+    /**
+     * \brief Get the Items In Detection Zone 
+     * 
+     * \return QList<QGraphicsItem *> 
+     */
     QList<QGraphicsItem *> getItemsInDetectZone();
 
+    /**
+     * \brief move robot to new position based on its parameters
+     * 
+     */
     void move();
 
     /**

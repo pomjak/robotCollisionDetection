@@ -227,6 +227,7 @@ void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void Robot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    Q_UNUSED(event);
     INFO << "Robot released...";
     update();
 }
@@ -245,6 +246,8 @@ void Robot::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void Robot::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
+    Q_UNUSED(event);
+
     RobotPropertiesDialog dialog(this);
     dialog.exec();
 }
