@@ -129,17 +129,6 @@ class Obstacle : public QGraphicsItem
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-
-  private:
-    QPointF center() const;
-    QPointF midTop() const;
-    QPointF midBottom() const;
-    QPointF topLeft() const;
-    QPointF topRight() const;
-    QPointF bottomLeft() const;
-    QPointF bottomRight() const;
-    qreal   dx(qreal angle_mod = 0) const;
-    qreal   dy(qreal angle_mod = 0) const;
 };
 
 class ObstaclePropertiesDialog

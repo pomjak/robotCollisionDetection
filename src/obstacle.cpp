@@ -112,57 +112,12 @@ void Obstacle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
         m_offset = event->scenePos();
     }
-    m_offset = event->scenePos();
-}
 
 void Obstacle::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     ObstaclePropertiesDialog dialog(this);
     dialog.exec();
 }
-
-QPointF Obstacle::center() const { return boundingRect().center(); }
-
-QPointF Obstacle::midTop() const
-{
-    return QPointF(center().x() + dx(), center().y() + dy());
-}
-
-QPointF Obstacle::midBottom() const
-{
-    return QPointF(center().x() + dx(-M_PI), center().y() + dy(-M_PI));
-}
-
-QPointF Obstacle::topLeft() const
-{
-    return QPointF(midTop().x() + dx(-M_PI / 2), midTop().y() + dy(-M_PI / 2));
-}
-
-QPointF Obstacle::topRight() const
-{
-    return QPointF(midTop().x() + dx(M_PI / 2), midTop().y() + dy(M_PI / 2));
-}
-
-QPointF Obstacle::bottomLeft() const
-{
-    return QPointF(midBottom().x() + dx(-M_PI / 2),
-                   midBottom().y() + dy(-M_PI / 2));
-}
-
-QPointF Obstacle::bottomRight() const
-{
-    return QPointF(midBottom().x() + dx(M_PI / 2),
-                   midBottom().y() + dy(M_PI / 2));
-}
-
-qreal Obstacle::dx(qreal a) const
-{
-    return ((size() / 2) * ::cos(angle() + a));
-}
-
-qreal Obstacle::dy(qreal a) const
-{
-    return ((size() / 2) * ::sin(angle() + a));
 }
 
 ObstaclePropertiesDialog::ObstaclePropertiesDialog(Obstacle *o,
