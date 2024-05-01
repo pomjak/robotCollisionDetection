@@ -1,31 +1,46 @@
+/**
+ * \file json_handler.cpp
+ * \author Pomsar Jakub (xpomsa00@stud.fit.vutbr.cz)
+ * \author Simon Cagala <xcagal00@stud.fit.vutbr.cz>
+ * \version 0.1
+ * \date 2024-04-29
+ *
+ * @copyright Copyright (c) 2024
+ *
+ */
 #include "json_handler.h"
 #include <QMessageBox>
 
-
-QJsonObject JsonHandler::saveToJson(Robot* robot) const
+QJsonObject JsonHandler::saveToJson(Robot *robot) const
 {
     QJsonObject json;
-    json["orientation"] = robot->getAngle();
-    json["speed"] = robot->getSpeed();
-    json["rotation"] = robot->getRotation();
-    json["position_x"] = robot->pos().x();
-    json["position_y"] = robot->pos().y();
+    json["orientation"]    = robot->angle();
+    json["speed"]          = robot->speed();
+    json["rotation"]       = robot->rotateBy();
+    json["x"]              = robot->pos().x();
+    json["y"]              = robot->pos().y();
+    json["detection_dist"] = robot->detectionDistance();
+    json["clockwise"]      = robot->clockwise();
     return json;
 }
 
-QJsonObject JsonHandler::saveToJson(Obstacle* obs) const
+QJsonObject JsonHandler::saveToJson(Obstacle *obs) const
 {
     QJsonObject json;
-    json["size"] = obs->getSize();
-    json["position_x"] = obs->pos().x();
-    json["position_y"] = obs->pos().y();
+    json["height"]      = obs->getHeight();
+    json["width"]       = obs->getWidth();
+    json["x"]           = obs->pos().x();
+    json["y"]           = obs->pos().y();
+    json["orientation"] = obs->rotation();
+
     return json;
 }
 
 QJsonObject JsonHandler::getJsonObjects()
 {
     QJsonArray obstacles;
-    for ( const auto& obs : *obstacleList )
+    /* insert all obstacle objects into an array */
+    for ( const auto &obs : *obstacleList )
     {
         obstacles.append(saveToJson(obs));
     }
@@ -34,7 +49,8 @@ QJsonObject JsonHandler::getJsonObjects()
     json["obstacles"] = obstacles;
 
     QJsonArray robots;
-    for ( const auto& robot : *robotList )
+    /* insert all obstacle robot into an array */
+    for ( const auto &robot : *robotList )
     {
         robots.append(saveToJson(robot));
     }
@@ -43,7 +59,7 @@ QJsonObject JsonHandler::getJsonObjects()
     return json;
 }
 
-void JsonHandler::save(const QString& filename)
+void JsonHandler::save(const QString &filename)
 {
     QFile saveFile(filename);
 
@@ -59,34 +75,39 @@ void JsonHandler::save(const QString& filename)
     saveFile.write(QJsonDocument(gameObject).toJson());
 }
 
-void JsonHandler::read(const QJsonObject& json)
+void JsonHandler::read(const QJsonObject &json)
 {
+    /* check if obstacles are present in file */
     if ( json.contains("obstacles") && json["obstacles"].isArray() )
     {
         QJsonArray obstaclesArray = json["obstacles"].toArray();
-
-        for ( const QJsonValue& obsValue : obstaclesArray )
+        /* create obstacles from an array */
+        for ( const QJsonValue &obsValue : obstaclesArray )
         {
-            QJsonObject obj = obsValue.toObject();
-            Obstacle* obst = new Obstacle(obj);
-            obstacleList->push_back(obst);
+            DEBUG << "LOADING OBSTACLE";
+            QJsonObject obj      = obsValue.toObject();
+            Obstacle   *obstacle = new Obstacle(obj);
+            addObstacle(obstacle);
         }
     }
 
+    /* check if robots are present in file */
     if ( json.contains("robots") && json["robots"].isArray() )
     {
         QJsonArray robotsArray = json["robots"].toArray();
 
-        for ( const QJsonValue& robotValue : robotsArray )
+        /* create robots from an array */
+        for ( const QJsonValue &robotValue : robotsArray )
         {
+            DEBUG << "LOADING ROBOT";
             QJsonObject obj = robotValue.toObject();
-            Robot* rbt = new Robot(obj);
-            robotList->push_back(rbt);
+            Robot      *rbt = new Robot(obj);
+            addRobot(rbt);
         }
     }
 }
 
-void JsonHandler::load(const QString& filename)
+void JsonHandler::load(const QString &filename)
 {
     QFile loadFile(filename);
 
