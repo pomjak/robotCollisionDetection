@@ -106,11 +106,11 @@ void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setOpacity(0.2);
     painter->setBrush(Qt::darkYellow);
     painter->drawPolygon(detectionArea());
-    painter->setPen(Qt::darkCyan);
     if ( manualControl() )
-        painter->setBrush(Qt::blue);
+        painter->setPen(Qt::red);
     else
-        painter->setBrush(Qt::darkGray);
+        painter->setPen(Qt::darkCyan);
+    painter->setBrush(Qt::darkGray);
     painter->setOpacity(1);
     painter->drawEllipse(boundingRect());
     painter->setPen(Qt::darkYellow);

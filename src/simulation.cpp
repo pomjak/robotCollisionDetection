@@ -209,12 +209,15 @@ void Simulation::keyPressEvent(QKeyEvent *event)
         case Qt::Key_Plus :  zoomIn(); break;
         case Qt::Key_Minus : zoomOut(); break;
         case Qt::Key_Up :
+        case Qt::Key_W :
             if ( m_selectedRobot ) { m_selectedRobot->manualMove(); }
             break;
         case Qt::Key_Left :
+        case Qt::Key_A :
             if ( m_selectedRobot ) { m_selectedRobot->rotateLeft(); }
             break;
         case Qt::Key_Right :
+        case Qt::Key_D :
             if ( m_selectedRobot ) { m_selectedRobot->rotateRight(); }
             break;
 
@@ -283,31 +286,38 @@ void Simulation::deleteObject(ObjectType type)
 
 void Simulation::mousePressEvent(QMouseEvent *event)
 {
-    if(event->button() & Qt::RightButton)
-    {// Deselect the previously selected robot, if any
-    if ( m_selectedRobot )
+    if ( event->button() & Qt::RightButton )
     {
-        m_selectedRobot->setSelected(false);
-        m_selectedRobot->setManualControl(false);
-    }
+        // Deselect the previously selected robot, if any
+        if ( m_selectedRobot )
+        {
+            m_selectedRobot->setSelected(false);
+            m_selectedRobot->setManualControl(false);
+        }
 
-    // Find the robot that was clicked
-    QPointF        scenePos = mapToScene(event->pos());
-    QGraphicsItem *item     = scene()->itemAt(scenePos, transform());
-    Robot         *robot    = qgraphicsitem_cast<Robot *>(item);
-    if ( robot )
-    {
-        // Set the clicked robot as the selected robot
-        m_selectedRobot = robot;
-        m_selectedRobot->setSelected(true);
-        m_selectedRobot->setManualControl(true);
-    }
-    else
-    {
-        // No robot clicked, so deselect any selected robot
-        m_selectedRobot = nullptr;
-    }
+        // Find the robot that was clicked
+        QPointF        scenePos = mapToScene(event->pos());
+        QGraphicsItem *item     = scene()->itemAt(scenePos, transform());
+        Robot         *robot;
+        if ( item != nullptr )
+            robot = qgraphicsitem_cast<Robot *>(item);
+        else
+            return;
+        DEBUG << item;
+        if ( robot != nullptr )
+        {
+            // Set the clicked robot as the selected robot
+            m_selectedRobot = robot;
+            m_selectedRobot->setSelected(true);
+            m_selectedRobot->setManualControl(true);
+        }
+        else
+        {
+            // No robot clicked, so deselect any selected robot
+            m_selectedRobot = nullptr;
+        }
 
-    // Pass the event to the base class for further processing
-    QGraphicsView::mousePressEvent(event);}
+        // Pass the event to the base class for further processing
+    }
+    QGraphicsView::mousePressEvent(event);
 }
