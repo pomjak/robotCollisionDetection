@@ -19,23 +19,12 @@ Robot::Robot()
     , m_speed(DEF_SPEED)
     , m_rotate_by(DEF_ROTATE_BY)
     , m_detection_dist(DEF_DETECT_DIST)
+    , m_clockwise(true)
 {
     setPos(0, 0);
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
-};
-
-Robot::Robot(QPointF _position)
-    : QObject()
-    , QGraphicsItem()
-    , m_size(DEF_ROBOT_SIZE)
-    , m_speed(DEF_SPEED)
-    , m_rotate_by(DEF_ROTATE_BY)
-    , m_detection_dist(DEF_DETECT_DIST)
-{
-    setPos(_position);
-    setFlag(ItemIsMovable);
-    setFlag(ItemSendsGeometryChanges);
+    setAcceptDrops(true);
 };
 
 Robot::Robot(QPointF _pos, double _angle, double _speed, double _rotate,
@@ -45,11 +34,27 @@ Robot::Robot(QPointF _pos, double _angle, double _speed, double _rotate,
     , m_speed(_speed)
     , m_rotate_by(_rotate)
     , m_detection_dist(_dist)
+    , m_clockwise(true)
 {
     setPos(_pos);
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
 }
+
+Robot::Robot(QPointF _position)
+    : QObject()
+    , QGraphicsItem()
+    , m_size(DEF_ROBOT_SIZE)
+    , m_speed(DEF_SPEED)
+    , m_rotate_by(DEF_ROTATE_BY)
+    , m_detection_dist(DEF_DETECT_DIST)
+    , m_clockwise(true)
+{
+    setPos(_position);
+    setFlag(ItemIsMovable);
+    setFlag(ItemSendsGeometryChanges);
+    setAcceptDrops(true);
+};
 
 Robot::Robot(QJsonObject &json)
     : m_size(DEF_ROBOT_SIZE)
@@ -63,10 +68,11 @@ Robot::Robot(QJsonObject &json)
     m_rotate_by = qBound(1.0, json["rotation"].toDouble(), 90.0);
     m_detection_dist =
         qBound(DEF_DETECT_DIST, json["detection_dist"].toDouble(), 100.0);
-
+    m_clockwise = json["clockwise"].toBool();
     setPos(pos_x, pos_y);
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
+    setAcceptDrops(true);
 }
 
 qreal Robot::size() const { return m_size; }
@@ -74,12 +80,13 @@ qreal Robot::angle() const { return m_angle; }
 qreal Robot::speed() const { return m_speed; }
 qreal Robot::rotateBy() const { return m_rotate_by; }
 qreal Robot::detectionDistance() const { return m_detection_dist; }
-
-void Robot::setSize(qreal size) { m_size = size; }
-void Robot::setAngle(qreal angle) { m_angle = angle; }
-void Robot::setSpeed(qreal speed) { m_speed = speed; }
-void Robot::setRotateBy(qreal rotate_by) { m_rotate_by = rotate_by; }
-void Robot::setDetectionDistance(qreal dist) { m_detection_dist = dist; }
+bool  Robot::clockwise() const { return m_clockwise; }
+void  Robot::setSize(qreal size) { m_size = size; }
+void  Robot::setAngle(qreal angle) { m_angle = angle; }
+void  Robot::setSpeed(qreal speed) { m_speed = speed; }
+void  Robot::setRotateBy(qreal rotate_by) { m_rotate_by = rotate_by; }
+void  Robot::setDetectionDistance(qreal dist) { m_detection_dist = dist; }
+void  Robot::setClockwise(bool c) { m_clockwise = c; }
 
 void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                   QWidget *widget)
@@ -165,34 +172,35 @@ void Robot::advance(int phase)
     qreal   dy     = speed() * ::sin(angle());
     QPointF newPos = pos() + QPointF(dx, dy);
 
-    /*  Check if the detection area is entirely within the scene rect */
-    if ( !scene()->sceneRect().contains(
-             mapToScene(detectionArea()).boundingRect()) )
+    /* check if new bound rect is still in scene */
+    if ( scene()->sceneRect().contains(
+             newBoundingRect(newPos).translated(newPos)) )
     {
-        /* Rotate if the detection area is partially or completely outside  */
-        /* the scene                                                        */
-        setAngle(angle() + rotateBy());
-        update();
+        /* get all objects in danger area */
+        const QList<QGraphicsItem *> colliding_items = scene()->items(
+            mapToScene(detectionArea()), Qt::IntersectsItemShape);
+
+        for ( const auto &item : colliding_items )
+        {
+            /* ignore itself */
+            if ( item != this )
+            {
+                // Rotate if obstacle detected
+                clockwise() ? setAngle(angle() + rotateBy())
+                            : setAngle(angle() - rotateBy());
+                return;
+            }
+        }
+        /* set new position if no item is in detection area */
+        setPos(newPos);
+    }
+    else
+    {
+        /* Rotate if hitting scene boundary */
+        clockwise() ? setAngle(angle() + rotateBy())
+                    : setAngle(angle() - rotateBy());
         return;
     }
-
-    /* get all objects in danger area */
-    const QList<QGraphicsItem *> colliding_items =
-        scene()->items(mapToScene(detectionArea()), Qt::IntersectsItemShape);
-
-    for ( const auto &item : colliding_items )
-    {
-        /* ignore itself */
-        if ( item != this )
-        {
-            // Rotate if obstacle detected
-            setAngle(angle() + rotateBy());
-            update();
-            return;
-        }
-    }
-    /* set new position if no item is in detection area */
-    setPos(newPos);
 }
 
 void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -202,7 +210,6 @@ void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void Robot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    Q_UNUSED(event);
     INFO << "Robot released...";
     update();
 }
@@ -215,7 +222,6 @@ void Robot::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
              newBoundingRect(newPos).translated(newPos)) )
     {
         DEBUG << "pos: " << mapToScene(pos());
-
         setPos(newPos);
         DEBUG << "newPos: " << mapToScene(pos());
     }
@@ -241,7 +247,7 @@ RobotPropertiesDialog::RobotPropertiesDialog(Robot *r, QWidget *parent)
     rotationBox->setValue(m_robot->rotateBy());
     detectDistanceBox->setValue(m_robot->detectionDistance());
     speedBox->setValue(m_robot->speed());
-    // ! TODO directionComboBox
+    directionButton->setChecked(m_robot->clockwise());
 }
 
 void RobotPropertiesDialog::on_buttonBox_accepted()
@@ -251,6 +257,7 @@ void RobotPropertiesDialog::on_buttonBox_accepted()
     m_robot->setSpeed(speedBox->value());
     m_robot->setRotateBy(rotationBox->value());
     m_robot->setDetectionDistance(detectDistanceBox->value());
+    m_robot->setClockwise(directionButton->isChecked());
     m_robot->update();
     QDialog::accept();
 }

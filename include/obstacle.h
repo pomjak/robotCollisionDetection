@@ -74,7 +74,6 @@ class Obstacle : public QGraphicsItem
      * \return qreal side
      **/
     qreal size() const;
-
     /**
      * \brief Set the Size object
      *
@@ -82,6 +81,9 @@ class Obstacle : public QGraphicsItem
      * \param h height of the obstacle
      **/
     void setSize(qreal w, qreal h);
+
+    void setWidth(qreal w);
+    void setHeight(qreal h);
 
     /**
      * \brief Get the Height of the obstacle

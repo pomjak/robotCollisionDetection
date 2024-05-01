@@ -56,6 +56,9 @@ void Obstacle::setSize(qreal w, qreal h)
     m_height = h;
 }
 
+void Obstacle::setWidth(qreal w) { m_width = w; }
+void Obstacle::setHeight(qreal h) { m_height = h; }
+
 qreal Obstacle::getHeight() const { return m_height; }
 
 qreal Obstacle::getWidth() const { return m_width; }
@@ -112,12 +115,13 @@ void Obstacle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
         m_offset = event->scenePos();
     }
+    m_offset = event->scenePos();
+}
 
 void Obstacle::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     ObstaclePropertiesDialog dialog(this);
     dialog.exec();
-}
 }
 
 ObstaclePropertiesDialog::ObstaclePropertiesDialog(Obstacle *o,
@@ -130,16 +134,16 @@ ObstaclePropertiesDialog::ObstaclePropertiesDialog(Obstacle *o,
 
     posXBox->setValue(m_obstacle->x());
     posYBox->setValue(m_obstacle->y());
-    // widthBox->setValue(m_obstacle->width());
-    // heightBox->setValue(m_obstacle->height());
+    widthBox->setValue(m_obstacle->getWidth());
+    heightBox->setValue(m_obstacle->getHeight());
     // ! TODO directionComboBox
 }
 
 void ObstaclePropertiesDialog::on_buttonBox_accepted()
 {
     m_obstacle->setPos(posXBox->value(), posYBox->value());
-    // m_obstacle->setWidth(widthBox->value());
-    // m_obstacle->setHeight(heightBox->value());
+    m_obstacle->setWidth(widthBox->value());
+    m_obstacle->setHeight(heightBox->value());
     m_obstacle->update();
     QDialog::accept();
 }
