@@ -73,31 +73,36 @@ void Simulation::setState(State _state) { m_state = _state; }
 
 void Simulation::spawnObject(ObjectType type)
 {
-    QSizeF objectSize;
-
-    if ( type == ObjectType::ROBOT )
-    {
-        objectSize = {DEF_ROBOT_SIZE, DEF_ROBOT_SIZE};
-    }
-
-    else if ( type == ObjectType::OBSTACLE )
-    {
-        objectSize = {QRandomGenerator::global()->bounded(20, MAX_OBS_SIZE),
-                      QRandomGenerator::global()->bounded(20, MAX_OBS_SIZE)};
-    }
-
+    QSizeF  objectSize;
     QPointF spawnPoint;
+
     do {
+
+        if ( type == ObjectType::ROBOT )
+        {
+            objectSize = {DEF_ROBOT_SIZE, DEF_ROBOT_SIZE};
+        }
+
+        else if ( type == ObjectType::OBSTACLE )
+        {
+            objectSize.setHeight(static_cast<qreal>(
+                QRandomGenerator::global()->bounded(20, MAX_OBS_SIZE)));
+            objectSize.setWidth(static_cast<qreal>(
+                QRandomGenerator::global()->bounded(20, MAX_OBS_SIZE)));
+        };
+
         spawnPoint = {QRandomGenerator::global()->bounded(SCENE_WIDTH),
                       QRandomGenerator::global()->bounded(SCENE_HEIGHT / 2)};
 
         QRectF spawnArea(spawnPoint, objectSize);
         QRectF sceneSpawnArea = spawnArea.translated(spawnPoint);
 
+        /* Check if spawn area is not out of the scene */
+        if ( !scene()->sceneRect().contains(sceneSpawnArea) ) continue;
+
         /* Check if there are any items at the spawn point */
         QList<QGraphicsItem *> itemsAtSpawnPoint =
-            scene()->items(sceneSpawnArea, Qt::IntersectsItemShape);
-
+            scene()->items(sceneSpawnArea);
         /* If there are no items at the spawn point, exit the loop */
         if ( itemsAtSpawnPoint.isEmpty() ) break;
     }
