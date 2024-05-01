@@ -28,8 +28,9 @@
 class Obstacle : public QGraphicsItem
 {
   private:
-    qreal   m_size;        /// Size of the obstacle
-    QPointF m_offset;      /// offset used for mouse movements
+    qreal   m_height; /// height of the obstacle
+    qreal   m_width;  ///  width of the obstacle
+    QPointF m_offset; ///   offset used for mouse movements
 
   public:
     /**
@@ -41,19 +42,18 @@ class Obstacle : public QGraphicsItem
      * \brief Constructor for the Obstacle class with a specified position.
      *
      * \param _position The position of the obstacle.
-     * \param size
+     * \param w width of the obstacle
+     * \param h height of the obstacle
      */
-    Obstacle(QPointF position, qreal size);
+    Obstacle(QPointF position, qreal w, qreal h);
 
     /**
-     * \brief Constructor for the Obstacle class with a specified position,
-     * size, and angle.
+     * \brief Construct a new Obstacle with specified position and QSizeF
      *
      * \param position The position of the obstacle.
      * \param size The size of the obstacle.
-     * \param angle The angle of the obstacle.
      */
-    Obstacle(QPointF position, qreal size, qreal angle);
+    Obstacle(QPointF position, QSizeF size);
 
     /**
      * \brief Constructor for the Obstacle class using data from a JSON object.
@@ -68,29 +68,32 @@ class Obstacle : public QGraphicsItem
     ~Obstacle() {}
 
     /**
-     * \brief Get the current orientation of the obstacle
-     * \return qreal angle
-     **/
-    qreal angle() const;
-
-    /**
      * \brief Get the size of the obstacle
      * \return qreal side
      **/
     qreal size() const;
 
     /**
-     * \brief Set the Angle of the obstacle
-     * \param a angle
-     **/
-    void setAngle(qreal a);
-
-    /**
      * \brief Set the Size object
      *
-     * \param s
+     * \param w width of the obstacle
+     * \param h height of the obstacle
      **/
-    void setSize(qreal s);
+    void setSize(qreal w, qreal h);
+
+    /**
+     * \brief Get the Height of the obstacle
+     *
+     * \return qreal
+     */
+    qreal getHeight() const;
+
+    /**
+     * \brief Get the Width of the obstacle
+     *
+     * \return qreal
+     */
+    qreal getWidth() const;
 
     /**
      * \brief Returns the bounding rectangle of the obstacle.
@@ -123,5 +126,4 @@ class Obstacle : public QGraphicsItem
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-
 };
