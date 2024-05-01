@@ -89,6 +89,8 @@ void Obstacle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 void Obstacle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    Q_UNUSED(event);
+
     m_offset = event->scenePos();
 }
 
@@ -120,6 +122,8 @@ void Obstacle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void Obstacle::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
+    Q_UNUSED(event);
+
     ObstaclePropertiesDialog dialog(this);
     dialog.exec();
 }
@@ -136,7 +140,6 @@ ObstaclePropertiesDialog::ObstaclePropertiesDialog(Obstacle *o,
     posYBox->setValue(m_obstacle->y());
     widthBox->setValue(m_obstacle->getWidth());
     heightBox->setValue(m_obstacle->getHeight());
-    // ! TODO directionComboBox
 }
 
 void ObstaclePropertiesDialog::on_buttonBox_accepted()

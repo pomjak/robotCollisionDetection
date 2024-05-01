@@ -212,17 +212,19 @@ void Simulation::keyPressEvent(QKeyEvent *event)
 
 void Simulation::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    // scene rectangle
+    Q_UNUSED(rect);
+
     QFont font = painter->font();
     font.setBold(true);
     font.setPointSize(14);
     painter->setFont(font);
 
-    // painter->fillRect(rect, Qt::darkGray);
+    // scene rectangle
     QRectF sr = scene()->sceneRect();
     painter->setBrush(Qt::NoBrush);
     painter->drawRect(sr);
-    QRectF  msgRect(sr.left() + 785, sr.top() + 390, 350, 150);
+
+    QRectF  msgRect(sr.left() + 785, sr.top() + 360, 350, 180);
     QString message = {tr("Ctrl+O - load a new layout\n"
                           "Ctrl+S - save current layout\n"
                           "Ctrl+L - clear screen\n"

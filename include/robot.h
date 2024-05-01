@@ -221,9 +221,37 @@ class Robot
     QPolygonF detectionArea() const;
 
     /**
+     * \brief rotate the robot based on its parameters
+     *
+     */
+    void rotate();
+
+    /**
+     * \brief returns true when detection area of robot is out of scene 
+     * 
+     * \return true out of the scene
+     * \return false within the scene
+     */
+    bool isOutOfBounds();
+
+    /**
+     * \brief Get the Items In Detection Zone 
+     * 
+     * \return QList<QGraphicsItem *> 
+     */
+    QList<QGraphicsItem *> getItemsInDetectZone();
+
+    /**
+     * \brief move robot to new position based on its parameters
+     * 
+     */
+    void move();
+
+    /**
      * \brief Called by GraphicsScene::advance slot; animates the object
      * \param phase advance is called twice, once with phase 0, indicating
-     *items are about to advance, then with phase 1 to actually advance them
+     *items are about to advance, then with phase 1 to actually advance
+     *them
      **/
     void advance(int phase) override;
 
