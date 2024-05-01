@@ -52,7 +52,8 @@ void Simulation::printLists()
     for ( const auto &obs : m_obstacle_list )
     {
         DEBUG << obs->pos().x() << obs->pos().y();
-        DEBUG << obs->size();
+        DEBUG << obs->getHeight();
+        DEBUG << obs->getWidth();
     }
 
     for ( const auto &rob : m_robot_list )
@@ -71,24 +72,24 @@ void Simulation::setState(State _state) { m_state = _state; }
 
 void Simulation::spawnObject(ObjectType type)
 {
-    qreal defaultSize;
-    qreal rotateByDegree;
-    if ( type == ObjectType::ROBOT ) { defaultSize = DEF_ROBOT_SIZE; }
+    QSizeF objectSize;
+
+    if ( type == ObjectType::ROBOT )
+    {
+        objectSize = {DEF_ROBOT_SIZE, DEF_ROBOT_SIZE};
+    }
 
     else if ( type == ObjectType::OBSTACLE )
     {
-        defaultSize = QRandomGenerator::global()->bounded(50, MAX_OBS_SIZE);
-
-        rotateByDegree = QRandomGenerator::global()->bounded(90);
+        objectSize = {QRandomGenerator::global()->bounded(20, MAX_OBS_SIZE),
+                      QRandomGenerator::global()->bounded(20, MAX_OBS_SIZE)};
     }
 
     QPointF spawnPoint;
-    QSizeF  objectSize(defaultSize, defaultSize);
     do {
         spawnPoint = {QRandomGenerator::global()->bounded(SCENE_WIDTH),
                       QRandomGenerator::global()->bounded(SCENE_HEIGHT / 2)};
-        // objectSize.setWidth(defaultSize);
-        // objectSize.setHeight(defaultSize);
+
         QRectF spawnArea(spawnPoint, objectSize);
         QRectF sceneSpawnArea = spawnArea.translated(spawnPoint);
 
@@ -100,23 +101,26 @@ void Simulation::spawnObject(ObjectType type)
         if ( itemsAtSpawnPoint.isEmpty() ) break;
     }
     while ( true );
-    DEBUG << scene()->sceneRect();
-    DEBUG << "scene contains spawn: "
-          << scene()->sceneRect().contains(spawnPoint);
+
     if ( type == ObjectType::ROBOT )
     {
-        Robot *robot = new Robot(spawnPoint);
+        double angle    = QRandomGenerator::global()->bounded(MAX_ROTATE_BY);
+        double speed    = QRandomGenerator::global()->bounded(MAX_SPEED);
+        double rotateBy = QRandomGenerator::global()->bounded(MAX_ROTATE_BY);
+        double dist     = QRandomGenerator::global()->bounded(MAX_DETECT_DIST);
+
+        Robot *robot = new Robot(spawnPoint, angle, speed, rotateBy, dist);
         addRobot(robot);
+
         INFO << "ROBOT SPAWNED at" << spawnPoint;
-        DEBUG << robot->scenePos();
     }
     else if ( type == ObjectType::OBSTACLE )
     {
-        Obstacle *obstacle =
-            new Obstacle(spawnPoint, defaultSize, rotateByDegree);
+        Obstacle *obstacle = new Obstacle(spawnPoint, objectSize);
+
         addObstacle(obstacle);
-        INFO << "Obstacle SPAWNED at" << spawnPoint << "size:" << defaultSize
-             << "rot" << rotateByDegree;
+
+        INFO << "OBSTACLE SPAWNED at" << spawnPoint << "size:" << objectSize;
     }
 }
 
@@ -210,7 +214,7 @@ void Simulation::drawBackground(QPainter *painter, const QRectF &rect)
     font.setPointSize(14);
     painter->setFont(font);
 
-    // painter->fillRect(rect, Qt::darkGray);  
+    // painter->fillRect(rect, Qt::darkGray);
     QRectF sr = scene()->sceneRect();
     painter->setBrush(Qt::NoBrush);
     painter->drawRect(sr);

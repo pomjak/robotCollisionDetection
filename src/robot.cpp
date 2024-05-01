@@ -23,7 +23,6 @@ Robot::Robot()
     setPos(0, 0);
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
-    setAcceptDrops(true);
 };
 
 Robot::Robot(QPointF _position)
@@ -37,8 +36,20 @@ Robot::Robot(QPointF _position)
     setPos(_position);
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
-    setAcceptDrops(true);
 };
+
+Robot::Robot(QPointF _pos, double _angle, double _speed, double _rotate,
+             double _dist)
+    : m_size(DEF_ROBOT_SIZE)
+    , m_angle(_angle)
+    , m_speed(_speed)
+    , m_rotate_by(_rotate)
+    , m_detection_dist(_dist)
+{
+    setPos(_pos);
+    setFlag(ItemIsMovable);
+    setFlag(ItemSendsGeometryChanges);
+}
 
 Robot::Robot(QJsonObject &json)
     : m_size(DEF_ROBOT_SIZE)
@@ -56,7 +67,6 @@ Robot::Robot(QJsonObject &json)
     setPos(pos_x, pos_y);
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
-    setAcceptDrops(true);
 }
 
 qreal Robot::size() const { return m_size; }
@@ -156,7 +166,8 @@ void Robot::advance(int phase)
     QPointF newPos = pos() + QPointF(dx, dy);
 
     /*  Check if the detection area is entirely within the scene rect */
-    if ( !scene()->sceneRect().contains(mapToScene(detectionArea()).boundingRect()) )
+    if ( !scene()->sceneRect().contains(
+             mapToScene(detectionArea()).boundingRect()) )
     {
         /* Rotate if the detection area is partially or completely outside  */
         /* the scene                                                        */

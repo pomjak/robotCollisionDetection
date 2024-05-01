@@ -26,7 +26,8 @@ QJsonObject JsonHandler::saveToJson(Robot *robot) const
 QJsonObject JsonHandler::saveToJson(Obstacle *obs) const
 {
     QJsonObject json;
-    json["size"]        = obs->size();
+    json["height"]      = obs->getHeight();
+    json["width"]       = obs->getWidth();
     json["x"]           = obs->pos().x();
     json["y"]           = obs->pos().y();
     json["orientation"] = obs->rotation();
