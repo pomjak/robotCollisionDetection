@@ -105,6 +105,12 @@ void Obstacle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     m_offset = event->scenePos();
 }
 
+void Obstacle::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    ObstaclePropertiesDialog dialog(this);
+    dialog.exec();
+}
+
 QPointF Obstacle::center() const { return boundingRect().center(); }
 
 QPointF Obstacle::midTop() const
@@ -147,4 +153,28 @@ qreal Obstacle::dx(qreal a) const
 qreal Obstacle::dy(qreal a) const
 {
     return ((size() / 2) * ::sin(angle() + a));
+}
+
+ObstaclePropertiesDialog::ObstaclePropertiesDialog(Obstacle *o,
+                                                   QWidget  *parent)
+    : QDialog(parent)
+    , m_obstacle(o)
+
+{
+    setupUi(this);
+
+    posXBox->setValue(m_obstacle->x());
+    posYBox->setValue(m_obstacle->y());
+    // widthBox->setValue(m_obstacle->width());
+    // heightBox->setValue(m_obstacle->height());
+    // ! TODO directionComboBox
+}
+
+void ObstaclePropertiesDialog::on_buttonBox_accepted()
+{
+    m_obstacle->setPos(posXBox->value(), posYBox->value());
+    // m_obstacle->setWidth(widthBox->value());
+    // m_obstacle->setHeight(heightBox->value());
+    m_obstacle->update();
+    QDialog::accept();
 }

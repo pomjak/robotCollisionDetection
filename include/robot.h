@@ -10,6 +10,7 @@
 
 #include "debug.h"
 #include "obstacle.h"
+#include "ui_robot-properties-dialog.h"
 #include <QCursor>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
@@ -31,7 +32,6 @@ class Robot
     : public QObject
     , public QGraphicsItem
 {
-    // friend class Simulation;
     Q_OBJECT
 
   private:
@@ -215,4 +215,21 @@ class Robot
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+};
+
+class RobotPropertiesDialog
+    : public QDialog
+    , private Ui::PropertiesDialog
+{
+    Q_OBJECT
+
+  public:
+    RobotPropertiesDialog(Robot *r, QWidget *parent = 0);
+
+  private slots:
+    void on_buttonBox_accepted();
+
+  private:
+    Robot *m_robot;
 };

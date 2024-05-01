@@ -9,6 +9,8 @@
 #pragma once
 
 #include "debug.h"
+#include "ui_obstacle-properties-dialog.h"
+#include <QDialog>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
@@ -116,6 +118,7 @@ class Obstacle : public QGraphicsItem
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
   private:
     QPointF center() const;
@@ -127,4 +130,19 @@ class Obstacle : public QGraphicsItem
     QPointF bottomRight() const;
     qreal   dx(qreal angle_mod = 0) const;
     qreal   dy(qreal angle_mod = 0) const;
+};
+
+class ObstaclePropertiesDialog
+    : public QDialog
+    , private Ui::ObstacleDialog
+{
+    Q_OBJECT
+  public:
+    ObstaclePropertiesDialog(Obstacle *o, QWidget *parent = 0);
+
+  private slots:
+    void on_buttonBox_accepted();
+
+  private:
+    Obstacle *m_obstacle;
 };
