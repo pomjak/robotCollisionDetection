@@ -24,7 +24,6 @@ Robot::Robot()
     setPos(0, 0);
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
-    setAcceptDrops(true);
 };
 
 Robot::Robot(QPointF _pos, double _angle, double _speed, double _rotate,
@@ -161,47 +160,64 @@ QPolygonF Robot::detectionArea() const
                        (detectionDistance() + radius()) * ::sin(angle())));
 }
 
-void Robot::advance(int phase)
+void Robot::rotate()
 {
-    /* advance() is called twice: once with phase == 0, indicating that item  */
-    /* are about to advance, and then with phase == 1 for the actual advance. */
-    if ( !phase ) return;
+    clockwise() ? setAngle(angle() + rotateBy())
+                : setAngle(angle() - rotateBy());
+    update();
+}
 
+bool Robot::isOutOfBounds()
+{
+    /*  Check if the detection area is entirely within the scene rect */
+    return !scene()->sceneRect().contains(
+        mapToScene(detectionArea()).boundingRect());
+}
+
+QList<QGraphicsItem *> Robot::getItemsInDetectZone()
+{
+    /* get all objects in danger area */
+    return scene()->items(mapToScene(detectionArea()));
+}
+
+void Robot::move()
+{
     /* Move the robot */
     qreal   dx     = speed() * ::cos(angle());
     qreal   dy     = speed() * ::sin(angle());
     QPointF newPos = pos() + QPointF(dx, dy);
-    
-    /*  Check if the detection area is entirely within the scene rect */
-    if ( !scene()->sceneRect().contains(
-             mapToScene(detectionArea()).boundingRect()) )
+
+    /* set new position */
+    setPos(newPos);
+}
+
+void Robot::advance(int phase)
+{
+    /* advance() is called twice: once with phase == 0, indicating that item */
+    /* are about to advance, and then with phase == 1 for the actual advance */
+    if ( !phase ) return;
+
+    if ( isOutOfBounds() )
     {
-        /* Rotate if the detection area is partially or completely outside  */
-        /* the scene                                                        */
-        clockwise() ? setAngle(angle() + rotateBy())
-                    : setAngle(angle() - rotateBy());
-        update();
+        /* Rotate if the detection area is outside the scene */
+        rotate();
         return;
     }
+    const auto collidingItems = getItemsInDetectZone();
 
-    /* get all objects in danger area */
-    const QList<QGraphicsItem *> colliding_items =
-        scene()->items(mapToScene(detectionArea()), Qt::IntersectsItemShape);
-
-    for ( const auto &item : colliding_items )
+    for ( const auto &item : collidingItems )
     {
         /* ignore itself */
         if ( item != this )
         {
-            // Rotate if obstacle detected
-            clockwise() ? setAngle(angle() + rotateBy())
-                        : setAngle(angle() - rotateBy());
-            update();
+            /* Rotate if obstacle detected */
+            rotate();
             return;
         }
     }
-    /* set new position if no item is in detection area */
-    setPos(newPos);
+
+    /* move if no items are in detection area */
+    move();
 }
 
 void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -222,9 +238,7 @@ void Robot::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if ( scene()->sceneRect().contains(
              newBoundingRect(newPos).translated(newPos)) )
     {
-        DEBUG << "pos: " << mapToScene(pos());
         setPos(newPos);
-        DEBUG << "newPos: " << mapToScene(pos());
     }
     m_offset = event->scenePos();
 }
