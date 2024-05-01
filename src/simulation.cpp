@@ -84,10 +84,10 @@ void Simulation::spawnObject(ObjectType type)
 
         else if ( type == ObjectType::OBSTACLE )
         {
-            objectSize.setHeight(
-                QRandomGenerator::global()->bounded(20, MAX_OBS_SIZE));
-            objectSize.setWidth(
-                QRandomGenerator::global()->bounded(20, MAX_OBS_SIZE));
+            objectSize.setHeight(static_cast<qreal>(
+                QRandomGenerator::global()->bounded(20, MAX_OBS_SIZE)));
+            objectSize.setWidth(static_cast<qreal>(
+                QRandomGenerator::global()->bounded(20, MAX_OBS_SIZE)));
         };
 
         spawnPoint = {QRandomGenerator::global()->bounded(SCENE_WIDTH),
