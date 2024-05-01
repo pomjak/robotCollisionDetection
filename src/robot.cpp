@@ -20,10 +20,13 @@ Robot::Robot()
     , m_rotate_by(DEF_ROTATE_BY)
     , m_detection_dist(DEF_DETECT_DIST)
     , m_clockwise(true)
+    , m_manual_override(false)
+
 {
     setPos(0, 0);
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
+    setSelected(false);
 };
 
 Robot::Robot(QPointF _pos, double _angle, double _speed, double _rotate,
@@ -34,10 +37,12 @@ Robot::Robot(QPointF _pos, double _angle, double _speed, double _rotate,
     , m_rotate_by(_rotate)
     , m_detection_dist(_dist)
     , m_clockwise(true)
+    , m_manual_override(false)
 {
     setPos(_pos);
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
+    setSelected(false);
 }
 
 Robot::Robot(QPointF _position)
@@ -48,11 +53,14 @@ Robot::Robot(QPointF _position)
     , m_rotate_by(DEF_ROTATE_BY)
     , m_detection_dist(DEF_DETECT_DIST)
     , m_clockwise(true)
+    , m_manual_override(false)
+
 {
     setPos(_position);
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setAcceptDrops(true);
+    setSelected(false);
 };
 
 Robot::Robot(QJsonObject &json)
@@ -80,12 +88,14 @@ qreal Robot::speed() const { return m_speed; }
 qreal Robot::rotateBy() const { return m_rotate_by; }
 qreal Robot::detectionDistance() const { return m_detection_dist; }
 bool  Robot::clockwise() const { return m_clockwise; }
+bool  Robot::manualControl() const { return m_manual_override; }
 void  Robot::setSize(qreal size) { m_size = size; }
 void  Robot::setAngle(qreal angle) { m_angle = angle; }
 void  Robot::setSpeed(qreal speed) { m_speed = speed; }
 void  Robot::setRotateBy(qreal rotate_by) { m_rotate_by = rotate_by; }
 void  Robot::setDetectionDistance(qreal dist) { m_detection_dist = dist; }
 void  Robot::setClockwise(bool c) { m_clockwise = c; }
+void  Robot::setManualControl(bool control) { m_manual_override = control; }
 
 void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                   QWidget *widget)
@@ -97,7 +107,10 @@ void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setBrush(Qt::darkYellow);
     painter->drawPolygon(detectionArea());
     painter->setPen(Qt::darkCyan);
-    painter->setBrush(Qt::darkGray);
+    if ( manualControl() )
+        painter->setBrush(Qt::blue);
+    else
+        painter->setBrush(Qt::darkGray);
     painter->setOpacity(1);
     painter->drawEllipse(boundingRect());
     painter->setPen(Qt::darkYellow);
@@ -160,10 +173,12 @@ QPolygonF Robot::detectionArea() const
                        (detectionDistance() + radius()) * ::sin(angle())));
 }
 
-void Robot::rotate()
+void Robot::rotateLeft() { setAngle(angle() - rotateBy()); }
+void Robot::rotateRight() { setAngle(angle() + rotateBy()); }
+
+void Robot::avoid()
 {
-    clockwise() ? setAngle(angle() + rotateBy())
-                : setAngle(angle() - rotateBy());
+    clockwise() ? rotateRight() : rotateLeft();
     update();
 }
 
@@ -191,38 +206,50 @@ void Robot::move()
     setPos(newPos);
 }
 
-void Robot::advance(int phase)
+bool Robot::isClearToMove()
 {
-    /* advance() is called twice: once with phase == 0, indicating that item */
-    /* are about to advance, and then with phase == 1 for the actual advance */
-    if ( !phase ) return;
+    if ( isOutOfBounds() ) { return false; }
 
-    if ( isOutOfBounds() )
-    {
-        /* Rotate if the detection area is outside the scene */
-        rotate();
-        return;
-    }
     const auto collidingItems = getItemsInDetectZone();
 
     for ( const auto &item : collidingItems )
     {
         /* ignore itself */
-        if ( item != this )
-        {
-            /* Rotate if obstacle detected */
-            rotate();
-            return;
-        }
+        if ( item != this ) { return false; }
     }
 
+    return true;
+}
+
+void Robot::manualMove()
+{
+    if ( isClearToMove() ) { move(); }
+}
+
+void Robot::advance(int phase)
+{
+    /* do not advance when robot is manually controlled */
+    if ( manualControl() ) return;
+
+    /* advance() is called twice: once with phase == 0, indicating that item */
+    /* are about to advance, and then with phase == 1 for the actual advance */
+    if ( !phase ) return;
+
     /* move if no items are in detection area */
-    move();
+    if ( isClearToMove() )
+        move();
+    else
+        avoid();
 }
 
 void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    m_offset = event->scenePos();
+    if ( event->buttons() & Qt::LeftButton ) { m_offset = event->scenePos(); }
+    else if ( event->buttons() & Qt::RightButton )
+    {
+        setSelected(true);
+        setManualControl(true);
+    }
 }
 
 void Robot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

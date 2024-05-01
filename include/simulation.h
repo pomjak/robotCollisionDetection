@@ -51,7 +51,8 @@ enum class ObjectType
  * including robots and obstacles. It also manages the simulation's state,
  * timing, and interaction with a QGraphicsScene for visualization.
  */
-class Simulation : public QGraphicsView
+class Simulation
+    : public QGraphicsView
 {
     Q_OBJECT
   private:
@@ -59,6 +60,7 @@ class Simulation : public QGraphicsView
     QList<Obstacle *> m_obstacle_list; /* list of obstacles            */
     JsonHandler       json;            /* instance of json interface   */
     State             m_state;         /* state of simulation          */
+    Robot            *m_selectedRobot; /* pointer to selected robot    */
 
   public:
     /**
@@ -244,4 +246,6 @@ class Simulation : public QGraphicsView
      * \param type type of object to delete
      **/
     void deleteObject(ObjectType type);
+
+    void mousePressEvent(QMouseEvent *event) override;
 };
