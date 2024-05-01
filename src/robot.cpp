@@ -156,7 +156,7 @@ void Robot::advance(int phase)
     QPointF newPos = pos() + QPointF(dx, dy);
 
     /*  Check if the detection area is entirely within the scene rect */
-    if ( !scene()->sceneRect().contains(detectionArea().boundingRect()) )
+    if ( !scene()->sceneRect().contains(mapToScene(detectionArea()).boundingRect()) )
     {
         /* Rotate if the detection area is partially or completely outside  */
         /* the scene                                                        */
