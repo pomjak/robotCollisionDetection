@@ -44,6 +44,7 @@ class Robot
     double  m_speed;          /// Speed of the robot
     double  m_rotate_by;      /// Angle to rotate by when detecting a collision
     double  m_detection_dist; /// Maximum collision detec distance
+    bool    m_clockwise;
     QPointF m_offset;
 
   public:
@@ -114,6 +115,13 @@ class Robot
     qreal detectionDistance() const;
 
     /**
+     * \brief Indicates default rotate direction
+     * \return true Clockwise rotation
+     * \return false Anticlockwise rotation
+     **/
+    bool clockwise() const;
+
+    /**
      * \brief Set the size of the robot
      * \param _size
      **/
@@ -142,6 +150,8 @@ class Robot
      * \param dist
      **/
     void setDetectionDistance(qreal dist);
+
+    void setClockwise(bool c);
 
     /**
      * \brief paints the contents of an item in local coordinates

@@ -74,7 +74,6 @@ class Obstacle : public QGraphicsItem
      * \return qreal side
      **/
     qreal size() const;
-
     /**
      * \brief Set the Size object
      *
@@ -82,6 +81,9 @@ class Obstacle : public QGraphicsItem
      * \param h height of the obstacle
      **/
     void setSize(qreal w, qreal h);
+
+    void setWidth(qreal w);
+    void setHeight(qreal h);
 
     /**
      * \brief Get the Height of the obstacle
@@ -129,17 +131,6 @@ class Obstacle : public QGraphicsItem
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
-
-  private:
-    QPointF center() const;
-    QPointF midTop() const;
-    QPointF midBottom() const;
-    QPointF topLeft() const;
-    QPointF topRight() const;
-    QPointF bottomLeft() const;
-    QPointF bottomRight() const;
-    qreal   dx(qreal angle_mod = 0) const;
-    qreal   dy(qreal angle_mod = 0) const;
 };
 
 class ObstaclePropertiesDialog

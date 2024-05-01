@@ -20,6 +20,7 @@ QJsonObject JsonHandler::saveToJson(Robot *robot) const
     json["x"]              = robot->pos().x();
     json["y"]              = robot->pos().y();
     json["detection_dist"] = robot->detectionDistance();
+    json["clockwise"]      = robot->clockwise();
     return json;
 }
 
