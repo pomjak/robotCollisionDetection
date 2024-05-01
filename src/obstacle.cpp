@@ -11,55 +11,64 @@
 #include "obstacle.h"
 
 Obstacle::Obstacle()
-    : m_size(DEF_OBSTACLE_SIZE)
-    , m_orientation(0)
+    : m_height(DEF_OBSTACLE_SIZE)
+    , m_width(DEF_OBSTACLE_SIZE)
 {
     setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
              QGraphicsItem::ItemSendsGeometryChanges);
 }
 
-Obstacle::Obstacle(QPointF p, qreal s)
-    : m_size(s)
-    , m_orientation(0)
+Obstacle::Obstacle(QPointF position, qreal w, qreal h)
+    : m_height(h)
+    , m_width(w)
 {
-    setPos(p);
+    setPos(position);
     setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
              QGraphicsItem::ItemSendsGeometryChanges);
 }
 
-Obstacle::Obstacle(QPointF p, qreal s, qreal a)
-    : m_size(s)
-    , m_orientation(a)
+Obstacle::Obstacle(QPointF position, QSizeF size)
+    : m_height(size.height())
+    , m_width(size.width())
 {
-    setPos(p);
-    setTransformOriginPoint(boundingRect().center());
+    setPos(position);
     setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
              QGraphicsItem::ItemSendsGeometryChanges);
 }
 
 Obstacle::Obstacle(QJsonObject &json)
 {
-    qreal size  = qBound(0.0, json["size"].toDouble(), MAX_OBS_SIZE);
-    qreal pos_x = qBound(0.0, json["x"].toDouble(), (MAX_W - size));
-    qreal pos_y = qBound(0.0, json["y"].toDouble(), (MAX_H - size));
-    qreal orient =
-        qBound(0.0, json["orientation"].toDouble(), 360.0); // ? TODO
+    m_width     = qBound(0.0, json["width"].toDouble(), MAX_OBS_SIZE);
+    m_height    = qBound(0.0, json["height"].toDouble(), MAX_OBS_SIZE);
+    qreal pos_x = qBound(0.0, json["x"].toDouble(), (MAX_W));
+    qreal pos_y = qBound(0.0, json["y"].toDouble(), (MAX_H));
+
     this->setPos(pos_x, pos_y);
-    /* find center and rotate if needed */
-    setTransformOriginPoint(boundingRect().center());
+    update();
+
     setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
              QGraphicsItem::ItemSendsGeometryChanges);
 }
 
-qreal Obstacle::angle() const { return m_orientation; }
-qreal Obstacle::size() const { return m_size; }
+void Obstacle::setSize(qreal w, qreal h)
+{
+    m_width  = w;
+    m_height = h;
+}
 
-void Obstacle::setAngle(qreal a) { m_orientation = a; }
-void Obstacle::setSize(qreal s) { m_size = s; }
+qreal Obstacle::getHeight() const { return m_height; }
+
+qreal Obstacle::getWidth() const { return m_width; }
 
 QRectF Obstacle::boundingRect() const
 {
-    return QRectF(pos().x(), pos().y(), size(), size());
+    return QRectF(pos().x(), pos().y(), m_width, m_height);
+}
+
+QRectF Obstacle::newBoundingRect(QPointF newPos) const
+{
+
+    return QRectF(newPos.x(), newPos.y(), m_width, m_height);
 }
 
 void Obstacle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
@@ -70,16 +79,9 @@ void Obstacle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setPen(Qt::black);
     painter->setBrush(Qt::darkRed);
     painter->drawPath(shape());
-}
 
-QPainterPath Obstacle::shape() const
-{
-    QPainterPath path;
-
-    path.addPolygon(QPolygonF() << topLeft() << bottomLeft() << bottomRight()
-                                << topRight());
-
-    return path;
+    painter->setBrush(Qt::NoBrush);
+    painter->drawRect(boundingRect());
 }
 
 void Obstacle::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -95,12 +97,20 @@ void Obstacle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void Obstacle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    QPointF delta  = event->scenePos() - m_offset;
-    QPointF newPos = pos() + (delta * 0.5);
-    QRectF  newRect(newPos, QSizeF(size(), size()));
-    if ( scene()->sceneRect().contains(newRect.translated(newPos)) )
+    if ( event->buttons() & Qt::LeftButton )
     {
-        setPos(newPos);
+        /* Calculate the new position based on the cursor position */
+        QPointF delta = event->scenePos() - m_offset;
+
+        QPointF newPos = pos() + (delta * 0.5);
+
+        if ( scene()->sceneRect().contains(
+                 newBoundingRect(newPos).translated(newPos)) )
+        {
+            setPos(newPos);
+        }
+
+        m_offset = event->scenePos();
     }
     m_offset = event->scenePos();
 }

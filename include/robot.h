@@ -24,6 +24,10 @@
 #define DEF_ROTATE_BY   0.1
 #define DEF_SPEED       2.0
 
+#define MAX_DETECT_DIST 100.0
+#define MAX_ROTATE_BY   M_PI
+#define MAX_SPEED       5.00
+
 /**
  * \brief A graphical item to use in the main scene and perform collision
  * detection on
@@ -50,6 +54,7 @@ class Robot
 
     /**
      * \brief Create a new robot
+     * \param _pos  position of the robot
      * \param _angle default angle of the robot
      * \param _speed default speed of the robot
      * \param _rotate default angle to rotate by in case of a detected
@@ -57,7 +62,8 @@ class Robot
      * \param _detect Maximum distance from the robot at which
      *collision is detected
      **/
-    Robot(double _angle, double _speed, double _rotate, double _dist);
+    Robot(QPointF _pos, double _angle, double _speed, double _rotate,
+          double _dist);
 
     /**
      * @brief Construct a new Robot
