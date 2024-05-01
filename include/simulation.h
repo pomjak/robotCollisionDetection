@@ -143,16 +143,6 @@ class Simulation : public QGraphicsView
      */
     void setState(State _state);
 
-    /**
-     * \brief Creates an object at a random available place in the simulation.
-     *
-     * This function creates an object of the specified type at a random
-     * available location within the simulation.
-     *
-     * \param type The type of object to spawn.
-     */
-    void spawnObject(ObjectType type);
-
   public slots:
     /**
      * \brief Load a layout configuration from a file.
@@ -185,12 +175,20 @@ class Simulation : public QGraphicsView
     void spawnObstacle();
 
     /**
-     * \brief Delete the selected object from the simulation.
+     * \brief Delete the selected robot from the simulation.
      *
-     * This function removes the currently selected object from
+     * This function removes the currently selected robot from
      * the simulation.
      */
-    void deleteObject();
+    void deleteRobot();
+
+    /**
+     * \brief Delete the selected obstacle from the simulation.
+     *
+     * This function removes the currently selected obstacle from
+     * the simulation.
+     */
+    void deleteObstacle();
 
     /**
      * \brief Delete all items from the simulation.
@@ -229,4 +227,21 @@ class Simulation : public QGraphicsView
      * \param rect
      **/
     void drawBackground(QPainter *painter, const QRectF &rect) override;
+
+    /**
+     * \brief Creates an object at a random available place in the simulation.
+     *
+     * This function creates an object of the specified type at a random
+     * available location within the simulation.
+     *
+     * \param type The type of object to spawn.
+     */
+    void spawnObject(ObjectType type);
+
+    /**
+     * \brief Deletes selected object
+     *
+     * \param type type of object to delete
+     **/
+    void deleteObject(ObjectType type);
 };
