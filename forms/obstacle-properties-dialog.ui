@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PropertiesDialog</class>
- <widget class="QDialog" name="PropertiesDialog">
+ <class>ObstacleDialog</class>
+ <widget class="QDialog" name="ObstacleDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -51,7 +51,7 @@
        <number>9</number>
       </property>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="posXLabel">
         <property name="text">
          <string>&amp;X:</string>
         </property>
@@ -87,7 +87,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="posYLabel">
         <property name="text">
          <string>&amp;Y:</string>
         </property>
@@ -147,24 +147,24 @@
        <number>6</number>
       </property>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="heightLabel">
         <property name="text">
-         <string>Size</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Orientation:</string>
+         <string>Height:</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="orientationBox"/>
+       <widget class="QDoubleSpinBox" name="widthBox"/>
       </item>
       <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="sizeBox"/>
+       <widget class="QDoubleSpinBox" name="heightBox"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="widthLabel">
+        <property name="text">
+         <string>Width:</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -199,7 +199,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>PropertiesDialog</receiver>
+   <receiver>ObstacleDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -215,7 +215,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>PropertiesDialog</receiver>
+   <receiver>ObstacleDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
