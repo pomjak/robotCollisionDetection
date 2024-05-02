@@ -22,12 +22,14 @@ Simulation::Simulation(QWidget *parent)
     QGraphicsScene *newscene = new QGraphicsScene(this);
     newscene->setSceneRect(QRectF(QPointF(0, 0), QPointF(1920, 1080)));
     DEBUG << sceneRect();
+
     setTransformationAnchor(AnchorUnderMouse);
     setScene(newscene);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
     setContextMenuPolicy(Qt::ActionsContextMenu);
     setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+
     setMaximumWidth(1920);
     setMinimumWidth(800);
     setMaximumHeight(1080);
@@ -86,14 +88,16 @@ void Simulation::spawnObject(ObjectType type)
 
         else if ( type == ObjectType::OBSTACLE )
         {
-            objectSize.setHeight(static_cast<qreal>(
-                QRandomGenerator::global()->bounded(20, MAX_OBS_SIZE)));
-            objectSize.setWidth(static_cast<qreal>(
-                QRandomGenerator::global()->bounded(20, MAX_OBS_SIZE)));
-        };
+            std::uniform_real_distribution<double> sizeDist(20, MAX_OBS_SIZE);
 
-        spawnPoint = {QRandomGenerator::global()->bounded(SCENE_WIDTH),
-                      QRandomGenerator::global()->bounded(SCENE_HEIGHT / 2)};
+            objectSize.setHeight(sizeDist(m_rng));
+            objectSize.setWidth(sizeDist(m_rng));
+        }
+
+        std::uniform_real_distribution<double> widthDist(20, SCENE_WIDTH);
+        std::uniform_real_distribution<double> heightDist(20, SCENE_HEIGHT);
+
+        spawnPoint = {widthDist(m_rng), heightDist(m_rng)};
 
         QRectF spawnArea(spawnPoint, objectSize);
         QRectF sceneSpawnArea = spawnArea.translated(spawnPoint);
@@ -111,10 +115,16 @@ void Simulation::spawnObject(ObjectType type)
 
     if ( type == ObjectType::ROBOT )
     {
-        double angle    = QRandomGenerator::global()->bounded(M_PI);
-        double speed    = QRandomGenerator::global()->bounded(MAX_SPEED);
-        double rotateBy = QRandomGenerator::global()->bounded(MAX_ROTATE_BY);
-        double dist     = QRandomGenerator::global()->bounded(MAX_DETECT_DIST);
+        /* Define distributions for different ranges */
+        std::uniform_real_distribution<double> detectDist(1.0, MAX_DETECT_DIST);
+        std::uniform_real_distribution<double> rotateDist(0.1, MAX_ROTATE_BY);
+        std::uniform_real_distribution<double> speedDist(0.1, MAX_SPEED);
+        std::uniform_real_distribution<double> orientDist(0.1, M_PI);
+
+        double angle    = orientDist(m_rng);
+        double speed    = speedDist(m_rng);
+        double rotateBy = rotateDist(m_rng);
+        double dist     = detectDist(m_rng);
 
         Robot *robot = new Robot(spawnPoint, angle, speed, rotateBy, dist);
         addRobot(robot);
