@@ -1,5 +1,7 @@
 # Makefile for a Qt-based C++ project
 
+XLOGINS = xpomsa00_xcagal00
+
 # Qt configuration
 QMAKE = /bin/qmake
 
@@ -49,5 +51,8 @@ clean:
 	rm -rf $(TARGET)
 	rm -rf $(TARGET_DEBUG)
 	rm -rf $(TRASH)
+
+zip:
+	zip $(XLOGINS).zip -r src/ include/ icp24.pro examples/ doc/Doxyfile README.md Makefile
 
 .PHONY: run clean
