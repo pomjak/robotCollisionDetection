@@ -111,7 +111,7 @@ void Simulation::spawnObject(ObjectType type)
 
     if ( type == ObjectType::ROBOT )
     {
-        double angle    = QRandomGenerator::global()->bounded(MAX_ROTATE_BY);
+        double angle    = QRandomGenerator::global()->bounded(M_PI);
         double speed    = QRandomGenerator::global()->bounded(MAX_SPEED);
         double rotateBy = QRandomGenerator::global()->bounded(MAX_ROTATE_BY);
         double dist     = QRandomGenerator::global()->bounded(MAX_DETECT_DIST);
