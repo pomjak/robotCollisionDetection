@@ -61,3 +61,4 @@ icp24_debug
 vgcore*
 *.json
 !examples/*.json
+*.zip
