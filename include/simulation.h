@@ -22,9 +22,14 @@
 #include <QWidget>
 #include <iostream>
 #include <memory>
+#include <random>
 
 #define SCENE_WIDTH  940.0
 #define SCENE_HEIGHT 860.0
+
+#define MAX_DETECT_DIST 100.0
+#define MAX_ROTATE_BY   M_PI / 8
+#define MAX_SPEED       3.00
 
 /**
  * \brief Enum class representing the state of the simulation.
@@ -51,16 +56,17 @@ enum class ObjectType
  * including robots and obstacles. It also manages the simulation's state,
  * timing, and interaction with a QGraphicsScene for visualization.
  */
-class Simulation
-    : public QGraphicsView
+class Simulation : public QGraphicsView
 {
     Q_OBJECT
   private:
-    QList<Robot *>    m_robot_list;    /* list of robots               */
-    QList<Obstacle *> m_obstacle_list; /* list of obstacles            */
-    JsonHandler       json;            /* instance of json interface   */
-    State             m_state;         /* state of simulation          */
-    Robot            *m_selectedRobot; /* pointer to selected robot    */
+    QList<Robot *>     m_robot_list;    /* list of robots               */
+    QList<Obstacle *>  m_obstacle_list; /* list of obstacles            */
+    JsonHandler        json;            /* instance of json interface   */
+    State              m_state;         /* state of simulation          */
+    Robot             *m_selectedRobot; /* pointer to selected robot    */
+    std::random_device m_rd;
+    std::mt19937       m_rng{m_rd()};
 
   public:
     /**
