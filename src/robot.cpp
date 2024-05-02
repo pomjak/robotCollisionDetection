@@ -223,7 +223,11 @@ bool Robot::isClearToMove()
 
 void Robot::manualMove()
 {
-    if ( isClearToMove() ) { move(); }
+    if ( isClearToMove() )
+    {
+        move();
+        move();
+    }
 }
 
 void Robot::advance(int phase)

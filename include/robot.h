@@ -25,8 +25,8 @@
 #define DEF_SPEED       2.0
 
 #define MAX_DETECT_DIST 100.0
-#define MAX_ROTATE_BY   M_PI
-#define MAX_SPEED       5.00
+#define MAX_ROTATE_BY   M_PI/8
+#define MAX_SPEED       3.00
 
 /**
  * \brief A graphical item to use in the main scene and perform collision
