@@ -162,7 +162,8 @@ QPointF Robot::detectionPoint() const
 QPolygonF Robot::detectionArea() const
 {
     return QPolygonF()
-           << center()
+           << leftBumper()
+           << rightBumper()
            << QPointF((rightBumper().x() +
                        (detectionDistance() + radius()) * ::cos(angle())),
                       (rightBumper().y() +
