@@ -53,6 +53,6 @@ clean:
 	rm -rf $(TRASH)
 
 zip:
-	zip $(XLOGINS).zip -r src/ include/ icp24.pro examples/ doc/Doxyfile README.md Makefile
+	zip $(XLOGINS).zip -r $(SRC_PATH)/ $(INC_PATH)/ $(FOR_PATH)/ $(TARGET).pro examples/ doc/Doxyfile README.md Makefile
 
-.PHONY: run clean
+.PHONY: run clean zip
