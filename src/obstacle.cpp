@@ -79,19 +79,33 @@ void Obstacle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    painter->setPen(Qt::black);
     painter->setBrush(Qt::darkRed);
-    painter->drawPath(shape());
+    if ( isSelected() )
+    {
+        painter->setPen(Qt::green);
+        painter->setOpacity(0.7);
+    }
+    else
+    {
+        painter->setPen(Qt::black);
+        painter->setOpacity(1);
+    }
 
+    painter->drawPath(shape());
     painter->setBrush(Qt::NoBrush);
     painter->drawRect(boundingRect());
 }
 
 void Obstacle::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    Q_UNUSED(event);
-
-    m_offset = event->scenePos();
+    if ( event->buttons() & Qt::LeftButton )
+    {
+        if ( event->modifiers() & Qt::ControlModifier )
+        {
+            setSelected(!isSelected());
+        }
+        m_offset = event->scenePos();
+    }
 }
 
 void Obstacle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

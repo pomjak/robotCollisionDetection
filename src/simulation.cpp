@@ -17,7 +17,7 @@ Simulation::Simulation(QWidget *parent)
     : QGraphicsView(parent)
     , json(robotList(), obstacleList())
     , m_state{State::STOPPED}
-    , m_selectedRobot(nullptr)
+    , m_manual_robot(nullptr)
 {
     QGraphicsScene *newscene = new QGraphicsScene(this);
     newscene->setSceneRect(QRectF(QPointF(0, 0), QPointF(1920, 1080)));
@@ -187,16 +187,12 @@ void Simulation::spawnRobot() { spawnObject(ObjectType::ROBOT); }
 
 void Simulation::spawnObstacle() { spawnObject(ObjectType::OBSTACLE); }
 
-void Simulation::deleteRobot() { deleteObject(ObjectType::ROBOT); }
-
-void Simulation::deleteObstacle() { deleteObject(ObjectType::OBSTACLE); }
-
 void Simulation::purgeScene()
 {
-    if ( m_selectedRobot )
+    if ( m_manual_robot )
     {
-        m_selectedRobot->setSelected(false);
-        m_selectedRobot = nullptr;
+        m_manual_robot->setSelected(false);
+        m_manual_robot = nullptr;
     }
     if ( scene() ) { scene()->clear(); }
 
@@ -227,15 +223,27 @@ void Simulation::keyPressEvent(QKeyEvent *event)
         case Qt::Key_Minus : zoomOut(); break;
         case Qt::Key_Up :
         case Qt::Key_W :
-            if ( m_selectedRobot ) { m_selectedRobot->manualMove(); }
+            if ( m_manual_robot ) { m_manual_robot->manualMove(); }
             break;
         case Qt::Key_Left :
         case Qt::Key_A :
-            if ( m_selectedRobot ) { m_selectedRobot->rotateLeft(); }
+            if ( m_manual_robot ) { m_manual_robot->rotateLeft(); }
             break;
         case Qt::Key_Right :
         case Qt::Key_D :
-            if ( m_selectedRobot ) { m_selectedRobot->rotateRight(); }
+            if ( m_manual_robot ) { m_manual_robot->rotateRight(); }
+            break;
+        case Qt::Key_Delete :
+            if ( scene()->selectedItems().size() > 0 )
+            {
+                DEBUG << "Items selected: " << scene()->selectedItems().size();
+                for ( auto &i : scene()->selectedItems() )
+                {
+                    DEBUG << "removing item : " << i;
+                    scene()->removeItem(i);
+                    delete i;
+                }
+            }
             break;
 
         default : QGraphicsView::keyPressEvent(event);
@@ -270,46 +278,14 @@ void Simulation::drawBackground(QPainter *painter, const QRectF &rect)
     painter->drawText(msgRect, message);
 }
 
-void Simulation::deleteObject(ObjectType type)
-{
-    QList<QGraphicsItem *>                items = scene()->selectedItems();
-    QMutableListIterator<QGraphicsItem *> it(items);
-    if ( type == ObjectType::ROBOT )
-    {
-        while ( it.hasNext() )
-        {
-            Robot *robot = dynamic_cast<Robot *>(it.next());
-            if ( robot )
-            {
-                delete robot;
-                it.remove();
-            }
-        }
-    }
-    else if ( type == ObjectType::OBSTACLE )
-    {
-        while ( it.hasNext() )
-        {
-            Obstacle *obs = dynamic_cast<Obstacle *>(it.next());
-            if ( obs )
-            {
-                delete obs;
-                it.remove();
-            }
-        }
-    }
-    qDeleteAll(items);
-}
-
 void Simulation::mousePressEvent(QMouseEvent *event)
 {
     if ( event->button() & Qt::RightButton )
     {
         /* Deselect the previously selected robot, if any */
-        if ( m_selectedRobot != nullptr )
+        if ( m_manual_robot != nullptr )
         {
-            m_selectedRobot->setSelected(false);
-            m_selectedRobot->setManualControl(false);
+            m_manual_robot->setManualControl(false);
         }
 
         /* Find the robot that was clicked */
@@ -324,14 +300,15 @@ void Simulation::mousePressEvent(QMouseEvent *event)
         if ( robot != nullptr )
         {
             /* Set the clicked robot as the selected robot */
-            m_selectedRobot = robot;
-            m_selectedRobot->setSelected(true);
-            m_selectedRobot->setManualControl(true);
+            m_manual_robot = robot;
+            m_manual_robot->setManualControl(true);
         }
         else
         {
-            /* No robot clicked, so deselect any selected robot */
-            m_selectedRobot = nullptr;
+            /* No robot clicked, so deselect any selected
+             * robot
+             */
+            m_manual_robot = nullptr;
         }
 
         /* Pass the event to the base class for further processing */

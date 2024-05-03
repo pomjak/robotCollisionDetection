@@ -25,6 +25,7 @@ Robot::Robot()
 {
     setPos(0, 0);
     setFlag(ItemIsMovable);
+    setFlag(ItemIsSelectable);
     setFlag(ItemSendsGeometryChanges);
     setSelected(false);
 };
@@ -41,6 +42,7 @@ Robot::Robot(QPointF _pos, double _angle, double _speed, double _rotate,
 {
     setPos(_pos);
     setFlag(ItemIsMovable);
+    setFlag(ItemIsSelectable);
     setFlag(ItemSendsGeometryChanges);
     setSelected(false);
 }
@@ -58,6 +60,7 @@ Robot::Robot(QPointF _position)
 {
     setPos(_position);
     setFlag(ItemIsMovable);
+    setFlag(ItemIsSelectable);
     setFlag(ItemSendsGeometryChanges);
     setAcceptDrops(true);
     setSelected(false);
@@ -78,6 +81,7 @@ Robot::Robot(QJsonObject &json)
     m_clockwise      = json["clockwise"].toBool();
 
     setPos(pos_x, pos_y);
+    setFlag(ItemIsSelectable);
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
 }
@@ -104,14 +108,18 @@ void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     Q_UNUSED(widget);
     painter->setPen(Qt::black);
     painter->setOpacity(0.2);
-    painter->setBrush(Qt::darkYellow);
+    painter->setBrush(Qt::yellow);
     painter->drawPolygon(detectionArea());
+    painter->setOpacity(1);
     if ( manualControl() )
         painter->setPen(Qt::red);
-    else
-        painter->setPen(Qt::darkCyan);
+    else if ( isSelected() )
+    {
+        painter->setPen(Qt::green);
+        painter->setOpacity(0.7);
+    }
+    else { painter->setPen(Qt::blue); }
     painter->setBrush(Qt::darkGray);
-    painter->setOpacity(1);
     painter->drawEllipse(boundingRect());
     painter->setPen(Qt::darkYellow);
     painter->setBrush(Qt::NoBrush);
@@ -248,12 +256,15 @@ void Robot::advance(int phase)
 
 void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if ( event->buttons() & Qt::LeftButton ) { m_offset = event->scenePos(); }
-    else if ( event->buttons() & Qt::RightButton )
+    if ( event->buttons() & Qt::LeftButton )
     {
-        setSelected(true);
-        setManualControl(true);
+        if ( event->modifiers() & Qt::ControlModifier )
+        {
+            setSelected(!isSelected());
+        }
+        m_offset = event->scenePos();
     }
+    else if ( event->buttons() & Qt::RightButton ) { setManualControl(true); }
 }
 
 void Robot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
