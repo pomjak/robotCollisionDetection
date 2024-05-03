@@ -303,8 +303,8 @@ RobotPropertiesDialog::RobotPropertiesDialog(Robot *r, QWidget *parent)
 
     posXBox->setValue(m_robot->x());
     posYBox->setValue(m_robot->y());
-    orientationBox->setValue(m_robot->angle());
-    rotationBox->setValue(m_robot->rotateBy());
+    orientationBox->setValue(qRadiansToDegrees(m_robot->angle()));
+    rotationBox->setValue(qRadiansToDegrees(m_robot->rotateBy()));
     detectDistanceBox->setValue(m_robot->detectionDistance());
     speedBox->setValue(m_robot->speed());
     directionButton->setChecked(m_robot->clockwise());
@@ -313,9 +313,9 @@ RobotPropertiesDialog::RobotPropertiesDialog(Robot *r, QWidget *parent)
 void RobotPropertiesDialog::on_buttonBox_accepted()
 {
     m_robot->setPos(posXBox->value(), posYBox->value());
-    m_robot->setAngle(orientationBox->value());
+    m_robot->setAngle(qDegreesToRadians(orientationBox->value()));
     m_robot->setSpeed(speedBox->value());
-    m_robot->setRotateBy(rotationBox->value());
+    m_robot->setRotateBy(qDegreesToRadians(rotationBox->value()));
     m_robot->setDetectionDistance(detectDistanceBox->value());
     m_robot->setClockwise(directionButton->isChecked());
     m_robot->update();
