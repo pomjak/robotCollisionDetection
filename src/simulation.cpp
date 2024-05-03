@@ -263,18 +263,25 @@ void Simulation::drawBackground(QPainter *painter, const QRectF &rect)
     painter->setBrush(Qt::NoBrush);
     painter->drawRect(sr);
 
-    QRectF  msgRect(sr.left() + 785, sr.top() + 360, 350, 180);
+    QRectF  msgRect(sr.left() + 20, sr.bottom() - 200, 350, 200);
     QString message = {tr("Ctrl+O - load a new layout\n"
                           "Ctrl+S - save current layout\n"
                           "Ctrl+L - clear screen\n"
                           "Ctrl+N - spawn a new robot\n"
                           "Ctrl+M - spawn a new obstacle\n"
                           "Space  - Play / Pause\n"
+                          "Delete - remove selected items\n"
                           "'+/-'  - zoom in/out\n")};
 
+    QRectF  mouseMsgRect(sr.left() + 1570, sr.bottom() - 100, 350, 90);
+    QString mouseControlMsg = {tr("Click & Drag - Move item\n"
+                                  "Right Click  - Manual control\n"
+                                  "Ctrl + Click - Select items\n"
+                                  "Double Click - Edit item")};
     painter->setBrush(Qt::darkGreen);
     painter->setPen(Qt::black);
     painter->drawText(msgRect, message);
+    painter->drawText(mouseMsgRect, mouseControlMsg);
 }
 
 void Simulation::mousePressEvent(QMouseEvent *event)
