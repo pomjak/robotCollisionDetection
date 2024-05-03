@@ -24,9 +24,8 @@ Robot::Robot()
 
 {
     setPos(0, 0);
-    setFlag(ItemIsMovable);
-    setFlag(ItemIsSelectable);
-    setFlag(ItemSendsGeometryChanges);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
+             QGraphicsItem::ItemSendsGeometryChanges);
     setSelected(false);
 };
 
@@ -41,9 +40,8 @@ Robot::Robot(QPointF _pos, double _angle, double _speed, double _rotate,
     , m_manual_override(false)
 {
     setPos(_pos);
-    setFlag(ItemIsMovable);
-    setFlag(ItemIsSelectable);
-    setFlag(ItemSendsGeometryChanges);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
+             QGraphicsItem::ItemSendsGeometryChanges);
     setSelected(false);
 }
 
@@ -59,10 +57,8 @@ Robot::Robot(QPointF _position)
 
 {
     setPos(_position);
-    setFlag(ItemIsMovable);
-    setFlag(ItemIsSelectable);
-    setFlag(ItemSendsGeometryChanges);
-    setAcceptDrops(true);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
+             QGraphicsItem::ItemSendsGeometryChanges);
     setSelected(false);
 };
 
@@ -81,9 +77,8 @@ Robot::Robot(QJsonObject &json)
     m_clockwise      = json["clockwise"].toBool();
 
     setPos(pos_x, pos_y);
-    setFlag(ItemIsSelectable);
-    setFlag(ItemIsMovable);
-    setFlag(ItemSendsGeometryChanges);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
+             QGraphicsItem::ItemSendsGeometryChanges);
 }
 
 qreal Robot::size() const { return m_size; }
@@ -265,13 +260,6 @@ void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
         m_offset = event->scenePos();
     }
     else if ( event->buttons() & Qt::RightButton ) { setManualControl(true); }
-}
-
-void Robot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    Q_UNUSED(event);
-    INFO << "Robot released...";
-    update();
 }
 
 void Robot::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

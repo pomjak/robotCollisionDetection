@@ -30,8 +30,8 @@
 class Obstacle : public QGraphicsItem
 {
   private:
-    qreal   m_height; /// height of the obstacle
-    qreal   m_width;  ///  width of the obstacle
+    qreal   m_width;  ///   width of the obstacle
+    qreal   m_height; ///   height of the obstacle
     QPointF m_offset; ///   offset used for mouse movements
 
   public:
@@ -128,7 +128,6 @@ class Obstacle : public QGraphicsItem
 
   protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 };

@@ -11,16 +11,16 @@
 #include "obstacle.h"
 
 Obstacle::Obstacle()
-    : m_height(DEF_OBSTACLE_SIZE)
-    , m_width(DEF_OBSTACLE_SIZE)
+    : m_width(DEF_OBSTACLE_SIZE)
+    , m_height(DEF_OBSTACLE_SIZE)
 {
     setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
              QGraphicsItem::ItemSendsGeometryChanges);
 }
 
 Obstacle::Obstacle(QPointF position, qreal w, qreal h)
-    : m_height(h)
-    , m_width(w)
+    : m_width(w)
+    , m_height(h)
 {
     setPos(position);
     setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
@@ -28,8 +28,8 @@ Obstacle::Obstacle(QPointF position, qreal w, qreal h)
 }
 
 Obstacle::Obstacle(QPointF position, QSizeF size)
-    : m_height(size.height())
-    , m_width(size.width())
+    : m_width(size.width())
+    , m_height(size.height())
 {
     setPos(position);
     setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
@@ -37,9 +37,9 @@ Obstacle::Obstacle(QPointF position, QSizeF size)
 }
 
 Obstacle::Obstacle(QJsonObject &json)
+    : m_width(qBound(0.0, json["width"].toDouble(), MAX_OBS_SIZE))
+    , m_height(qBound(0.0, json["height"].toDouble(), MAX_OBS_SIZE))
 {
-    m_width     = qBound(0.0, json["width"].toDouble(), MAX_OBS_SIZE);
-    m_height    = qBound(0.0, json["height"].toDouble(), MAX_OBS_SIZE);
     qreal pos_x = qBound(0.0, json["x"].toDouble(), (MAX_W));
     qreal pos_y = qBound(0.0, json["y"].toDouble(), (MAX_H));
 
@@ -106,12 +106,6 @@ void Obstacle::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }
         m_offset = event->scenePos();
     }
-}
-
-void Obstacle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    Q_UNUSED(event);
-    update();
 }
 
 void Obstacle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

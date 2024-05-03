@@ -285,8 +285,9 @@ class Robot
     bool isClearToMove();
 
     /**
-     * \brief when robot is manually controlled, it can move forward, or stay in place
-     * 
+     * \brief when robot is manually controlled, it can move forward, or stay
+     * in place
+     *
      */
     void manualMove();
 
@@ -300,7 +301,6 @@ class Robot
 
   protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 };

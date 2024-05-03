@@ -239,7 +239,6 @@ void Simulation::keyPressEvent(QKeyEvent *event)
                 DEBUG << "Items selected: " << scene()->selectedItems().size();
                 for ( auto &i : scene()->selectedItems() )
                 {
-                    DEBUG << "removing item : " << i;
                     scene()->removeItem(i);
                     delete i;
                 }
