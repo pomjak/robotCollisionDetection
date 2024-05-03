@@ -125,9 +125,9 @@
         {
             "clockwise": false,
             "detection_dist": 35,
-            "orientation": -25.100000000000087,
-            "rotation": 0.1,
-            "speed": 1,
+            "orientation": 45.0,
+            "rotation": 1.0,
+            "speed": 1.01,
             "x": 491.7160355645943,
             "y": 318.62097242812575
         },
@@ -135,7 +135,7 @@
             "clockwise": true,
             "detection_dist": 63.24,
             "orientation": 136.53999999999965,
-            "rotation": 0.17,
+            "rotation": 3.5,
             "speed": 0.73,
             "x": 580.5825374340349,
             "y": 223.06006888270002
@@ -144,7 +144,7 @@
             "clockwise": false,
             "detection_dist": 32.28,
             "orientation": -37.59999999999999,
-            "rotation": 0.37,
+            "rotation": 34.0,
             "speed": 0.6599999999999999,
             "x": 572.7388284248766,
             "y": 314.5796859990531
@@ -153,7 +153,7 @@
             "clockwise": false,
             "detection_dist": 35,
             "orientation": 19.099999999999962,
-            "rotation": 0.12,
+            "rotation": 21.1,
             "speed": 0.31,
             "x": 371.7105186080327,
             "y": 314.05978546871876
@@ -162,7 +162,7 @@
             "clockwise": false,
             "detection_dist": 50,
             "orientation": -48.320000000000036,
-            "rotation": 0.32,
+            "rotation": 14.3,
             "speed": 0.58,
             "x": 306.6160969955641,
             "y": 202.61609596430338
@@ -171,7 +171,7 @@
             "clockwise": true,
             "detection_dist": 55,
             "orientation": 155.47999999999877,
-            "rotation": 0.32,
+            "rotation": 11.2,
             "speed": 0.93,
             "x": 306.7860242653239,
             "y": 137.42491239593525
@@ -180,7 +180,7 @@
             "clockwise": true,
             "detection_dist": 75.07,
             "orientation": 49.900000000000176,
-            "rotation": 0.34,
+            "rotation": 4.5,
             "speed": 0.8700000000000001,
             "x": 555.8696933439259,
             "y": 110.29948472996459
@@ -189,7 +189,7 @@
             "clockwise": true,
             "detection_dist": 80.72361720291653,
             "orientation": 18.916831667965265,
-            "rotation": 0.1157154553148933,
+            "rotation": 7.1157154553148933,
             "speed": 2.159417867127588,
             "x": 409.3077527681294,
             "y": 105.50027560596388

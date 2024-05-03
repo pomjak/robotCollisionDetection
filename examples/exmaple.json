@@ -54,7 +54,7 @@
             "clockwise": true,
             "detection_dist": 25,
             "orientation": 0,
-            "rotation": 0.05,
+            "rotation": 12,
             "speed": 0.5,
             "x": 49,
             "y": 44

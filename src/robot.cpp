@@ -24,8 +24,8 @@ Robot::Robot()
 
 {
     setPos(0, 0);
-    setFlag(ItemIsMovable);
-    setFlag(ItemSendsGeometryChanges);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
+             QGraphicsItem::ItemSendsGeometryChanges);
     setSelected(false);
 };
 
@@ -40,8 +40,8 @@ Robot::Robot(QPointF _pos, double _angle, double _speed, double _rotate,
     , m_manual_override(false)
 {
     setPos(_pos);
-    setFlag(ItemIsMovable);
-    setFlag(ItemSendsGeometryChanges);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
+             QGraphicsItem::ItemSendsGeometryChanges);
     setSelected(false);
 }
 
@@ -57,9 +57,8 @@ Robot::Robot(QPointF _position)
 
 {
     setPos(_position);
-    setFlag(ItemIsMovable);
-    setFlag(ItemSendsGeometryChanges);
-    setAcceptDrops(true);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
+             QGraphicsItem::ItemSendsGeometryChanges);
     setSelected(false);
 };
 
@@ -78,8 +77,8 @@ Robot::Robot(QJsonObject &json)
     m_clockwise      = json["clockwise"].toBool();
 
     setPos(pos_x, pos_y);
-    setFlag(ItemIsMovable);
-    setFlag(ItemSendsGeometryChanges);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
+             QGraphicsItem::ItemSendsGeometryChanges);
 }
 
 qreal Robot::size() const { return m_size; }
@@ -104,14 +103,18 @@ void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     Q_UNUSED(widget);
     painter->setPen(Qt::black);
     painter->setOpacity(0.2);
-    painter->setBrush(Qt::darkYellow);
+    painter->setBrush(Qt::yellow);
     painter->drawPolygon(detectionArea());
+    painter->setOpacity(1);
     if ( manualControl() )
         painter->setPen(Qt::red);
-    else
-        painter->setPen(Qt::darkCyan);
+    else if ( isSelected() )
+    {
+        painter->setPen(Qt::green);
+        painter->setOpacity(0.7);
+    }
+    else { painter->setPen(Qt::blue); }
     painter->setBrush(Qt::darkGray);
-    painter->setOpacity(1);
     painter->drawEllipse(boundingRect());
     painter->setPen(Qt::darkYellow);
     painter->setBrush(Qt::NoBrush);
@@ -248,12 +251,15 @@ void Robot::advance(int phase)
 
 void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if ( event->buttons() & Qt::LeftButton ) { m_offset = event->scenePos(); }
-    else if ( event->buttons() & Qt::RightButton )
+    if ( event->buttons() & Qt::LeftButton )
     {
-        setSelected(true);
-        setManualControl(true);
+        if ( event->modifiers() & Qt::ControlModifier )
+        {
+            setSelected(!isSelected());
+        }
+        m_offset = event->scenePos();
     }
+    else if ( event->buttons() & Qt::RightButton ) { setManualControl(true); }
 }
 
 void Robot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -292,8 +298,8 @@ RobotPropertiesDialog::RobotPropertiesDialog(Robot *r, QWidget *parent)
 
     posXBox->setValue(m_robot->x());
     posYBox->setValue(m_robot->y());
-    orientationBox->setValue(m_robot->angle());
-    rotationBox->setValue(m_robot->rotateBy());
+    orientationBox->setValue(qRadiansToDegrees(m_robot->angle()));
+    rotationBox->setValue(qRadiansToDegrees(m_robot->rotateBy()));
     detectDistanceBox->setValue(m_robot->detectionDistance());
     speedBox->setValue(m_robot->speed());
     directionButton->setChecked(m_robot->clockwise());
@@ -302,9 +308,9 @@ RobotPropertiesDialog::RobotPropertiesDialog(Robot *r, QWidget *parent)
 void RobotPropertiesDialog::on_buttonBox_accepted()
 {
     m_robot->setPos(posXBox->value(), posYBox->value());
-    m_robot->setAngle(orientationBox->value());
+    m_robot->setAngle(qDegreesToRadians(orientationBox->value()));
     m_robot->setSpeed(speedBox->value());
-    m_robot->setRotateBy(rotationBox->value());
+    m_robot->setRotateBy(qDegreesToRadians(rotationBox->value()));
     m_robot->setDetectionDistance(detectDistanceBox->value());
     m_robot->setClockwise(directionButton->isChecked());
     m_robot->update();

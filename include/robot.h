@@ -285,8 +285,9 @@ class Robot
     bool isClearToMove();
 
     /**
-     * \brief when robot is manually controlled, it can move forward, or stay in place
-     * 
+     * \brief when robot is manually controlled, it can move forward, or stay
+     * in place
+     *
      */
     void manualMove();
 

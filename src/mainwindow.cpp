@@ -39,16 +39,6 @@ void MainWindow::setupActions()
     connect(addObstacleAction, &QAction::triggered, simulation,
             &Simulation::spawnObstacle);
 
-    deleteRobotAction = new QAction(tr("Remove robot"), this);
-    deleteRobotAction->setShortcut(QKeySequence(tr("Delete")));
-    connect(deleteRobotAction, &QAction::triggered, simulation,
-            &Simulation::deleteRobot);
-
-    deleteObstacleAction = new QAction(tr("Remove obstacle"), this);
-    deleteObstacleAction->setShortcut(QKeySequence(tr("Delete")));
-    connect(deleteRobotAction, &QAction::triggered, simulation,
-            &Simulation::deleteObstacle);
-
     loadLevelAction = new QAction(tr("L&oad Level"), this);
     loadLevelAction->setShortcut(QKeySequence(tr("Ctrl+O")));
     connect(loadLevelAction, &QAction::triggered, simulation,
@@ -104,4 +94,13 @@ MainWindow::~MainWindow()
 {
     delete timer;
     delete simulation;
+    delete file_menu;
+    delete edit_menu;
+    delete toggleSimAction;
+    delete addRobotAction;
+    delete addObstacleAction;
+    delete loadLevelAction;
+    delete saveLevelAction;
+    delete clearSceneAction;
+    delete exitAction;
 }
