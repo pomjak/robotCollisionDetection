@@ -262,6 +262,13 @@ void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
     else if ( event->buttons() & Qt::RightButton ) { setManualControl(true); }
 }
 
+void Robot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event);
+    INFO << "Robot released...";
+    update();
+}
+
 void Robot::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     QPointF delta  = event->scenePos() - m_offset;

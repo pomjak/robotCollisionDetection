@@ -108,6 +108,12 @@ void Obstacle::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
+void Obstacle::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    Q_UNUSED(event);
+    update();
+}
+
 void Obstacle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if ( event->buttons() & Qt::LeftButton )
