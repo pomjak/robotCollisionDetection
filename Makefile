@@ -3,7 +3,7 @@
 XLOGINS = xpomsa00_xcagal00
 
 # Qt configuration
-QMAKE = /bin/qmake
+QMAKE = qmake
 
 # Target naem
 TARGET = icp24
