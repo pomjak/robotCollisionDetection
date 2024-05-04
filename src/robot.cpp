@@ -176,14 +176,18 @@ QPolygonF Robot::detectionArea() const
                        (detectionDistance() + radius()) * ::sin(angle())));
 }
 
-void Robot::rotateLeft() { setAngle(angle() - rotateBy()); }
-void Robot::rotateRight() { setAngle(angle() + rotateBy()); }
-
-void Robot::avoid()
+void Robot::rotateLeft()
 {
-    clockwise() ? rotateRight() : rotateLeft();
+    setAngle(angle() - rotateBy());
     update();
 }
+void Robot::rotateRight()
+{
+    setAngle(angle() + rotateBy());
+    update();
+}
+
+void Robot::avoid() { clockwise() ? rotateRight() : rotateLeft(); }
 
 bool Robot::isOutOfBounds()
 {
