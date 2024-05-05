@@ -54,12 +54,6 @@ class MainWindow : public QMainWindow
     ~MainWindow();
 
     /**
-     * \brief Connects all used buttons
-     *
-     */
-    void connect_buttons();
-
-    /**
      * \brief Creates toolbar menus
      **/
     void setupMenus();
