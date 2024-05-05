@@ -20,10 +20,13 @@ Robot::Robot()
     , m_rotate_by(DEF_ROTATE_BY)
     , m_detection_dist(DEF_DETECT_DIST)
     , m_clockwise(true)
+    , m_manual_override(false)
+
 {
     setPos(0, 0);
-    setFlag(ItemIsMovable);
-    setFlag(ItemSendsGeometryChanges);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
+             QGraphicsItem::ItemSendsGeometryChanges);
+    setSelected(false);
 };
 
 Robot::Robot(QPointF _pos, double _angle, double _speed, double _rotate,
@@ -34,10 +37,12 @@ Robot::Robot(QPointF _pos, double _angle, double _speed, double _rotate,
     , m_rotate_by(_rotate)
     , m_detection_dist(_dist)
     , m_clockwise(true)
+    , m_manual_override(false)
 {
     setPos(_pos);
-    setFlag(ItemIsMovable);
-    setFlag(ItemSendsGeometryChanges);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
+             QGraphicsItem::ItemSendsGeometryChanges);
+    setSelected(false);
 }
 
 Robot::Robot(QPointF _position)
@@ -48,30 +53,32 @@ Robot::Robot(QPointF _position)
     , m_rotate_by(DEF_ROTATE_BY)
     , m_detection_dist(DEF_DETECT_DIST)
     , m_clockwise(true)
+    , m_manual_override(false)
+
 {
     setPos(_position);
-    setFlag(ItemIsMovable);
-    setFlag(ItemSendsGeometryChanges);
-    setAcceptDrops(true);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
+             QGraphicsItem::ItemSendsGeometryChanges);
+    setSelected(false);
 };
 
 Robot::Robot(QJsonObject &json)
     : m_size(DEF_ROBOT_SIZE)
+    , m_manual_override(false)
 {
     /* Set the initial position of the robot */
     qreal pos_x = qBound(0.0, json["x"].toDouble(), (MAX_W - size()));
     qreal pos_y = qBound(0.0, json["y"].toDouble(), (MAX_H - size()));
-    /* ? TODO Possibly change min/max values */
-    m_angle     = qBound(0.0, json["orientation"].toDouble(), 360.0);
-    m_speed     = qBound(1.0, json["speed"].toDouble(), 10.0);
-    m_rotate_by = qBound(1.0, json["rotation"].toDouble(), 90.0);
-    m_detection_dist =
-        qBound(DEF_DETECT_DIST, json["detection_dist"].toDouble(), 100.0);
-    m_clockwise = json["clockwise"].toBool();
+
+    m_angle          = json["orientation"].toDouble();
+    m_speed          = json["speed"].toDouble();
+    m_rotate_by      = json["rotation"].toDouble();
+    m_detection_dist = json["detection_dist"].toDouble();
+    m_clockwise      = json["clockwise"].toBool();
+
     setPos(pos_x, pos_y);
-    setFlag(ItemIsMovable);
-    setFlag(ItemSendsGeometryChanges);
-    setAcceptDrops(true);
+    setFlags(QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsSelectable |
+             QGraphicsItem::ItemSendsGeometryChanges);
 }
 
 qreal Robot::size() const { return m_size; }
@@ -80,12 +87,14 @@ qreal Robot::speed() const { return m_speed; }
 qreal Robot::rotateBy() const { return m_rotate_by; }
 qreal Robot::detectionDistance() const { return m_detection_dist; }
 bool  Robot::clockwise() const { return m_clockwise; }
+bool  Robot::manualControl() const { return m_manual_override; }
 void  Robot::setSize(qreal size) { m_size = size; }
 void  Robot::setAngle(qreal angle) { m_angle = angle; }
 void  Robot::setSpeed(qreal speed) { m_speed = speed; }
 void  Robot::setRotateBy(qreal rotate_by) { m_rotate_by = rotate_by; }
 void  Robot::setDetectionDistance(qreal dist) { m_detection_dist = dist; }
 void  Robot::setClockwise(bool c) { m_clockwise = c; }
+void  Robot::setManualControl(bool control) { m_manual_override = control; }
 
 void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                   QWidget *widget)
@@ -94,11 +103,18 @@ void Robot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     Q_UNUSED(widget);
     painter->setPen(Qt::black);
     painter->setOpacity(0.2);
-    painter->setBrush(Qt::darkYellow);
+    painter->setBrush(Qt::yellow);
     painter->drawPolygon(detectionArea());
-    painter->setPen(Qt::darkCyan);
-    painter->setBrush(Qt::darkGray);
     painter->setOpacity(1);
+    if ( manualControl() )
+        painter->setPen(Qt::red);
+    else if ( isSelected() )
+    {
+        painter->setPen(Qt::green);
+        painter->setOpacity(0.7);
+    }
+    else { painter->setPen(Qt::blue); }
+    painter->setBrush(Qt::darkGray);
     painter->drawEllipse(boundingRect());
     painter->setPen(Qt::darkYellow);
     painter->setBrush(Qt::NoBrush);
@@ -149,7 +165,7 @@ QPointF Robot::detectionPoint() const
 QPolygonF Robot::detectionArea() const
 {
     return QPolygonF()
-           << center()
+           << leftBumper() << rightBumper()
            << QPointF((rightBumper().x() +
                        (detectionDistance() + radius()) * ::cos(angle())),
                       (rightBumper().y() +
@@ -160,12 +176,18 @@ QPolygonF Robot::detectionArea() const
                        (detectionDistance() + radius()) * ::sin(angle())));
 }
 
-void Robot::rotate()
+void Robot::rotateLeft()
 {
-    clockwise() ? setAngle(angle() + rotateBy())
-                : setAngle(angle() - rotateBy());
+    setAngle(angle() - rotateBy());
     update();
 }
+void Robot::rotateRight()
+{
+    setAngle(angle() + rotateBy());
+    update();
+}
+
+void Robot::avoid() { clockwise() ? rotateRight() : rotateLeft(); }
 
 bool Robot::isOutOfBounds()
 {
@@ -191,38 +213,57 @@ void Robot::move()
     setPos(newPos);
 }
 
-void Robot::advance(int phase)
+bool Robot::isClearToMove()
 {
-    /* advance() is called twice: once with phase == 0, indicating that item */
-    /* are about to advance, and then with phase == 1 for the actual advance */
-    if ( !phase ) return;
+    if ( isOutOfBounds() ) { return false; }
 
-    if ( isOutOfBounds() )
-    {
-        /* Rotate if the detection area is outside the scene */
-        rotate();
-        return;
-    }
     const auto collidingItems = getItemsInDetectZone();
 
     for ( const auto &item : collidingItems )
     {
         /* ignore itself */
-        if ( item != this )
-        {
-            /* Rotate if obstacle detected */
-            rotate();
-            return;
-        }
+        if ( item != this ) { return false; }
     }
 
+    return true;
+}
+
+void Robot::manualMove()
+{
+    if ( isClearToMove() )
+    {
+        move();
+        move();
+    }
+}
+
+void Robot::advance(int phase)
+{
+    /* do not advance when robot is manually controlled */
+    if ( manualControl() ) return;
+
+    /* advance() is called twice: once with phase == 0, indicating that item */
+    /* are about to advance, and then with phase == 1 for the actual advance */
+    if ( !phase ) return;
+
     /* move if no items are in detection area */
-    move();
+    if ( isClearToMove() )
+        move();
+    else
+        avoid();
 }
 
 void Robot::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    m_offset = event->scenePos();
+    if ( event->buttons() & Qt::LeftButton )
+    {
+        if ( event->modifiers() & Qt::ControlModifier )
+        {
+            setSelected(!isSelected());
+        }
+        m_offset = event->scenePos();
+    }
+    else if ( event->buttons() & Qt::RightButton ) { setManualControl(true); }
 }
 
 void Robot::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -261,8 +302,8 @@ RobotPropertiesDialog::RobotPropertiesDialog(Robot *r, QWidget *parent)
 
     posXBox->setValue(m_robot->x());
     posYBox->setValue(m_robot->y());
-    orientationBox->setValue(m_robot->angle());
-    rotationBox->setValue(m_robot->rotateBy());
+    orientationBox->setValue(qRadiansToDegrees(m_robot->angle()));
+    rotationBox->setValue(qRadiansToDegrees(m_robot->rotateBy()));
     detectDistanceBox->setValue(m_robot->detectionDistance());
     speedBox->setValue(m_robot->speed());
     directionButton->setChecked(m_robot->clockwise());
@@ -271,9 +312,9 @@ RobotPropertiesDialog::RobotPropertiesDialog(Robot *r, QWidget *parent)
 void RobotPropertiesDialog::on_buttonBox_accepted()
 {
     m_robot->setPos(posXBox->value(), posYBox->value());
-    m_robot->setAngle(orientationBox->value());
+    m_robot->setAngle(qDegreesToRadians(orientationBox->value()));
     m_robot->setSpeed(speedBox->value());
-    m_robot->setRotateBy(rotationBox->value());
+    m_robot->setRotateBy(qDegreesToRadians(rotationBox->value()));
     m_robot->setDetectionDistance(detectDistanceBox->value());
     m_robot->setClockwise(directionButton->isChecked());
     m_robot->update();

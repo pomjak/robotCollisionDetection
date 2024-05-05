@@ -17,16 +17,19 @@ Simulation::Simulation(QWidget *parent)
     : QGraphicsView(parent)
     , json(robotList(), obstacleList())
     , m_state{State::STOPPED}
+    , m_manual_robot(nullptr)
 {
     QGraphicsScene *newscene = new QGraphicsScene(this);
     newscene->setSceneRect(QRectF(QPointF(0, 0), QPointF(1920, 1080)));
     DEBUG << sceneRect();
+
     setTransformationAnchor(AnchorUnderMouse);
     setScene(newscene);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
     setContextMenuPolicy(Qt::ActionsContextMenu);
     setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+
     setMaximumWidth(1920);
     setMinimumWidth(800);
     setMaximumHeight(1080);
@@ -85,14 +88,16 @@ void Simulation::spawnObject(ObjectType type)
 
         else if ( type == ObjectType::OBSTACLE )
         {
-            objectSize.setHeight(static_cast<qreal>(
-                QRandomGenerator::global()->bounded(20, MAX_OBS_SIZE)));
-            objectSize.setWidth(static_cast<qreal>(
-                QRandomGenerator::global()->bounded(20, MAX_OBS_SIZE)));
-        };
+            std::uniform_real_distribution<double> sizeDist(20, MAX_OBS_SIZE);
 
-        spawnPoint = {QRandomGenerator::global()->bounded(SCENE_WIDTH),
-                      QRandomGenerator::global()->bounded(SCENE_HEIGHT / 2)};
+            objectSize.setHeight(sizeDist(m_rng));
+            objectSize.setWidth(sizeDist(m_rng));
+        }
+
+        std::uniform_real_distribution<double> widthDist(20, SCENE_WIDTH);
+        std::uniform_real_distribution<double> heightDist(20, SCENE_HEIGHT);
+
+        spawnPoint = {widthDist(m_rng), heightDist(m_rng)};
 
         QRectF spawnArea(spawnPoint, objectSize);
         QRectF sceneSpawnArea = spawnArea.translated(spawnPoint);
@@ -110,10 +115,17 @@ void Simulation::spawnObject(ObjectType type)
 
     if ( type == ObjectType::ROBOT )
     {
-        double angle    = QRandomGenerator::global()->bounded(MAX_ROTATE_BY);
-        double speed    = QRandomGenerator::global()->bounded(MAX_SPEED);
-        double rotateBy = QRandomGenerator::global()->bounded(MAX_ROTATE_BY);
-        double dist     = QRandomGenerator::global()->bounded(MAX_DETECT_DIST);
+        /* Define distributions for different ranges */
+        std::uniform_real_distribution<double> detectDist(1.0,
+                                                          MAX_DETECT_DIST);
+        std::uniform_real_distribution<double> rotateDist(0.1, MAX_ROTATE_BY);
+        std::uniform_real_distribution<double> speedDist(0.1, MAX_SPEED);
+        std::uniform_real_distribution<double> orientDist(0.1, M_PI);
+
+        double angle    = orientDist(m_rng);
+        double speed    = speedDist(m_rng);
+        double rotateBy = rotateDist(m_rng);
+        double dist     = detectDist(m_rng);
 
         Robot *robot = new Robot(spawnPoint, angle, speed, rotateBy, dist);
         addRobot(robot);
@@ -175,13 +187,15 @@ void Simulation::spawnRobot() { spawnObject(ObjectType::ROBOT); }
 
 void Simulation::spawnObstacle() { spawnObject(ObjectType::OBSTACLE); }
 
-void Simulation::deleteRobot() { deleteObject(ObjectType::ROBOT); }
-
-void Simulation::deleteObstacle() { deleteObject(ObjectType::OBSTACLE); }
-
 void Simulation::purgeScene()
 {
-    scene()->clear();
+    if ( m_manual_robot )
+    {
+        m_manual_robot->setSelected(false);
+        m_manual_robot = nullptr;
+    }
+    if ( scene() ) { scene()->clear(); }
+
     m_robot_list.clear();
     m_obstacle_list.clear();
 }
@@ -200,13 +214,38 @@ void Simulation::scaleView(qreal scale_factor)
 
     scale(scale_factor, scale_factor);
 }
+
 void Simulation::keyPressEvent(QKeyEvent *event)
 {
     switch ( event->key() )
     {
         case Qt::Key_Plus :  zoomIn(); break;
         case Qt::Key_Minus : zoomOut(); break;
-        default :            QGraphicsView::keyPressEvent(event);
+        case Qt::Key_Up :
+        case Qt::Key_W :
+            if ( m_manual_robot ) { m_manual_robot->manualMove(); }
+            break;
+        case Qt::Key_Left :
+        case Qt::Key_A :
+            if ( m_manual_robot ) { m_manual_robot->rotateLeft(); }
+            break;
+        case Qt::Key_Right :
+        case Qt::Key_D :
+            if ( m_manual_robot ) { m_manual_robot->rotateRight(); }
+            break;
+        case Qt::Key_Delete :
+            if ( scene()->selectedItems().size() > 0 )
+            {
+                DEBUG << "Items selected: " << scene()->selectedItems().size();
+                for ( auto &i : scene()->selectedItems() )
+                {
+                    scene()->removeItem(i);
+                    delete i;
+                }
+            }
+            break;
+
+        default : QGraphicsView::keyPressEvent(event);
     }
 }
 
@@ -224,47 +263,61 @@ void Simulation::drawBackground(QPainter *painter, const QRectF &rect)
     painter->setBrush(Qt::NoBrush);
     painter->drawRect(sr);
 
-    QRectF  msgRect(sr.left() + 785, sr.top() + 360, 350, 180);
+    QRectF  msgRect(sr.left() + 20, sr.bottom() - 200, 350, 200);
     QString message = {tr("Ctrl+O - load a new layout\n"
                           "Ctrl+S - save current layout\n"
                           "Ctrl+L - clear screen\n"
                           "Ctrl+N - spawn a new robot\n"
                           "Ctrl+M - spawn a new obstacle\n"
                           "Space  - Play / Pause\n"
+                          "Delete - remove selected items\n"
                           "'+/-'  - zoom in/out\n")};
 
+    QRectF  mouseMsgRect(sr.left() + 1570, sr.bottom() - 100, 350, 90);
+    QString mouseControlMsg = {tr("Click & Drag - Move item\n"
+                                  "Right Click  - Manual control\n"
+                                  "Ctrl + Click - Select items\n"
+                                  "Double Click - Edit item")};
     painter->setBrush(Qt::darkGreen);
     painter->setPen(Qt::black);
     painter->drawText(msgRect, message);
+    painter->drawText(mouseMsgRect, mouseControlMsg);
 }
 
-void Simulation::deleteObject(ObjectType type)
+void Simulation::mousePressEvent(QMouseEvent *event)
 {
-    QList<QGraphicsItem *>                items = scene()->selectedItems();
-    QMutableListIterator<QGraphicsItem *> it(items);
-    if ( type == ObjectType::ROBOT )
+    if ( event->button() & Qt::RightButton )
     {
-        while ( it.hasNext() )
+        /* Deselect the previously selected robot, if any */
+        if ( m_manual_robot != nullptr )
         {
-            Robot *robot = dynamic_cast<Robot *>(it.next());
-            if ( robot )
-            {
-                delete robot;
-                it.remove();
-            }
+            m_manual_robot->setManualControl(false);
         }
-    }
-    else if ( type == ObjectType::OBSTACLE )
-    {
-        while ( it.hasNext() )
+
+        /* Find the robot that was clicked */
+        QPointF        scenePos = mapToScene(event->pos());
+        QGraphicsItem *item     = scene()->itemAt(scenePos, transform());
+        Robot         *robot;
+        if ( item != nullptr )
+            robot = qgraphicsitem_cast<Robot *>(item);
+        else
+            return;
+        DEBUG << item;
+        if ( robot != nullptr )
         {
-            Obstacle *obs = dynamic_cast<Obstacle *>(it.next());
-            if ( obs )
-            {
-                delete obs;
-                it.remove();
-            }
+            /* Set the clicked robot as the selected robot */
+            m_manual_robot = robot;
+            m_manual_robot->setManualControl(true);
         }
+        else
+        {
+            /* No robot clicked, so deselect any selected
+             * robot
+             */
+            m_manual_robot = nullptr;
+        }
+
+        /* Pass the event to the base class for further processing */
     }
-    qDeleteAll(items);
+    QGraphicsView::mousePressEvent(event);
 }

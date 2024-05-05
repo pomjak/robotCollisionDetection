@@ -146,9 +146,6 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="orientationBox"/>
-      </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
@@ -157,7 +154,14 @@
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="QDoubleSpinBox" name="speedBox"/>
+       <widget class="QDoubleSpinBox" name="speedBox">
+        <property name="maximum">
+         <double>5.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_5">
@@ -172,9 +176,6 @@
          <string>Orientation:</string>
         </property>
        </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="rotationBox"/>
       </item>
       <item row="5" column="0">
        <widget class="QLabel" name="label_8">
@@ -191,7 +192,11 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QDoubleSpinBox" name="detectDistanceBox"/>
+       <widget class="QDoubleSpinBox" name="detectDistanceBox">
+        <property name="singleStep">
+         <double>5.000000000000000</double>
+        </property>
+       </widget>
       </item>
       <item row="3" column="1">
        <widget class="QRadioButton" name="directionButton">
@@ -206,6 +211,20 @@
         </property>
         <property name="autoExclusive">
          <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="rotationBox">
+        <property name="maximum">
+         <double>360.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="orientationBox">
+        <property name="maximum">
+         <double>360.000000000000000</double>
         </property>
        </widget>
       </item>

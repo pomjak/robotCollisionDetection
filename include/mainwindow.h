@@ -54,12 +54,6 @@ class MainWindow : public QMainWindow
     ~MainWindow();
 
     /**
-     * \brief Connects all used buttons
-     *
-     */
-    void connect_buttons();
-
-    /**
      * \brief Creates toolbar menus
      **/
     void setupMenus();
@@ -78,8 +72,6 @@ class MainWindow : public QMainWindow
     QAction    *toggleSimAction;
     QAction    *addRobotAction;
     QAction    *addObstacleAction;
-    QAction    *deleteRobotAction;
-    QAction    *deleteObstacleAction;
     QAction    *loadLevelAction;
     QAction    *saveLevelAction;
     QAction    *clearSceneAction;

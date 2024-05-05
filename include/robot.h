@@ -24,10 +24,6 @@
 #define DEF_ROTATE_BY   0.1
 #define DEF_SPEED       2.0
 
-#define MAX_DETECT_DIST 100.0
-#define MAX_ROTATE_BY   M_PI
-#define MAX_SPEED       5.00
-
 /**
  * \brief A graphical item to use in the main scene and perform collision
  * detection on
@@ -46,6 +42,7 @@ class Robot
     double  m_detection_dist; /// Maximum collision detec distance
     bool    m_clockwise;
     QPointF m_offset;
+    bool    m_manual_override; /// manual control bit
 
   public:
     /**
@@ -151,7 +148,27 @@ class Robot
      **/
     void setDetectionDistance(qreal dist);
 
+    /**
+     * \brief Set the Clockwise
+     *
+     * \param c
+     */
     void setClockwise(bool c);
+
+    /**
+     * \brief Set the Manual Control of robot
+     *
+     * \param control
+     */
+    void setManualControl(bool control);
+
+    /**
+     * \brief get state of manual control of the robot
+     *
+     * \return true
+     * \return false
+     */
+    bool manualControl() const;
 
     /**
      * \brief paints the contents of an item in local coordinates
@@ -221,31 +238,58 @@ class Robot
     QPolygonF detectionArea() const;
 
     /**
-     * \brief rotate the robot based on its parameters
+     * \brief rotate robot left
      *
      */
-    void rotate();
+    void rotateLeft();
 
     /**
-     * \brief returns true when detection area of robot is out of scene 
-     * 
+     * \brief rotate robot right
+     *
+     */
+    void rotateRight();
+
+    /**
+     * \brief avoid collision by rotating the robot based on its parameters
+     *
+     */
+    void avoid();
+
+    /**
+     * \brief returns true when detection area of robot is out of scene
+     *
      * \return true out of the scene
      * \return false within the scene
      */
     bool isOutOfBounds();
 
     /**
-     * \brief Get the Items In Detection Zone 
-     * 
-     * \return QList<QGraphicsItem *> 
+     * \brief Get the Items In Detection Zone
+     *
+     * \return QList<QGraphicsItem *>
      */
     QList<QGraphicsItem *> getItemsInDetectZone();
 
     /**
      * \brief move robot to new position based on its parameters
-     * 
+     *
      */
     void move();
+
+    /**
+     * \brief return true if robot can move forward
+     *
+     * \return true
+     * \return false
+     */
+    bool isClearToMove();
+
+    /**
+     * \brief when robot is manually controlled, it can move forward, or stay
+     * in place
+     *
+     */
+    void manualMove();
 
     /**
      * \brief Called by GraphicsScene::advance slot; animates the object

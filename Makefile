@@ -1,11 +1,12 @@
 # Makefile for a Qt-based C++ project
+# Authors: Pomsar Jakub (xpomsa00), Cagala Simon (xcagal00)
+XLOGINS = xpomsa00-xcagal00
 
 # Qt configuration
-QMAKE = /bin/qmake
+QMAKE = qmake
 
 # Target naem
 TARGET = icp24
-TARGET_DEBUG = icp24_debug
 
 # Source files
 SRC_PATH = src
@@ -23,7 +24,7 @@ BUILD_DIR = build
 
 # Default target
 all: build
-	cd build && $(QMAKE) && $(MAKE) && cp $(TARGET_DEBUG) ../
+	cd build && $(QMAKE) && $(MAKE) && cp $(TARGET) ../
 
 build: clean
 	mkdir $(BUILD_DIR)
@@ -44,10 +45,15 @@ cleandoc:
 
 celan: clean
 
-clean: 
+clean: cleandoc
 	rm -rf $(BUILD_DIR)/
 	rm -rf $(TARGET)
 	rm -rf $(TARGET_DEBUG)
 	rm -rf $(TRASH)
 
-.PHONY: run clean
+pack:
+	zip $(XLOGINS).zip -r $(SRC_PATH)/ $(INC_PATH)/ $(FOR_PATH)/ $(TARGET).pro examples/ doc/Doxyfile README.md Makefile
+
+zip: pack
+
+.PHONY: run clean zip

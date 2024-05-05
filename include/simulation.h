@@ -22,9 +22,14 @@
 #include <QWidget>
 #include <iostream>
 #include <memory>
+#include <random>
 
 #define SCENE_WIDTH  940.0
 #define SCENE_HEIGHT 860.0
+
+#define MAX_DETECT_DIST 100.0
+#define MAX_ROTATE_BY   M_PI / 8
+#define MAX_SPEED       3.00
 
 /**
  * \brief Enum class representing the state of the simulation.
@@ -55,10 +60,13 @@ class Simulation : public QGraphicsView
 {
     Q_OBJECT
   private:
-    QList<Robot *>    m_robot_list;    /* list of robots               */
-    QList<Obstacle *> m_obstacle_list; /* list of obstacles            */
-    JsonHandler       json;            /* instance of json interface   */
-    State             m_state;         /* state of simulation          */
+    QList<Robot *>     m_robot_list;    /* list of robots               */
+    QList<Obstacle *>  m_obstacle_list; /* list of obstacles            */
+    JsonHandler        json;            /* instance of json interface   */
+    State              m_state;         /* state of simulation          */
+    Robot             *m_manual_robot;  /* pointer to selected robot    */
+    std::random_device m_rd;
+    std::mt19937       m_rng{m_rd()};
 
   public:
     /**
@@ -175,22 +183,6 @@ class Simulation : public QGraphicsView
     void spawnObstacle();
 
     /**
-     * \brief Delete the selected robot from the simulation.
-     *
-     * This function removes the currently selected robot from
-     * the simulation.
-     */
-    void deleteRobot();
-
-    /**
-     * \brief Delete the selected obstacle from the simulation.
-     *
-     * This function removes the currently selected obstacle from
-     * the simulation.
-     */
-    void deleteObstacle();
-
-    /**
      * \brief Delete all items from the simulation.
      *
      * This function removes all objects and clears the scene
@@ -238,10 +230,6 @@ class Simulation : public QGraphicsView
      */
     void spawnObject(ObjectType type);
 
-    /**
-     * \brief Deletes selected object
-     *
-     * \param type type of object to delete
-     **/
-    void deleteObject(ObjectType type);
+
+    void mousePressEvent(QMouseEvent *event) override;
 };

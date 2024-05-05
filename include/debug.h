@@ -1,3 +1,13 @@
+/**
+ * \file debug.h
+ * \author Pomsar Jakub (xpomsa00@stud.fit.vutbr.cz)
+ * \author Simon Cagala <xcagal00@stud.fit.vutbr.cz>
+ * \brief debug functions
+ * \version 0.1 \date 2024-04-28
+ *
+ * @copyright Copyright (c) 2024
+ *
+ */
 #pragma once
 
 #include <QDebug>
