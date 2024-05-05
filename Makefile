@@ -46,13 +46,15 @@ cleandoc:
 
 celan: clean
 
-clean: 
+clean: cleandoc
 	rm -rf $(BUILD_DIR)/
 	rm -rf $(TARGET)
 	rm -rf $(TARGET_DEBUG)
 	rm -rf $(TRASH)
 
-zip:
+pack:
 	zip $(XLOGINS).zip -r $(SRC_PATH)/ $(INC_PATH)/ $(FOR_PATH)/ $(TARGET).pro examples/ doc/Doxyfile README.md Makefile
+
+zip: pack
 
 .PHONY: run clean zip
