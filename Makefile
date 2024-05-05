@@ -1,5 +1,5 @@
 # Makefile for a Qt-based C++ project
-
+# Authors: Pomsar Jakub (xpomsa00), Cagala Simon (xcagal00)
 XLOGINS = xpomsa00-xcagal00
 
 # Qt configuration
