@@ -1,13 +1,12 @@
 # Makefile for a Qt-based C++ project
 
-XLOGINS = xpomsa00_xcagal00
+XLOGINS = xpomsa00-xcagal00
 
 # Qt configuration
 QMAKE = qmake
 
 # Target naem
 TARGET = icp24
-TARGET_DEBUG = icp24_debug
 
 # Source files
 SRC_PATH = src
@@ -25,7 +24,7 @@ BUILD_DIR = build
 
 # Default target
 all: build
-	cd build && $(QMAKE) && $(MAKE) && cp $(TARGET_DEBUG) ../
+	cd build && $(QMAKE) && $(MAKE) && cp $(TARGET) ../
 
 build: clean
 	mkdir $(BUILD_DIR)
