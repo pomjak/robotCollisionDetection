@@ -11,7 +11,8 @@
 #include "simulation.h"
 #include <QFileDialog>
 
-using std::shared_ptr, std::make_shared;
+using std::shared_ptr;
+using std::make_shared;
 
 Simulation::Simulation(QWidget *parent)
     : QGraphicsView(parent)
