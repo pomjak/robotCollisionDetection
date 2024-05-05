@@ -13,6 +13,9 @@ SRC_PATH = src
 INC_PATH = include
 FOR_PATH = forms
 
+# misc files needed for submission
+MISC = examples/ doc/Doxyfile README.md Makefile class-dia.pdf
+
 SOURCES = $(SRC_PATH)/*.cpp
 HEADERS = $(INC_PATH)/*.h
 FORMS   = $(FOR_PATH)/*.ui
@@ -52,7 +55,7 @@ clean: cleandoc
 	rm -rf $(TRASH)
 
 pack:
-	zip $(XLOGINS).zip -r $(SRC_PATH)/ $(INC_PATH)/ $(FOR_PATH)/ $(TARGET).pro examples/ doc/Doxyfile README.md Makefile
+	zip $(XLOGINS).zip -r $(SRC_PATH)/ $(INC_PATH)/ $(FOR_PATH)/ $(TARGET).pro  $(MISC)
 
 zip: pack
 
